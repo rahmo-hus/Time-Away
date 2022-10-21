@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - "65432:5432"
+    environment:
+      - POSTGRES_USER=absence-planner
+      - POSTGRES_PASSWORD=absence-planner
+      - POSTGRES_DB=absence-planner

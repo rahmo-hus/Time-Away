@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define your own datamodels here and run `yarn redwood prisma migrate dev`
+// to create migrations for them and apply to your dev DB.
+// TODO: Please remove the following example:
+model Company {
+  id                 Int         @id @default(autoincrement())
+  country            String
+  startOfNewYear     Int
+  shareAllAbsences   Boolean     @default(false)
+  isTeamViewHidden   Boolean     @default(false)
+  ldapAuthEnabled    Boolean
+  ldapAuthConfig     String
+  dateFormat         String
+  companyWideMessage String
+  mode               Int
+  timezone           String
+  carryOver          Int
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime
+  Department         Department?
+}
+
+model Department {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  allowance             Int
+  includePublicHolidays Boolean
+  isAccruedAllowance    Boolean
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime
+  companyId             Int      @unique
+  company               Company  @relation(fields: [companyId], references: [id])
+}
