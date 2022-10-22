@@ -13,8 +13,9 @@ import PublicLayout from 'src/layouts/PublicLayout'
 const Routes = () => {
   return (
     <Router>
-    <Set wrap={PublicLayout}>
-      <Route path="/calendar" page={CalendarPage} name="calendar" />
+      <Set wrap={PublicLayout}>
+        <Route path="/calendar" page={CalendarPage} name="calendar" />
+        <Route path="/register" page={RegisterPage} name="register" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>

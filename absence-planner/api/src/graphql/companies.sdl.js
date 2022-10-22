@@ -23,16 +23,13 @@ export const schema = gql`
 
   input CreateCompanyInput {
     country: String!
-    startOfNewYear: Int!
-    shareAllAbsences: Boolean!
-    isTeamViewHidden: Boolean!
-    ldapAuthEnabled: Boolean!
-    ldapAuthConfig: String!
-    dateFormat: String!
+    name: String
+    username: String
+    email: String
+    password: String
     companyWideMessage: String!
     mode: Int!
     timezone: String!
-    carryOver: Int!
   }
 
   input UpdateCompanyInput {
@@ -50,7 +47,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createCompany(input: CreateCompanyInput!): Company! @requireAuth
+    createCompany(input: CreateCompanyInput!): Company! @skipAuth
     updateCompany(id: Int!, input: UpdateCompanyInput!): Company! @requireAuth
     deleteCompany(id: Int!): Company! @requireAuth
   }
