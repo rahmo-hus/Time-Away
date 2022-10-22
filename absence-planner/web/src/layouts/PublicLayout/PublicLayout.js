@@ -1,3 +1,5 @@
+import { Link, routes } from '@redwoodjs/router'
+
 const PublicLayout = ({ children }) => {
   return <>
     <div className="container">
@@ -9,7 +11,7 @@ const PublicLayout = ({ children }) => {
             </div>
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav navbar-left">
-                <li><a href="/calendar/">Calendar</a></li>
+                <li><Link to={routes.calendar()}>Calendar</Link></li>
                 <li><a href="/calendar/teamview/">Team View</a></li>
                 <li className="hidden-xs"><a href="/users/">Employees</a></li>
                 <li className="navbar-form navbar-left">
@@ -54,7 +56,7 @@ const PublicLayout = ({ children }) => {
                     <li><a href="/logout/">Logout</a></li>
                   </ul>
                 </li>
-                <li><a href="/login/">Login</a></li>
+                <li><Link to={routes.login()}>Login</Link></li>
               </ul>
             </div>
           </nav>
