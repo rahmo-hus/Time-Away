@@ -13,49 +13,49 @@ generator client {
 model Company {
   id                 Int         @id @default(autoincrement())
   name               String?
-  country            String
-  startOfNewYear     Int
-  shareAllAbsences   Boolean     @default(false)
-  isTeamViewHidden   Boolean     @default(false)
-  ldapAuthEnabled    Boolean
-  ldapAuthConfig     String
-  dateFormat         String
-  companyWideMessage String
-  mode               Int
-  timezone           String
-  carryOver          Int
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime
+  country            String?
+  startOfNewYear     Int?
+  shareAllAbsences   Boolean?     @default(false)
+  isTeamViewHidden   Boolean?     @default(false)
+  ldapAuthEnabled    Boolean?
+  ldapAuthConfig     String?
+  dateFormat         String?
+  companyWideMessage String?
+  mode               Int?
+  timezone           String?
+  carryOver          Int?
+  createdAt          DateTime?    @default(now())
+  updatedAt          DateTime?
   Department         Department?
   User               User[]
 }
 
 model Department {
   id                    Int      @id @default(autoincrement())
-  name                  String
-  allowance             Int
-  includePublicHolidays Boolean
-  isAccruedAllowance    Boolean
+  name                  String?
+  allowance             Int?
+  includePublicHolidays Boolean?
+  isAccruedAllowance    Boolean?
   createdAt             DateTime @default(now())
-  updatedAt             DateTime
-  companyId             Int      @unique
-  company               Company  @relation(fields: [companyId], references: [id])
+  updatedAt             DateTime?
+  companyId             Int?      @unique
+  company               Company?  @relation(fields: [companyId], references: [id])
   User                  User[]
 }
 
 model User {
   id            Int        @id @default(autoincrement())
-  email         String
-  password      String
-  firstName     String
-  lastName      String
+  email         String?
+  password      String?
+  firstName     String?
+  lastName      String?
   isActivated   Boolean    @default(false)
   isAdmin       Boolean    @default(false)
   isAutoApprove Boolean    @default(false)
-  startDate     DateTime
-  updatedAt     DateTime
-  companyId     Int
-  departmentId  Int
-  company       Company    @relation(fields: [companyId], references: [id])
-  department    Department @relation(fields: [departmentId], references: [id])
+  startDate     DateTime?
+  updatedAt     DateTime?
+  companyId     Int?
+  departmentId  Int?
+  company       Company?    @relation(fields: [companyId], references: [id])
+  department    Department? @relation(fields: [departmentId], references: [id])
 }

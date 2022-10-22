@@ -1,0 +1,43 @@
+-- DropForeignKey
+ALTER TABLE "User" DROP CONSTRAINT "User_companyId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "User" DROP CONSTRAINT "User_departmentId_fkey";
+
+-- AlterTable
+ALTER TABLE "Company" ALTER COLUMN "country" DROP NOT NULL,
+ALTER COLUMN "startOfNewYear" DROP NOT NULL,
+ALTER COLUMN "shareAllAbsences" DROP NOT NULL,
+ALTER COLUMN "isTeamViewHidden" DROP NOT NULL,
+ALTER COLUMN "ldapAuthEnabled" DROP NOT NULL,
+ALTER COLUMN "ldapAuthConfig" DROP NOT NULL,
+ALTER COLUMN "dateFormat" DROP NOT NULL,
+ALTER COLUMN "companyWideMessage" DROP NOT NULL,
+ALTER COLUMN "mode" DROP NOT NULL,
+ALTER COLUMN "timezone" DROP NOT NULL,
+ALTER COLUMN "carryOver" DROP NOT NULL,
+ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Department" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "allowance" DROP NOT NULL,
+ALTER COLUMN "includePublicHolidays" DROP NOT NULL,
+ALTER COLUMN "isAccruedAllowance" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "email" DROP NOT NULL,
+ALTER COLUMN "password" DROP NOT NULL,
+ALTER COLUMN "firstName" DROP NOT NULL,
+ALTER COLUMN "lastName" DROP NOT NULL,
+ALTER COLUMN "startDate" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL,
+ALTER COLUMN "companyId" DROP NOT NULL,
+ALTER COLUMN "departmentId" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE SET NULL ON UPDATE CASCADE;

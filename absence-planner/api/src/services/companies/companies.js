@@ -11,9 +11,9 @@ export const company = ({ id }) => {
 }
 
 export const createCompany = ({ input }) => {
-  return db.company.create({
+  return  db.company.create({
     data: input,
-  })
+  });
 }
 
 export const updateCompany = ({ id, input }) => {

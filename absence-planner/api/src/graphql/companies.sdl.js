@@ -24,11 +24,7 @@ export const schema = gql`
   input CreateCompanyInput {
     country: String!
     name: String
-    username: String
-    email: String
-    password: String
     companyWideMessage: String!
-    mode: Int!
     timezone: String!
   }
 

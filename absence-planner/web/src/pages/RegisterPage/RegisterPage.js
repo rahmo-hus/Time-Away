@@ -1,38 +1,109 @@
 import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
+import { MetaTags, useMutation } from '@redwoodjs/web'
 import {
   FieldError,
   Form,
   Label,
   TextField,
   TextAreaField,
+  FormError,
   Submit,
   SelectField,
-  Option
 } from '@redwoodjs/forms'
+
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+
+
+const CREATE_COMPANY = gql`
+  mutation CreateCompanyMutation($company: CreateCompanyInput!) {
+    createCompany(input: $company) {
+      id
+    }
+  }
+`
+
+const CREATE_USER = gql`
+  mutation CreateUserMutation($user: CreateUserInput!){
+    createUser(input: $user){
+      id
+    }
+  }
+`
 
 const RegisterPage = () => {
 
-  const onSubmit =(data)=>{
-      console.log(data)
+  const [userData, setUserData] = useState(null);
+
+  const [createUser, { loading, error }] = useMutation(CREATE_USER, {
+    onCompleted:()=>{
+      toast.success("Company added successfully");
+    }
+  })
+
+  const [createCompany] = useMutation(CREATE_COMPANY, {
+    onCompleted: (data) => {
+      createUser({
+        variables: {
+          user: {
+            ...userData,
+            companyId: data.createCompany.id
+          },
+        }
+      })
+    }
+  });
+
+
+  const [passwordValue, setPassword] = useState('');
+  const formMethods = useForm();
+
+  const onSubmit = (data) => {
+    setUserData({
+      email: data.Email,
+      password: data.Password,
+      firstName: data["First name"],
+      lastName: data["Last name"],
+      isActivated: true,
+      isAdmin: true,
+      isAutoApprove: true,
+    });
+
+    createCompany({
+      variables: {
+        company: {
+          name: data["Company name"],
+          country: data.country,
+          timezone: data.timezone,
+          companyWideMessage: data["Company info"]
+        }
+      }
+    })
   }
 
   return (
     <>
       <MetaTags title="Register" description="Register page" />
 
-      <h1 style={{textAlign:'center'}}>New company</h1>
+      <h1 style={{ textAlign: 'center' }}>New company</h1>
 
       {/* {{> show_flash_messages }} */}
-
-      <div className="row" style={{display:'flex', justifyContent:'center'}}>
+      <Toaster />
+      <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="lead">Register new company account and supervisor user</div>
       </div>
       <hr></hr>
 
-      <div className="row" style={{display:'flex', justifyContent:'center'}}>
+      <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="col-md-9">
-          <Form className="form-horizontal" onSubmit={onSubmit}>
+          <Form className="form-horizontal"
+            config={{ mode: 'onBlur' }}
+            onSubmit={onSubmit}
+            formMethods={formMethods}
+          >
+            <FormError error={error} wrapperClassName="error text-center" /> <br></br>
 
             <div className="form-group">
               <Label name="Company name" className="col-md-4 control-label">
@@ -40,11 +111,11 @@ const RegisterPage = () => {
               </Label>
               <div className="col-md-6">
                 <TextField
-                id="company-name"
+                  placeholder="Name of organization"
                   name="Company name"
                   validation={{
                     required: true,
-                    message:'Company name is required'
+                    message: 'Company name is required'
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -54,11 +125,31 @@ const RegisterPage = () => {
             </div>
 
             <div className="form-group">
+              <Label name="Company message" className="col-md-4 control-label">
+                Company info
+              </Label>
+              <div className="col-md-6">
+                <TextAreaField
+                  placeholder="Brief organization information"
+                  name="Company info"
+                  validation={{
+                    required: true,
+                    message: 'Company info is required'
+                  }}
+                  errorClassName="form-control error"
+                  className="form-control"
+                />
+                <FieldError name="Company info" className="error" />
+              </div>
+            </div>
+
+            <div className="form-group">
               <Label name="First name" className="col-md-4 control-label">
                 First name
               </Label>
               <div className="col-md-6">
                 <TextField
+                  placeholder="First name of administrator user"
                   name="First name"
                   validation={{
                     required: true,
@@ -77,6 +168,7 @@ const RegisterPage = () => {
               <div className="col-md-6">
                 <TextField
                   name="Last name"
+                  placeholder="Last name of administrator user"
                   validation={{
                     required: true,
                   }}
@@ -94,6 +186,7 @@ const RegisterPage = () => {
               <div className="col-md-6">
                 <TextField
                   name="Email"
+                  placeholder="Email of administrator user"
                   validation={{
                     required: true,
                     pattern: {
@@ -115,9 +208,15 @@ const RegisterPage = () => {
               <div className="col-md-6">
                 <TextField
                   name="Password"
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="***********"
                   type="password"
                   validation={{
-                    required: true
+                    required: true,
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters long"
+                    }
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -133,9 +232,11 @@ const RegisterPage = () => {
               <div className="col-md-6">
                 <TextField
                   name="Password confirm"
+                  placeholder="***********"
                   type="password"
                   validation={{
-                    required: true
+                    required: true,
+                    validate: value => value === passwordValue || 'Passwords must match'
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -184,7 +285,7 @@ const RegisterPage = () => {
             <hr></hr>
             <div className="form-group">
               <div className="col-md-offset-4 col-md-6">
-                <Submit className='btn btn-success'>Create</Submit>
+                <Submit disabled={loading} className='btn btn-success'>Create</Submit>
               </div>
             </div>
           </Form>
