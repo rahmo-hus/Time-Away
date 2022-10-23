@@ -70,6 +70,7 @@ const RegisterPage = () => {
       isActivated: true,
       isAdmin: true,
       isAutoApprove: true,
+      roles: 'manager'
     });
 
     createCompany({

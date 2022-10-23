@@ -58,6 +58,7 @@ model User {
   departmentId        Int?
   hashedPassword      String
   salt                String
+  roles               String      @default("employee")
   resetToken          String?
   resetTokenExpiresAt DateTime?
   company             Company?    @relation(fields: [companyId], references: [id])

@@ -3,7 +3,7 @@ import { useAuth} from '@redwoodjs/auth'
 
 const PublicLayout = ({ children }) => {
 
-  const { isAuthenticated, currentUser, logOut } = useAuth();
+  const { isAuthenticated, currentUser, logOut, hasRole } = useAuth();
 
   return <>
     <div className="container">
@@ -19,7 +19,10 @@ const PublicLayout = ({ children }) => {
                 <ul className="nav navbar-nav navbar-left">
                   <li><Link to={routes.calendar()}>Calendar</Link></li>
                   <li><a href="/calendar/teamview/">Team View</a></li>
+                  {
+                    hasRole('manager') &&
                   <li className="hidden-xs"><a href="/users/">Employees</a></li>
+                  }
                   <li className="navbar-form navbar-left">
                     <div className="form-group">
                       <button type="button" className="btn btn-info" data-toggle="modal" data-target="#book_leave_modal" id="book_time_off_btn">New absence</button>
@@ -37,6 +40,7 @@ const PublicLayout = ({ children }) => {
                       <li className="dropdown-header">No notifications</li>
                     </ul>
                   </li>
+                  { hasRole('manager') &&
                   <li className="dropdown hidden-xs">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><span className="fa fa-gears"></span> <span className="caret"></span></a>
                     <ul className="dropdown-menu" role="menu">
@@ -52,15 +56,14 @@ const PublicLayout = ({ children }) => {
                       <li><a href="/reports/">Reports</a></li>
                     </ul>
                   </li>
-                  <li className="visible-xs-block"><a href="/requests/">Requests</a></li>
-                  <li className="visible-xs-block"><a href="/logout/">Logout</a></li>
+                  }
                   <li className="dropdown hidden-xs">
                     <a id="me_menu" href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Me <span className="caret"></span></a>
                     <ul className="dropdown-menu" role="menu">
                       <li><a href="/requests/">Requests</a></li>
                       <li className="hidden-xs"><a href="/calendar/feeds/">Feeds</a></li>
                       <li role="separator" className="divider hidden-xs"></li>
-                      <li><button type="a" onClick={logOut}>Logout</button></li>
+                      <li><a onClick={logOut}>Logout</a></li>
                     </ul>
                   </li>
                 </ul>
