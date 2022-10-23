@@ -27,13 +27,13 @@ const CREATE_COMPANY = gql`
 `
 
 const RegisterPage = () => {
-  const { isAuthenticated, signUp } = useAuth();
+  const { isAuthenticated, signUp, logOut } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate(routes.calendar())
-    }
-  }, [isAuthenticated])
+   }
+  }, [])
 
 
   const [userData, setUserData] = useState(null);
@@ -45,8 +45,10 @@ const RegisterPage = () => {
       const response = await signUp({ ...userData, companyId: data.createCompany.id });
 
       console.log(response)
-      if (response.message) {
-        toast.success(response.message);
+      if (response.id) {
+        toast.success("Company created successfully");
+        logOut();
+
       }
       else if (response.error) {
         toast.error(response.error);
@@ -102,7 +104,6 @@ const RegisterPage = () => {
             onSubmit={onSubmit}
             formMethods={formMethods}
           >
-            <FormError error={error} wrapperClassName="error text-center" /> <br></br>
 
             <div className="form-group">
               <Label name="Company name" className="col-md-4 control-label">

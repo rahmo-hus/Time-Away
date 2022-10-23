@@ -50,12 +50,12 @@ export const handler = async (event, context) => {
     },
 
     errors: {
-      usernameOrPasswordMissing: 'Both username and password are required',
-      usernameNotFound: 'Username ${username} not found',
+      usernameOrPasswordMissing: 'Both email and password are required',
+      usernameNotFound: 'Credentials are not valid',
       // For security reasons you may want to make this the same as the
       // usernameNotFound error so that a malicious user can't use the error
       // to narrow down if it's the username or password that's incorrect
-      incorrectPassword: 'Incorrect password for ${username}',
+      incorrectPassword: 'Credentials are not valid',
     },
 
     // How long a user will remain logged in, in seconds
@@ -104,7 +104,7 @@ export const handler = async (event, context) => {
     // `signUp()` function in the form of: `{ message: 'String here' }`.
     handler: ({ username, hashedPassword, salt, userAttributes }) => {
 
-      db.user.create({
+      return db.user.create({
         data: {
           email: username,
           hashedPassword: hashedPassword,
@@ -119,7 +119,7 @@ export const handler = async (event, context) => {
         },
       });
 
-      return "Company registered successfully";
+     // return "Company registered successfully";
     },
 
     // Include any format checks for password here. Return `true` if the

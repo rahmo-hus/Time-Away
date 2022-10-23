@@ -1,4 +1,4 @@
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, navigate } from '@redwoodjs/router'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { MetaTags } from '@redwoodjs/web'
 
@@ -11,16 +11,31 @@ import {
   Submit
 } from '@redwoodjs/forms'
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import {useAuth} from '@redwoodjs/auth'
 
 const LoginPage = () => {
 
   const formMethods = useForm();
+  const {isAuthenticated, logIn} = useAuth();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+      const response = await logIn({username:data.Email, password:data.Password});
 
+      if(response.message){
+        navigate(routes.calendar());
+      }
+      else if(response.error){
+        toast.error(response.error);
+      }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(routes.calendar())
+    }
+  }, [isAuthenticated])
 
   return (
     <>
