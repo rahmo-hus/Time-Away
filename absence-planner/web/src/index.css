@@ -24,6 +24,10 @@ a {
   font-size: 16px;
 }
 
+.flex-center{
+  display: flex;
+  justify-content: center;
+}
 /*
   Add special class to remove default buttom space
 */
