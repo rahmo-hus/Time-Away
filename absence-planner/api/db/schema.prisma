@@ -15,8 +15,8 @@ model Company {
   name               String?
   country            String?
   startOfNewYear     Int?
-  shareAllAbsences   Boolean?     @default(false)
-  isTeamViewHidden   Boolean?     @default(false)
+  shareAllAbsences   Boolean?    @default(false)
+  isTeamViewHidden   Boolean?    @default(false)
   ldapAuthEnabled    Boolean?
   ldapAuthConfig     String?
   dateFormat         String?
@@ -24,19 +24,19 @@ model Company {
   mode               Int?
   timezone           String?
   carryOver          Int?
-  createdAt          DateTime?    @default(now())
+  createdAt          DateTime?   @default(now())
   updatedAt          DateTime?
   Department         Department?
   User               User[]
 }
 
 model Department {
-  id                    Int      @id @default(autoincrement())
+  id                    Int       @id @default(autoincrement())
   name                  String?
   allowance             Int?
   includePublicHolidays Boolean?
   isAccruedAllowance    Boolean?
-  createdAt             DateTime @default(now())
+  createdAt             DateTime  @default(now())
   updatedAt             DateTime?
   companyId             Int?      @unique
   company               Company?  @relation(fields: [companyId], references: [id])
@@ -44,18 +44,22 @@ model Department {
 }
 
 model User {
-  id            Int        @id @default(autoincrement())
-  email         String?
-  password      String?
-  firstName     String?
-  lastName      String?
-  isActivated   Boolean    @default(false)
-  isAdmin       Boolean    @default(false)
-  isAutoApprove Boolean    @default(false)
-  startDate     DateTime?
-  updatedAt     DateTime?
-  companyId     Int?
-  departmentId  Int?
-  company       Company?    @relation(fields: [companyId], references: [id])
-  department    Department? @relation(fields: [departmentId], references: [id])
+  id                  Int         @id @default(autoincrement())
+  email               String?     @unique
+  password            String?
+  firstName           String?
+  lastName            String?
+  isActivated         Boolean     @default(false)
+  isAdmin             Boolean     @default(false)
+  isAutoApprove       Boolean     @default(false)
+  startDate           DateTime?
+  updatedAt           DateTime?
+  companyId           Int?
+  departmentId        Int?
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+  company             Company?    @relation(fields: [companyId], references: [id])
+  department          Department? @relation(fields: [departmentId], references: [id])
 }

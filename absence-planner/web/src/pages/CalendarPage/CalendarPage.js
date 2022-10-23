@@ -75,7 +75,7 @@ const CalendarPage = () => {
 
 
         <div className="row main-row_header">
-          <div className="col-md-12">Calendar <a href="/calendar/feeds/" data-toggle="tooltip" data-placement="right" title="Export absences  to external calendars"><span className="fa fa-rss"></span></a></div>
+          <div className="col-md-12">Calendar <a href="/calendar/feeds/" datatoggle="tooltip" dataplacement="right" title="Export absences  to external calendars"><span className="fa fa-rss"></span></a></div>
         </div>
 
         <div className="row">
@@ -113,16 +113,16 @@ const CalendarPage = () => {
             <table className="calendar_month month_{{ this.month }}">
               <thead>
                 <tr>
-                  <td colspan="14">Date</td>
+                  <td colSpan="14">Date</td>
                 </tr>
                 <tr>
-                  <td colspan="2">M</td>
-                  <td colspan="2">T</td>
-                  <td colspan="2">W</td>
-                  <td colspan="2">T</td>
-                  <td colspan="2">F</td>
-                  <td colspan="2">S</td>
-                  <td colspan="2">S</td>
+                  <td colSpan="2">M</td>
+                  <td colSpan="2">T</td>
+                  <td colSpan="2">W</td>
+                  <td colSpan="2">T</td>
+                  <td colSpan="2">F</td>
+                  <td colSpan="2">S</td>
+                  <td colSpan="2">S</td>
                 </tr>
               </thead>
               <tbody>

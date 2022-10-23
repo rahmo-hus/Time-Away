@@ -1,4 +1,4 @@
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, navigate } from '@redwoodjs/router'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import {
@@ -12,8 +12,9 @@ import {
   SelectField,
 } from '@redwoodjs/forms'
 
-import { useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '@redwoodjs/auth'
 
 
 
@@ -25,34 +26,32 @@ const CREATE_COMPANY = gql`
   }
 `
 
-const CREATE_USER = gql`
-  mutation CreateUserMutation($user: CreateUserInput!){
-    createUser(input: $user){
-      id
-    }
-  }
-`
-
 const RegisterPage = () => {
+  const { isAuthenticated, signUp } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(routes.calendar())
+    }
+  }, [isAuthenticated])
+
 
   const [userData, setUserData] = useState(null);
-
-  const [createUser, { loading, error }] = useMutation(CREATE_USER, {
-    onCompleted:()=>{
-      toast.success("Company added successfully");
-    }
-  })
+  const [loading, setLoading] = useState(false);
 
   const [createCompany] = useMutation(CREATE_COMPANY, {
-    onCompleted: (data) => {
-      createUser({
-        variables: {
-          user: {
-            ...userData,
-            companyId: data.createCompany.id
-          },
-        }
-      })
+    onCompleted: async (data) => {
+      setLoading(true);
+      const response = await signUp({ ...userData, companyId: data.createCompany.id });
+
+      console.log(response)
+      if (response.message) {
+        toast.success(response.message);
+      }
+      else if (response.error) {
+        toast.error(response.error);
+        setLoading(false);
+      }
     }
   });
 
@@ -62,7 +61,7 @@ const RegisterPage = () => {
 
   const onSubmit = (data) => {
     setUserData({
-      email: data.Email,
+      username: data.Email,
       password: data.Password,
       firstName: data["First name"],
       lastName: data["Last name"],
@@ -80,7 +79,7 @@ const RegisterPage = () => {
           companyWideMessage: data["Company info"]
         }
       }
-    })
+    });
   }
 
   return (
