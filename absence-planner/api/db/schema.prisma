@@ -28,39 +28,156 @@ model Company {
   updatedAt          DateTime?
   Department         Department?
   User               User[]
+  Holiday            Holiday[]
+  LeaveType          LeaveType[]
+  Comment            Comment[]
+  Schedule           Schedule[]
 }
 
 model Department {
-  id                    Int       @id @default(autoincrement())
+  id                    Int                    @id @default(autoincrement())
   name                  String?
   allowance             Int?
   includePublicHolidays Boolean?
   isAccruedAllowance    Boolean?
-  createdAt             DateTime  @default(now())
+  createdAt             DateTime               @default(now())
   updatedAt             DateTime?
-  companyId             Int?      @unique
-  company               Company?  @relation(fields: [companyId], references: [id])
+  companyId             Int?                   @unique
+  company               Company?               @relation(fields: [companyId], references: [id])
   User                  User[]
+  DepartmentSupervisor  DepartmentSupervisor[]
 }
 
 model User {
-  id                  Int         @id @default(autoincrement())
-  email               String?     @unique
-  password            String?
-  firstName           String?
-  lastName            String?
-  isActivated         Boolean     @default(false)
-  isAdmin             Boolean     @default(false)
-  isAutoApprove       Boolean     @default(false)
-  startDate           DateTime?
-  updatedAt           DateTime?
-  companyId           Int?
-  departmentId        Int?
-  hashedPassword      String
-  salt                String
-  roles               String      @default("employee")
-  resetToken          String?
-  resetTokenExpiresAt DateTime?
-  company             Company?    @relation(fields: [companyId], references: [id])
-  department          Department? @relation(fields: [departmentId], references: [id])
+  id                      Int                       @id @default(autoincrement())
+  email                   String?                   @unique
+  password                String?
+  firstName               String?
+  lastName                String?
+  isActivated             Boolean                   @default(false)
+  isAdmin                 Boolean                   @default(false)
+  isAutoApprove           Boolean                   @default(false)
+  startDate               DateTime?
+  updatedAt               DateTime?
+  companyId               Int?
+  departmentId            Int?
+  hashedPassword          String
+  salt                    String
+  roles                   String                    @default("employee")
+  resetToken              String?
+  resetTokenExpiresAt     DateTime?
+  company                 Company?                  @relation(fields: [companyId], references: [id])
+  department              Department?               @relation(fields: [departmentId], references: [id])
+  DepartmentSupervisor    DepartmentSupervisor[]
+  LeavesRequested         Leave[]                   @relation("requester")
+  LeavesToApprove         Leave[]                   @relation("approver")
+  Feed                    Feed[]
+  Comment                 Comment[]
+  Schedule                Schedule[]
+  UserAllowanceAdjustment UserAllowanceAdjustment[]
+}
+
+model Holiday {
+  id        Int       @id @default(autoincrement())
+  name      String
+  date      DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  companyId Int
+  company   Company   @relation(fields: [companyId], references: [id])
+}
+
+model LeaveType {
+  id           Int       @id @default(autoincrement())
+  name         String
+  color        String?
+  useAllowance Boolean?
+  limit        Int?
+  sortOrder    Int?
+  autoApprove  Boolean?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  companyId    Int
+  company      Company   @relation(fields: [companyId], references: [id])
+  Leave        Leave[]
+}
+
+model DepartmentSupervisor {
+  createdAt    DateTime   @default(now())
+  userId       Int
+  departmentId Int
+  user         User       @relation(fields: [userId], references: [id])
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@id([userId, departmentId])
+}
+
+model Leave {
+  id              Int       @id @default(autoincrement())
+  status          Int?
+  employeeComment String?
+  approverComment String?
+  decidedAt       DateTime?
+  dateStart       DateTime?
+  dateEnd         DateTime?
+  dayPartStart    Int?
+  dayPartEnd      Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime?
+  requesterId     Int
+  approverId      Int
+  leaveTypeId     Int
+  requester       User      @relation("requester", fields: [requesterId], references: [id])
+  approver        User      @relation("approver", fields: [approverId], references: [id])
+  leaveType       LeaveType @relation(fields: [leaveTypeId], references: [id])
+}
+
+model Feed {
+  id        Int       @id @default(autoincrement())
+  name      String?
+  token     String?
+  type      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  entityType String?
+  entityId   String?
+  comment    String?
+  at         DateTime?
+  companyId  Int
+  byUserId   Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  user       User      @relation(fields: [byUserId], references: [id])
+}
+
+model Schedule {
+  id        Int       @id @default(autoincrement())
+  monday    String?
+  tuesday   String?
+  wednesday String?
+  thursday  String?
+  friday    String?
+  saturday  String?
+  sunday    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  companyId Int
+  userId    Int
+  company   Company   @relation(fields: [companyId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model UserAllowanceAdjustment {
+  id                   Int      @id @default(autoincrement())
+  year                 Int?
+  adjustment           Int?
+  carriedOverAllowance Int?
+  createdAt            DateTime @default(now())
+  userId               Int
+  user                 User     @relation(fields: [userId], references: [id])
 }
