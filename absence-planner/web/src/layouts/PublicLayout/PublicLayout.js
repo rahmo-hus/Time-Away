@@ -1,5 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 import { useAuth} from '@redwoodjs/auth'
+import NewAbsenceCell from 'src/components/NewAbsenceCell'
 
 const PublicLayout = ({ children }) => {
 
@@ -25,7 +26,7 @@ const PublicLayout = ({ children }) => {
                   }
                   <li className="navbar-form navbar-left">
                     <div className="form-group">
-                      <button type="button" className="btn btn-info" data-toggle="modal" data-target="#book_leave_modal" id="book_time_off_btn">New absence</button>
+                      <Link className="btn btn-info" to={routes.newAbsence()} id="book_time_off_btn">New absence</Link>
                     </div>
                   </li>
                 </ul>

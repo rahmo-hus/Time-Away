@@ -124,10 +124,10 @@ model Leave {
   dayPartEnd      Int?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime?
-  requesterId     Int
+  requesterId     Int?
   approverId      Int
   leaveTypeId     Int
-  requester       User      @relation("requester", fields: [requesterId], references: [id])
+  requester       User?      @relation("requester", fields: [requesterId], references: [id])
   approver        User      @relation("approver", fields: [approverId], references: [id])
   leaveType       LeaveType @relation(fields: [leaveTypeId], references: [id])
 }

@@ -14,6 +14,7 @@ const Routes = () => {
   return (
     <Router>
       <Set wrap={PublicLayout}>
+        <Route path="/new-absence" page={NewAbsencePage} name="newAbsence" />
         <Route path="/login" page={LoginPage} name="login" />
         <Route path="/register" page={RegisterPage} name="register" />
         <Private unauthenticated="login">

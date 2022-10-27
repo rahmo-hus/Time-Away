@@ -2,7 +2,7 @@ import Calendar from "src/components/Calendar"
 
 export const QUERY = gql`
   query CompaniesQuery {
-    calendar: companies {
+    calendar: users {
       id
     }
   }
