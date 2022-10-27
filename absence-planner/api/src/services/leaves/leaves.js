@@ -1,12 +1,6 @@
 import { RedwoodGraphQLError } from '@redwoodjs/graphql-server';
 import { db } from 'src/lib/db'
 
-function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
-  if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
-  if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
-  if (b_start < a_start && a_end < b_end) return true; // a in b
-  return false;
-}
 function multipleDateRangeOverlaps(data, requestedDates) {
   var i, j;
   if (data.length > 0) {
@@ -55,6 +49,14 @@ export const updateLeave = ({ id, input }) => {
     data: input,
     where: { id },
   })
+}
+
+export const leavesByUserId = ({userId}) =>{
+  return db.leave.findMany({
+    where: {
+      requesterId: userId
+    }
+  });
 }
 
 export const deleteLeave = ({ id }) => {

@@ -7,7 +7,7 @@ export const schema = gql`
     isAccruedAllowance: Boolean
     createdAt: DateTime!
     updatedAt: DateTime
-    companyId: Int
+    companyId: Int,
     company: Company
     User: [User]!
   }

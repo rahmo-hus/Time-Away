@@ -29,13 +29,13 @@ const NewAbsence = ({ users, leaveTypes }) => {
 
   const [request, setRequest] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess]= useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const { hasRole } = useAuth();
 
-  const [create, {loading, error}] = useMutation(CREATE_APPROVED_LEAVE, {
+  const [create, { loading, error }] = useMutation(CREATE_APPROVED_LEAVE, {
     onCompleted: (data) => {
-        toast.success("submission success");
-        setSubmissionSuccess(true);
+      toast.success("submission success");
+      setSubmissionSuccess(true);
     }
   })
 
@@ -44,7 +44,7 @@ const NewAbsence = ({ users, leaveTypes }) => {
       dateStart: data["Date from"],
       dateEnd: data["Date to"],
       approverId: parseInt(data.employee),
-      requesterId:parseInt(data.employee),
+      requesterId: parseInt(data.employee),
       status: 2,
       approverComment: data.reason,
       dayPartStart: parseInt(data.from_date_part),
@@ -59,18 +59,17 @@ const NewAbsence = ({ users, leaveTypes }) => {
   }
 
   useEffect(() => {
-    if(submitted){
-    console.log(request)
-    create({variables:{leave: request}});
-    setSubmitted(false);
+    if (submitted) {
+      create({ variables: { leave: request } });
+      setSubmitted(false);
     }
   }, [request, submitted])
 
   return (
     <div className="container flex-center">
       <Form config={{ mode: 'onBlur' }} onSubmit={onSubmit}>
-      <Toaster/>
-      <FormError error={error} wrapperClassName="error" />
+        <Toaster />
+        <FormError error={error} wrapperClassName="error" />
         <h1 style={{ textAlign: 'center' }}>New absence</h1>
         <hr></hr>
         <div className="modal-body">

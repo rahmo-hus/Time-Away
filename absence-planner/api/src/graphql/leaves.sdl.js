@@ -22,6 +22,7 @@ export const schema = gql`
   type Query {
     leaves: [Leave!]! @requireAuth
     leave(id: Int!): Leave @requireAuth
+    leavesByUserId(userId: Int!): [Leave!] @requireAuth
   }
 
   input CreateLeaveInput {

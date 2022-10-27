@@ -1,7 +1,22 @@
 import { useAuth } from "@redwoodjs/auth";
+import { useEffect } from 'react'
+
+const Calendar = ({ leaves, department }) => {
+
+  useEffect(() => {
+    console.log(leaves);
+  });
+
+  const calculateLeaveDays = () =>{
+    let total = 0;
+    for(let i=0; i<leaves.length; i++){
+      const diffTime = Math.abs(new Date(leaves[i].dateEnd) - new Date(leaves[i].dateStart));
+        total+= parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
+    return department.allowance - total;
+  }
 
 
-const Calendar = () => {
   const { isAuthenticated, currentUser } = useAuth();
   return (
     <>
@@ -9,7 +24,7 @@ const Calendar = () => {
 
       <div className="row flex-center">
         <div className="row">
-          <div className="lead"> {currentUser.firstName} {currentUser.lastName} calendar for  2022</div>
+          <div className="lead"> {currentUser.firstName} {currentUser.lastName} calendar for  {new Date().getFullYear()}</div>
           <div className="col-md-6">
           </div>
         </div>
@@ -24,15 +39,14 @@ const Calendar = () => {
 
       <div className="row">
 
-        {/* <div className="col-md-3 top-leave-type-statistics">
-    <dl>
-      {{ #with current_user }}
-      <dt data-tom-days-available-in-allowance>{{ ../ user_allowance.number_of_days_available_in_allowance }}</dt>
-      <dd>Days available</dd>
-      <dd>out of <span data-tom-total-days-in-allowance>{{ ../ user_allowance.total_number_of_days_in_allowance }}</span> in allowance</dd>
-      {{/with}}
-    </dl>
-  </div> */}
+        <div className="col-md-3 top-leave-type-statistics">
+          <dl>
+            <dt data-tom-days-available-in-allowance>{calculateLeaveDays()}</dt>
+            <dd>Days available</dd>
+            <dd>out of <span data-tom-total-days-in-allowance>{department.allowance}</span> in allowance</dd>
+
+          </dl>
+        </div>
         <div className="flex-center">
           <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
             {/* {{> user_details / allowance_breakdown user_allowance = user_allowance }} */}

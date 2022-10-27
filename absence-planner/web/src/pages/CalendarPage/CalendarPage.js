@@ -11,7 +11,7 @@ const CalendarPage = () => {
   return (
     <>
       <MetaTags title="Calendar" description="Calendar page" />
-      <CalendarCell/>
+      <CalendarCell userId={currentUser.id}/>
       </>
       )
 }
