@@ -1,19 +1,34 @@
 import { useAuth } from "@redwoodjs/auth";
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import AllowanceBreakdown from "src/components/AllowanceBreakdown";
 
-const Calendar = ({ leaves, department }) => {
+const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
+
+  const { hasRole } = useAuth();
+  const [showFullYear, setShowFullYear] = useState(false);
 
   useEffect(() => {
-    console.log(leaves);
+    console.log(leaveTypes);
   });
 
-  const calculateLeaveDays = () =>{
+  const calculateDaysTaken = () => {
     let total = 0;
-    for(let i=0; i<leaves.length; i++){
+    for (let i = 0; i < leaves.length; i++) {
       const diffTime = Math.abs(new Date(leaves[i].dateEnd) - new Date(leaves[i].dateStart));
-        total+= parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      total += parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
     }
-    return department.allowance - total;
+    return total;
+  }
+
+  const calculateDaysTakenForLeaveTypeName = name => {
+    let total = 0;
+    for (let i = 0; i < leaves.length; i++) {
+      if (leaves[i].leaveType.name === name) {
+        const diffTime = Math.abs(new Date(leaves[i].dateEnd) - new Date(leaves[i].dateStart));
+        total += parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      }
+    }
+    return total;
   }
 
 
@@ -39,46 +54,39 @@ const Calendar = ({ leaves, department }) => {
 
       <div className="row">
 
-        <div className="col-md-3 top-leave-type-statistics">
+        <div className="col-md-2 top-leave-type-statistics">
           <dl>
-            <dt data-tom-days-available-in-allowance>{calculateLeaveDays()}</dt>
+            <dt data-tom-days-available-in-allowance>{department.allowance - calculateDaysTaken()}</dt>
             <dd>Days available</dd>
             <dd>out of <span data-tom-total-days-in-allowance>{department.allowance}</span> in allowance</dd>
 
           </dl>
         </div>
         <div className="flex-center">
-          <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
-            {/* {{> user_details / allowance_breakdown user_allowance = user_allowance }} */}
-            User allowed allowance
+          <div className="col-md-4 secondary-leave-type-statistics hidden-xs">
+            <AllowanceBreakdown allowanceDetails={{ isAccruedAllowance: department.isAccruedAllowance, daysTaken: calculateDaysTaken(), nominalAllowance: department.allowance, ...allowanceAdjustment }} />
           </div>
 
           <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
             <dl>
               <dt>Used so far</dt>
-
-              {/* {{# if leave_type_statistics }}
-      {{# each leave_type_statistics }} */}
-              <dd><em> Leave type name</em> <span className="pull-right">Days taken: Days limit out of limit</span></dd>
-              {/* {{/ each}}
-      {{ else}} */}
-
-              <dd className="text-muted">No approved requests so far.</dd>
-              {/* {{/if}} */}
+              {
+                leaveTypes.map((leaveType) => (<>
+                  <dd><em> {leaveType.name}</em> <span className="pull-right">{calculateDaysTakenForLeaveTypeName(leaveType.name)} out of {department.allowance}</span></dd>
+                </>))
+              }
+              {
+                !hasRole('manager') &&
+                <dd className="text-muted">No approved requests so far.</dd>
+              }
             </dl>
           </div>
 
           <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
             <dl>
               <dt>Details</dt>
-              {/* {{~# each supervisors  ~}} */}
-              {/* <dd>
-        <em>{{# if  @first }} Supervisor: {{ else   }}  &nbsp;   {{/ if  }}</em>
-        <span className="pull-right"><a href="mailto:{{this.email}}">{{ this.full_name }}</a></span>
-      </dd> */}
-              {/* {{~/ each ~}} */}
-              <dd><em>Department:</em> <span className="pull-right"><a href="/calendar/teamview/?department={{ current_user.department.id }}">Current user department</a></span></dd>
-              <dd><em>Allowance in 2022:</em><span className="pull-right"> Total number of in allowance days</span></dd>
+              <dd><em>Department:</em> <span className="pull-right"><a href="/calendar/teamview/?department={{ current_user.department.id }}">{department.name}</a></span></dd>
+              <dd><em>Allowance in 2022:</em><span className="pull-right"> {department.allowance}</span></dd>
             </dl>
           </div>
         </div>
@@ -89,19 +97,19 @@ const Calendar = ({ leaves, department }) => {
 
 
       <div className="row main-row_header">
-        <div className="col-md-12">Calendar <a href="/calendar/feeds/" datatoggle="tooltip" dataplacement="right" title="Export absences  to external calendars"><span className="fa fa-rss"></span></a></div>
+        <div className="col-md-12">Calendar <a href="/calendar/feeds/" datatoggle="tooltip" dataplacement="right" title="Export absences  to external calendars"/></div>
       </div>
 
       <div className="row">
         <div className="flex-center">
           <div className="col-xs-2">
-            {/* {{ #if show_full_year }}
-      <a className="btn btn-default" href="/calendar/?year={{previous_year}}{{#if show_full_year}}&show_full_year=1{{/if}}"><span aria-hidden="true" className="fa fa-chevron-left"></span> {{ previous_year }} </a>
-      {{/if}} */}
+            { showFullYear &&
+      <a className="btn btn-default" ><span aria-hidden="true" className="fa fa-chevron-left"></span> { new Date().getFullYear() - 1} </a>
+      }
           </div>
           <div className="col-xs-8 calendar-section-caption">
 
-            {/* <strong>{{ #if show_full_year }}January - December {{ current_year }}{{ else}}Upcoming Months{{/if}}</strong> */}
+            { showFullYear ? <strong>January - December {new Date().getFullYear()}</strong>: <strong>Upcoming Months</strong> }
             &nbsp;
 
             {/* {{# unless show_full_year }}

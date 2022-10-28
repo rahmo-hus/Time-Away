@@ -1,7 +1,7 @@
 import Calendar from "src/components/Calendar"
 
-export const beforeQuery = ({userId}) => ({
-    variables: {userId}
+export const beforeQuery = ({ userId }) => ({
+  variables: { userId }
 })
 
 export const QUERY = gql`
@@ -13,6 +13,10 @@ export const QUERY = gql`
       approverComment,
       dateStart,
       dateEnd,
+      approver{
+        firstName,
+        lastName
+      },
       leaveType{
         id,
         name,
@@ -23,8 +27,21 @@ export const QUERY = gql`
     user: user(id: $userId){
       department{
         id,
-        allowance
+        name,
+        allowance,
+        isAccruedAllowance
       }
+    },
+    allowanceAdjustment: userAllowanceAdjustmentByUserId(userId: $userId){
+      id,
+      year,
+      adjustment,
+      carriedOverAllowance
+    },
+    leaveTypes: leaveTypes{
+      id,
+      name,
+      color
     }
   }
 `
@@ -37,6 +54,12 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ leaves, user }) => {
-  return <div><Calendar leaves = {leaves} department={user.department}/></div>
+export const Success = ({ leaves, user, allowanceAdjustment, leaveTypes }) => {
+  return <div>
+    <Calendar
+      leaves={leaves}
+      department={user.department}
+      allowanceAdjustment={allowanceAdjustment}
+      leaveTypes = {leaveTypes}
+    /></div>
 }

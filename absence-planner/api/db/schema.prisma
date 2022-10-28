@@ -127,7 +127,7 @@ model Leave {
   requesterId     Int?
   approverId      Int
   leaveTypeId     Int
-  requester       User?      @relation("requester", fields: [requesterId], references: [id])
+  requester       User?     @relation("requester", fields: [requesterId], references: [id])
   approver        User      @relation("approver", fields: [approverId], references: [id])
   leaveType       LeaveType @relation(fields: [leaveTypeId], references: [id])
 }
@@ -178,6 +178,6 @@ model UserAllowanceAdjustment {
   adjustment           Int?
   carriedOverAllowance Int?
   createdAt            DateTime @default(now())
-  userId               Int
+  userId               Int      @unique
   user                 User     @relation(fields: [userId], references: [id])
 }
