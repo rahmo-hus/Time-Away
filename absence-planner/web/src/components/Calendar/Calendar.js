@@ -106,6 +106,14 @@ const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
     return data;
   }
 
+  const isLeaveCell = (date) => {
+    for (let i = 0; i < leaves.length; i++) {
+      if (date >= new Date(leaves[i].dateStart.split('T')[0]) && date <= new Date(leaves[i].dateEnd.split('T')[0]))
+        return leaves[i].leaveType.name;
+    }
+    return null;
+  }
+
   const { isAuthenticated, currentUser } = useAuth();
   return (
     <>
@@ -172,7 +180,6 @@ const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
       <div className="row">
       </div>
 
-
       <div className="row main-row_header">
         <div className="col-md-12">Calendar <a href="/calendar/feeds/" datatoggle="tooltip" dataplacement="right" title="Export absences  to external calendars" /></div>
       </div>
@@ -229,11 +236,11 @@ const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
                         getCalendar(data.year, data.month).weeks.map((week, key) => (
                           <React.Fragment key={key}>
                             <tr>
-                              <CalendarBody data={{ day: week.M, weekend: false }}></CalendarBody>
-                              <CalendarBody data={{ day: week.Tu, weekend: false }}></CalendarBody>
-                              <CalendarBody data={{ day: week.W, weekend: false }}></CalendarBody>
-                              <CalendarBody data={{ day: week.Th, weekend: false }}></CalendarBody>
-                              <CalendarBody data={{ day: week.F, weekend: false }}></CalendarBody>
+                              <CalendarBody data={{ day: week.M, leave: isLeaveCell(new Date(data.year + '-' + data.month + '-' + week.M))}}></CalendarBody>
+                              <CalendarBody data={{ day: week.Tu, leave: isLeaveCell(new Date(data.year + '-' + data.month + '-' + week.Tu)) }}></CalendarBody>
+                              <CalendarBody data={{ day: week.W , leave: isLeaveCell(new Date(data.year + '-' + data.month + '-' + week.W))}}></CalendarBody>
+                              <CalendarBody data={{ day: week.Th , leave: isLeaveCell(new Date(data.year + '-' + data.month + '-' + week.Th))}}></CalendarBody>
+                              <CalendarBody data={{ day: week.F , leave: isLeaveCell(new Date(data.year + '-' + data.month + '-' + week.F))}}></CalendarBody>
                               <CalendarBody data={{ day: week.Sa, weekend: true }}></CalendarBody>
                               <CalendarBody data={{ day: week.Su, weekend: true }}></CalendarBody>
                             </tr>
