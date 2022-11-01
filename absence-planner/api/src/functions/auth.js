@@ -102,9 +102,9 @@ export const handler = async (event, context) => {
     //
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
-    handler: ({ username, hashedPassword, salt, userAttributes }) => {
+    handler: async ({ username, hashedPassword, salt, userAttributes }) => {
 
-      return db.user.create({
+      await db.user.create({
         data: {
           email: username,
           hashedPassword: hashedPassword,
@@ -112,6 +112,8 @@ export const handler = async (event, context) => {
           firstName: userAttributes.firstName,
           lastName: userAttributes.lastName,
           isAdmin: userAttributes.isAdmin,
+          startDate: userAttributes.startDate,
+          departmentId: userAttributes.departmentId,
           isActivated: userAttributes.isActivated,
           isAutoApprove: userAttributes.isAutoApprove,
           companyId: userAttributes.companyId,
@@ -120,6 +122,7 @@ export const handler = async (event, context) => {
         },
       });
 
+      return "Success";
      // return "Company registered successfully";
     },
 

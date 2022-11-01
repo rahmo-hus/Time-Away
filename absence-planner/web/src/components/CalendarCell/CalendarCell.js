@@ -55,11 +55,10 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ leaves, user, allowanceAdjustment, leaveTypes }) => {
-  return <div>
-    <Calendar
+  return  <Calendar
       leaves={leaves}
       department={user.department}
       allowanceAdjustment={allowanceAdjustment}
       leaveTypes = {leaveTypes}
-    /></div>
+    />
 }

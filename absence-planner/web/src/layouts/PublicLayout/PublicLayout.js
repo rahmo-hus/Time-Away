@@ -51,7 +51,7 @@ const PublicLayout = ({ children }) => {
                       <li><a href="/settings/bankholidays/">Bank Holidays</a></li>
                       <li><a href="/settings/company/authentication/">LDAP configuration</a></li>
                       <li><a href="/settings/company/integration-api/">API configuration</a></li>
-                      <li><a href="/users/import/">Import employees</a></li>
+                      <li><Link to={routes.addEmployee()}>Import employees</Link></li>
                       <li role="separator" className="divider"></li>
                       <li><a href="/audit/email/">Emails audit</a></li>
                       <li><a href="/reports/">Reports</a></li>

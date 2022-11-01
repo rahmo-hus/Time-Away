@@ -10,6 +10,14 @@ export const department = ({ id }) => {
   })
 }
 
+export const departmentsByCompanyId = ({companyId}) =>{
+  return db.department.findMany({
+    where:{
+      companyId: companyId
+    }
+  });
+}
+
 export const createDepartment = ({ input }) => {
   return db.department.create({
     data: input,

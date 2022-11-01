@@ -1,7 +1,9 @@
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 export const companies = () => {
-  return db.company.findMany()
+
+  return db.findMany();
 }
 
 export const company = ({ id }) => {

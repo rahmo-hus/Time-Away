@@ -14,6 +14,7 @@ export const schema = gql`
     carryOver: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
+    departments: [Department]
   }
 
   type Query {

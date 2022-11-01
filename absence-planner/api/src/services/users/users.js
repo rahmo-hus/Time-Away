@@ -1,13 +1,14 @@
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 export const users = () => {
   return db.user.findMany()
 }
 
-export const user = ({ id }) => {
+export const user =  ({ id }) => {
   return db.user.findUnique({
     where: { id },
-  })
+  });
 }
 
 export const createUser = ({ input }) => {
@@ -30,8 +31,11 @@ export const deleteUser = ({ id }) => {
 }
 
 export const User = {
-  company: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).company()
+  company: async (_obj, { root }) => {
+    const company = await db.user.findUnique({ where: { id: root?.id } }).company();
+    company.departments = await db.department.findMany({where: {companyId: company.id}});
+
+    return company;
   },
   department: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).department()

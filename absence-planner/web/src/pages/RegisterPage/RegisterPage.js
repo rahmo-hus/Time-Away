@@ -43,8 +43,7 @@ const RegisterPage = () => {
     onCompleted: async (data) => {
       setLoading(true);
       const response = await signUp({ ...userData, companyId: data.createCompany.id });
-
-      console.log(response)
+        //TODO: fix this logout thing
       if (response.id) {
         toast.success("Company created successfully");
         logOut();
