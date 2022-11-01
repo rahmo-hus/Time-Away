@@ -27,7 +27,7 @@ const CREATE_COMPANY = gql`
 `
 
 const RegisterPage = () => {
-  const { isAuthenticated, signUp, logOut } = useAuth();
+  const { isAuthenticated, signUp } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -44,9 +44,8 @@ const RegisterPage = () => {
       setLoading(true);
       const response = await signUp({ ...userData, companyId: data.createCompany.id });
         //TODO: fix this logout thing
-      if (response.id) {
+      if (response) {
         toast.success("Company created successfully");
-        logOut();
 
       }
       else if (response.error) {
