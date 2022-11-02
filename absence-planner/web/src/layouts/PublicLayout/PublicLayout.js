@@ -22,7 +22,7 @@ const PublicLayout = ({ children }) => {
                   <li><a href="/calendar/teamview/">Team View</a></li>
                   {
                     hasRole('manager') &&
-                  <li className="hidden-xs"><a href="/users/">Employees</a></li>
+                  <li className="hidden-xs"><Link to={routes.viewEmployees()}>Employees</Link></li>
                   }
                   <li className="navbar-form navbar-left">
                     <div className="form-group">

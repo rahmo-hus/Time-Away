@@ -1,5 +1,5 @@
 import { toast, Toaster } from '@redwoodjs/web/toast'
-
+import {routes, Link} from '@redwoodjs/router'
 import {
   FieldError,
   Form,
@@ -74,7 +74,7 @@ const AddEmployee = ({ data }) => {
       <div className="row">
         <div className="col-md-6">
           <ol className="breadcrumb">
-            <li><a href="/users/">All Employees</a></li>
+            <li><Link to={routes.viewEmployees()}>All Employees</Link></li>
             <li className="active">Add new employee</li>
           </ol>
         </div>

@@ -15,6 +15,7 @@ export const schema = gql`
   type Query {
     departments: [Department!]! @requireAuth
     department(id: Int!): Department @requireAuth
+    departmentsByCompanyId(companyId: Int!) : [Department!]! @requireAuth
   }
 
   input CreateDepartmentInput {

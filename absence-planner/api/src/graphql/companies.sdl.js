@@ -9,6 +9,7 @@ export const schema = gql`
     ldapAuthConfig: String!
     dateFormat: String!
     companyWideMessage: String!
+    name: String!
     mode: Int!
     timezone: String!
     carryOver: Int!

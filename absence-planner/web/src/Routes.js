@@ -17,6 +17,7 @@ const Routes = () => {
         <Route path="/login" page={LoginPage} name="login" />
         <Route path="/register" page={RegisterPage} name="register" />
         <Private unauthenticated="login">
+          <Route path="/view-employees" page={ViewEmployeesPage} name="viewEmployees" />
           <Route path="/new-absence" page={NewAbsencePage} name="newAbsence" />
           <Route path="/add-employee" page={AddEmployeePage} name="addEmployee" />
           <Route path="/calendar" page={CalendarPage} name="calendar" />
