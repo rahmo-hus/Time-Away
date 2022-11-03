@@ -1,10 +1,39 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import {Link, routes} from '@redwoodjs/router'
 
 const ViewEmployees = ({ employees, company, departments }) => {
 
+  const [selectedDepartment, setSelectedDepartment] = useState(0);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [loadIn, setLoadIn] = useState(false);
+
   useEffect(() => {
-    console.log(employees);
+    if (loadIn === false) {
+      setFilteredEmployees(employees);
+      setLoadIn(true);
+    }
   });
+
+  useEffect(() => {
+    console.log(selectedDepartment);
+    if (filteredEmployees !== null) {
+      if (selectedDepartment === 0) {
+        setFilteredEmployees(employees)
+      } else {
+        const localFilteredEmployees = employees.filter(employee => employee.department ? (employee.department.id === selectedDepartment) : false);
+        setFilteredEmployees(localFilteredEmployees);
+      }
+    }
+  }, [selectedDepartment]);
+
+  const calculateDaysTaken = (approvedLeaves) => {
+    let total = 0;
+    for (let i = 0; i < approvedLeaves.length; i++) {
+      const diffTime = Math.abs(new Date(approvedLeaves[i].dateEnd) - new Date(approvedLeaves[i].dateStart));
+      total += parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
+    return total;
+  }
 
   return (
     <div>
@@ -14,38 +43,24 @@ const ViewEmployees = ({ employees, company, departments }) => {
         <div className="col-md-3 lead">{company.name}'s staff</div>
         <div className="col-md-3 col-md-offset-6">
           <div className="btn-group pull-right">
-            <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Add new employee
-              <span className="caret"></span>
-              <span className="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul className="dropdown-menu">
-              <li><a href="/users/import/" id="import_users_btn">Import employees</a></li>
-              <li><a href="/users/add/" id="add_new_department">Add single employee</a></li>
-            </ul>
+            <Link className="button" to={routes.addEmployee()}>Add single employee</Link>
           </div>
-          {/* <Form action="/users/" method="GET">
-            <input type="hidden" name="department" value="{{department_id}}">
-              <input type="hidden" name="as-csv" value="1">
-                <button
-                  className="btn btn-link pull-right single-click"
-                  type="submit"
-                  data-content="Download current page as .CSV file"
-                  data-placement="top"
-                  data-toggle="popover"
-                  data-trigger="focus hover"
-                ><i className="fa fa-download"></i> .csv</button>
-              </form> */}
         </div>
       </div>
 
       <div className="row">&nbsp;</div>
 
       <div className="col-md-3 list-group all-departments">
-        <a href="/users/" className="list-group-item{{#unless department_id }} selected-item{{/unless}}">All departments</a>
-
-        <a className="list-group-item {{#if_equal ../department_id this.id}} selected-item{{/if_equal}}" href="/users/?department={{this.id}}"></a>
-
+        <button onClick={() => setSelectedDepartment(0)} className={'list-group-item ' + (selectedDepartment === 0 ? 'selected-item' : '')}>All departments</button>
+        {
+          departments.map((department) => (
+            <React.Fragment key={department.id}>
+              <button onClick={() => setSelectedDepartment(department.id)} className={'list-group-item ' + (selectedDepartment === department.id ? 'selected-item' : '')}>
+                {department.name}
+              </button>
+            </React.Fragment>
+          ))
+        }
       </div>
 
       <div className="col-md-9">
@@ -61,24 +76,25 @@ const ViewEmployees = ({ employees, company, departments }) => {
           </thead>
           <tbody>
             {
-              employees.map((employee) => (
-                <tr data-vpp-user-row={employee.id}>
-                  <td className="user-link-cell"><a href="/users/edit/{{this.user_id}}/">
-                    {
-                      !employee.isActivated ? <s>{employee.firstName} {employee.lastName}</s>:
-                      <div>{employee.firstName} {employee.lastName}</div>
-                    }</a></td>
-                  <td className="user_department"><a href="/settings/departments/edit/{{ this.department_id }}/">{employee.department ? employee.department.name : ''}</a></td>
-                  <td>{employee.isAdmin ? "Yes" : "No"}</td>
-                  <td className="vpp-days-remaining">{employee.department ? employee.department.allowance : ''}</td>
-                  <td className="vpp-days-used">Days taken </td>
-                </tr>
+              filteredEmployees.map((employee) => (
+                <React.Fragment key={employee.id}>
+                  <tr data-vpp-user-row={employee.id}>
+                    <td className="user-link-cell"><a href="/users/edit/{{this.user_id}}/">
+                      {
+                        !employee.isActivated ? <s>{employee.firstName} {employee.lastName}</s> :
+                          <div>{employee.firstName} {employee.lastName}</div>
+                      }</a></td>
+                    <td className="user_department"><a href="/settings/departments/edit/{{ this.department_id }}/">{employee.department ? employee.department.name : ''}</a></td>
+                    <td>{employee.isAdmin ? "Yes" : "No"}</td>
+                    <td className="vpp-days-remaining">{employee.department ? employee.department.allowance : ''}</td>
+                    <td className="vpp-days-used">{calculateDaysTaken(employee.approvedLeaves)}</td>
+                  </tr>
+                </React.Fragment>
               ))
             }
           </tbody>
         </table>
       </div>
-
     </div>
   )
 }

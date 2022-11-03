@@ -14,7 +14,13 @@ export const QUERY = gql`
       email,
       isActivated,
       isAdmin,
+      approvedLeaves{
+        id,
+        dateStart,
+        dateEnd
+      },
       department{
+        id,
         name,
         allowance
       }

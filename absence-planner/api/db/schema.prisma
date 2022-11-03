@@ -26,7 +26,7 @@ model Company {
   carryOver          Int?
   createdAt          DateTime?   @default(now())
   updatedAt          DateTime?
-  Department         Department?
+  Department         Department[]
   User               User[]
   Holiday            Holiday[]
   LeaveType          LeaveType[]
@@ -42,7 +42,7 @@ model Department {
   isAccruedAllowance    Boolean?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime?
-  companyId             Int?                   @unique
+  companyId             Int?
   company               Company?               @relation(fields: [companyId], references: [id])
   User                  User[]
   DepartmentSupervisor  DepartmentSupervisor[]
