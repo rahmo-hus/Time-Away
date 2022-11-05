@@ -15,7 +15,6 @@ const ViewEmployees = ({ employees, company, departments }) => {
   });
 
   useEffect(() => {
-    console.log(selectedDepartment);
     if (filteredEmployees !== null) {
       if (selectedDepartment === 0) {
         setFilteredEmployees(employees)
@@ -79,11 +78,11 @@ const ViewEmployees = ({ employees, company, departments }) => {
               filteredEmployees.map((employee) => (
                 <React.Fragment key={employee.id}>
                   <tr data-vpp-user-row={employee.id}>
-                    <td className="user-link-cell"><a href="/users/edit/{{this.user_id}}/">
+                    <td className="user-link-cell"><Link to={routes.editEmployee({id: employee.id})}>
                       {
                         !employee.isActivated ? <s>{employee.firstName} {employee.lastName}</s> :
                           <div>{employee.firstName} {employee.lastName}</div>
-                      }</a></td>
+                      }</Link></td>
                     <td className="user_department"><a href="/settings/departments/edit/{{ this.department_id }}/">{employee.department ? employee.department.name : ''}</a></td>
                     <td>{employee.isAdmin ? "Yes" : "No"}</td>
                     <td className="vpp-days-remaining">{employee.department ? employee.department.allowance : ''}</td>
