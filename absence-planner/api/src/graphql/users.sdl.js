@@ -7,6 +7,7 @@ export const schema = gql`
     lastName: String
     isActivated: Boolean!
     isAdmin: Boolean!
+    roles: String
     isAutoApprove: Boolean!
     startDate: DateTime
     updatedAt: DateTime
@@ -40,10 +41,10 @@ export const schema = gql`
     firstName: String
     lastName: String
     isActivated: Boolean
+    roles: String
     isAdmin: Boolean
     isAutoApprove: Boolean
     startDate: DateTime
-    companyId: Int
     departmentId: Int
   }
 

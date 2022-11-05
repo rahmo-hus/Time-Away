@@ -28,7 +28,6 @@ const AddEmployee = ({ data }) => {
   })
 
   const onSubmit = async (input) => {
-    console.log(input);
 
     setEmployeeData({
       username: input.Email,

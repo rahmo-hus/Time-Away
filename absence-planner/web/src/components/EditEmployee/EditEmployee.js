@@ -1,17 +1,10 @@
-import {Link, routes} from '@redwoodjs/router';
-import {useState, useEffect} from 'react';
+import { Link, routes } from '@redwoodjs/router';
+import { useState, useEffect } from 'react';
+import GeneralDetails from '../GeneralDetails/GeneralDetails';
 
-const EditEmployee = ({user}) => {
+const EditEmployee = ({ user, onSubmit, deleteEmployee, loading, error }) => {
 
   const [selectedItem, setSelectedItem] = useState(0);
-
-  useEffect(() =>{
-    console.log(user);
-  })
-
-  const deleteEmployee = () => {
-
-  }
 
   return (
     <div>
@@ -32,13 +25,19 @@ const EditEmployee = ({user}) => {
       {/* flash messages */}
 
       <div className="col-md-3 list-group">
-        <Link className={'list-group-item '+(selectedItem === 0 ? 'selected-item' : '')} >General details</Link>
-        <a href="/users/edit/{{employee.id}}/" className="list-group-item{{# if show_main_tab }} selected-item{{/if}}">General details</a>
-        <a href="/users/edit/{{employee.id}}/schedule/" className="list-group-item {{# if show_schedule_tab }} selected-item{{/if}}">Schedule</a>
-        <a href="/users/edit/{{employee.id}}/calendar/" className="list-group-item {{# if show_calendar_tab }} selected-item{{/if}}">Calendar</a>
-        <a href="/users/edit/{{employee.id}}/absences/" className="list-group-item{{# if show_absence_tab }} selected-item{{/if}}">Absences</a>
+        <button onClick={() => setSelectedItem(0)} className={'list-group-item ' + (selectedItem === 0 ? 'selected-item' : '')}>General details</button>
+        <button onClick={() => setSelectedItem(1)} className={'list-group-item ' + (selectedItem === 1 ? 'selected-item' : '')}>Schedule</button>
+        <button onClick={() => setSelectedItem(2)} className={'list-group-item ' + (selectedItem === 2 ? 'selected-item' : '')}>Calendar</button>
+        <button onClick={() => setSelectedItem(3)} className={'list-group-item ' + (selectedItem === 3 ? 'selected-item' : '')}>Absences</button>
       </div>
 
+      {
+        selectedItem === 0 ?
+          <GeneralDetails user={user}
+            onSubmit={onSubmit}
+            error={error}
+            loading={loading} /> : <></>
+      }
 
     </div>
   )
