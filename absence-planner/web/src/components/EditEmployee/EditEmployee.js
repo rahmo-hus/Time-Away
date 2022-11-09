@@ -1,8 +1,26 @@
 import { Link, routes } from '@redwoodjs/router';
 import { useState, useEffect } from 'react';
-import GeneralDetails from '../GeneralDetails/GeneralDetails';
+import AbsenceDetails from 'src/components/AbsenceDetails';
+import GeneralDetails from 'src/components/GeneralDetails';
+import Schedule from 'src/components/Schedule';
+import Absences from 'src/components/Absences'
 
-const EditEmployee = ({ user, onSubmit, deleteEmployee, loading, error }) => {
+const EditEmployee = ({
+  user,
+  onSubmit,
+  deleteEmployee,
+  allowanceAdjustment,
+  leaveTypes,
+  leaves,
+  loading,
+  error,
+  allowanceAdjustmentChangeLoading,
+  allowanceAdjustmentChangeError,
+  submitAllowanceAdjustment }) => {
+
+  useEffect(() => {
+    console.log(user)
+  })
 
   const [selectedItem, setSelectedItem] = useState(0);
 
@@ -36,7 +54,23 @@ const EditEmployee = ({ user, onSubmit, deleteEmployee, loading, error }) => {
           <GeneralDetails user={user}
             onSubmit={onSubmit}
             error={error}
-            loading={loading} /> : <></>
+            loading={loading} /> :
+          selectedItem === 1 ?
+            <Schedule user={user} /> :
+            selectedItem === 2 ?
+              <AbsenceDetails allowanceAdjustment={allowanceAdjustment}
+                leaveTypes={leaveTypes}
+                leaves={leaves}
+                department={user?.department}
+              /> : <Absences user={user}
+                allowanceAdjustment={allowanceAdjustment}
+                leaves={leaves}
+                department={user?.department}
+                leaveTypes={leaveTypes}
+                submitAllowanceAdjustment = {submitAllowanceAdjustment}
+                allowanceAdjustmentChangeError={allowanceAdjustmentChangeError}
+                allowanceAdjustmentChangeLoading={allowanceAdjustmentChangeLoading}
+              />
       }
 
     </div>

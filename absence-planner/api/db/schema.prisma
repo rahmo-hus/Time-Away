@@ -167,7 +167,7 @@ model Schedule {
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   companyId Int
-  userId    Int
+  userId    Int       @unique
   company   Company   @relation(fields: [companyId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
 }

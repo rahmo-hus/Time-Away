@@ -2,9 +2,39 @@ import EditEmployee from "src/components/EditEmployee"
 import { useState } from 'react'
 import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 export const QUERY = gql`
   query EditEmployeeQuery($id: Int!) {
+    leaves: leavesByUserId(userId: $id) {
+      id,
+      status,
+      employeeComment,
+      approverComment,
+      dateStart,
+      dateEnd,
+      approver{
+        firstName,
+        lastName
+      },
+      leaveType{
+        id,
+        name,
+        color,
+        limit
+      }
+    },
+    allowanceAdjustment: userAllowanceAdjustmentByUserId(userId: $id){
+      id,
+      year,
+      adjustment,
+      carriedOverAllowance
+    },
+    leaveTypes: leaveTypes{
+      id,
+      name,
+      color
+    },
     user: user(id: $id){
       id,
       firstName,
@@ -14,6 +44,22 @@ export const QUERY = gql`
       isAdmin,
       startDate,
       departmentId,
+      department{
+        id,
+        name,
+        allowance,
+        isAccruedAllowance
+      },
+      schedule{
+        id,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday
+      }
       company{
         id,
         departments{
@@ -41,15 +87,31 @@ const UPDATE_USER_MUTATION = gql`
     }
 `
 
+const UPDATE_ALLOWANCE_ADJUSTMENT = gql`
+    mutation UpdateAllowanceAdjustment($id: Int!, $input: UpdateUserAllowanceAdjustmentInput!){
+      updateUserAllowanceAdjustment(id: $id, input: $input){
+        userId
+      }
+    }
+`
+
+const CREATE_ALLOWANCE_ADJUSTMENT = gql`
+    mutation CreateAllowanceAdjustment($id: Int!, $input: CreateUserAllowanceAdjustmentInput!){
+      createUserAllowanceAdjustment(id: $id, input: $input){
+        userId
+      }
+    }
+`
+
 export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>
+// export const Empty = () => <div>Empty</div>
 
 export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ user, id }) => {
+export const Success = ({ user, leaveTypes, allowanceAdjustment, leaves, id }) => {
 
   const [updateUser, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_USER_MUTATION, {
@@ -57,9 +119,48 @@ export const Success = ({ user, id }) => {
         //TODO: add password reset
         navigate(routes.viewEmployees());
       }
-    })
+    });
 
-  const onSubmit = (input) => {
+  const [updateAllowanceAdjustment, { loading: updateAllowanceAdjustmentLoading, error: updateAllowanceAdjustmentError }] =
+    useMutation(UPDATE_ALLOWANCE_ADJUSTMENT, {
+      onCompleted: () => {
+        toast('Allowance adjustment update success');
+      }
+    });
+
+  const [createAllowanceAdjustment, { loading: createAllowanceAdjustmentLoading, error: createAllowanceAdjustmentError }] =
+    useMutation(CREATE_ALLOWANCE_ADJUSTMENT, {
+      onCompleted: () => {
+        toast('Allowance adjustment update success');
+      }
+    });
+
+  const submitAllowanceAdjustment = (input) => {
+    if (allowanceAdjustment) {
+      updateAllowanceAdjustment({
+        variables: {
+          id: allowanceAdjustment.id,
+          input: {
+            year: new Date().getFullYear(),
+            adjustment: input.allowanceAdjustment,
+          }
+        }
+      })
+    }
+    else {
+      createAllowanceAdjustment({
+        variables:{
+          input:{
+            userId: id,
+            carriedOverAllowance: 0,
+            year: new Date.getFullYear(),
+            adjustment: input.allowanceAdjustment
+          }
+        }
+      })
+    }
+  }
+  const updateUserData = (input) => {
 
     updateUser({
       variables: {
@@ -81,12 +182,20 @@ export const Success = ({ user, id }) => {
   const deleteEmployee = () => {
 
   }
-
-  return <EditEmployee
-    user={user}
-    onSubmit={onSubmit}
-    deleteEmployee={deleteEmployee}
-    loading={updateLoading}
-    error={updateError}
-  />
+  return <>
+    <Toaster />
+    <EditEmployee
+      user={user}
+      onSubmit={updateUserData}
+      leaveTypes={leaveTypes}
+      allowanceAdjustment={allowanceAdjustment}
+      leaves={leaves}
+      deleteEmployee={deleteEmployee}
+      loading={updateLoading}
+      error={updateError}
+      allowanceAdjustmentChangeLoading = {updateAllowanceAdjustmentLoading||createAllowanceAdjustmentLoading}
+      allowanceAdjustmentChangeError = {updateAllowanceAdjustmentError || createAllowanceAdjustmentError}
+      submitAllowanceAdjustment = {submitAllowanceAdjustment}
+    />
+  </>
 }
