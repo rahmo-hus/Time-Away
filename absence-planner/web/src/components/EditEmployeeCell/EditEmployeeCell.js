@@ -24,12 +24,6 @@ export const QUERY = gql`
         limit
       }
     },
-    allowanceAdjustment: userAllowanceAdjustmentByUserId(userId: $id){
-      id,
-      year,
-      adjustment,
-      carriedOverAllowance
-    },
     leaveTypes: leaveTypes{
       id,
       name,
@@ -59,6 +53,12 @@ export const QUERY = gql`
         friday,
         saturday,
         sunday
+      },
+      allowanceAdjustment{
+        id,
+        year,
+        adjustment,
+        carriedOverAllowance
       }
       company{
         id,
@@ -96,8 +96,8 @@ const UPDATE_ALLOWANCE_ADJUSTMENT = gql`
 `
 
 const CREATE_ALLOWANCE_ADJUSTMENT = gql`
-    mutation CreateAllowanceAdjustment($id: Int!, $input: CreateUserAllowanceAdjustmentInput!){
-      createUserAllowanceAdjustment(id: $id, input: $input){
+    mutation CreateAllowanceAdjustment($input: CreateUserAllowanceAdjustmentInput!){
+      createUserAllowanceAdjustment(input: $input){
         userId
       }
     }
@@ -111,7 +111,8 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ user, leaveTypes, allowanceAdjustment, leaves, id }) => {
+export const Success = ({ user, leaveTypes, leaves, id }) => {
+  const {allowanceAdjustment} = user;
 
   const [updateUser, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_USER_MUTATION, {
@@ -149,11 +150,11 @@ export const Success = ({ user, leaveTypes, allowanceAdjustment, leaves, id }) =
     }
     else {
       createAllowanceAdjustment({
-        variables:{
-          input:{
-            userId: id,
+        variables: {
+          input: {
+            userId: user.id,
             carriedOverAllowance: 0,
-            year: new Date.getFullYear(),
+            year: new Date().getFullYear(),
             adjustment: input.allowanceAdjustment
           }
         }
@@ -193,9 +194,9 @@ export const Success = ({ user, leaveTypes, allowanceAdjustment, leaves, id }) =
       deleteEmployee={deleteEmployee}
       loading={updateLoading}
       error={updateError}
-      allowanceAdjustmentChangeLoading = {updateAllowanceAdjustmentLoading||createAllowanceAdjustmentLoading}
-      allowanceAdjustmentChangeError = {updateAllowanceAdjustmentError || createAllowanceAdjustmentError}
-      submitAllowanceAdjustment = {submitAllowanceAdjustment}
+      allowanceAdjustmentChangeLoading={updateAllowanceAdjustmentLoading || createAllowanceAdjustmentLoading}
+      allowanceAdjustmentChangeError={updateAllowanceAdjustmentError || createAllowanceAdjustmentError}
+      submitAllowanceAdjustment={submitAllowanceAdjustment}
     />
   </>
 }

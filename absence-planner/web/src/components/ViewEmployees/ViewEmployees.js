@@ -25,6 +25,14 @@ const ViewEmployees = ({ employees, company, departments }) => {
     }
   }, [selectedDepartment]);
 
+  const returnZeroIfValueIsNull = val => {
+    return val ? val : 0;
+  }
+
+  const calculateTotalAllowance = (employee) => {
+    return employee?.department.allowance + returnZeroIfValueIsNull(employee?.allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(employee?.allowanceAdjustment?.carriedOverAllowance);
+  }
+
   const calculateDaysTaken = (approvedLeaves) => {
     let total = 0;
     for (let i = 0; i < approvedLeaves.length; i++) {
@@ -85,7 +93,7 @@ const ViewEmployees = ({ employees, company, departments }) => {
                       }</Link></td>
                     <td className="user_department"><a href="/settings/departments/edit/{{ this.department_id }}/">{employee.department ? employee.department.name : ''}</a></td>
                     <td>{employee.isAdmin ? "Yes" : "No"}</td>
-                    <td className="vpp-days-remaining">{employee.department ? employee.department.allowance : ''}</td>
+                    <td className="vpp-days-remaining">{calculateTotalAllowance(employee) - calculateDaysTaken(employee.approvedLeaves)}</td>
                     <td className="vpp-days-used">{calculateDaysTaken(employee.approvedLeaves)}</td>
                   </tr>
                 </React.Fragment>

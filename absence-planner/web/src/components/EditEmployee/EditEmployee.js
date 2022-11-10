@@ -18,9 +18,6 @@ const EditEmployee = ({
   allowanceAdjustmentChangeError,
   submitAllowanceAdjustment }) => {
 
-  useEffect(() => {
-    console.log(user)
-  })
 
   const [selectedItem, setSelectedItem] = useState(0);
 
@@ -39,6 +36,10 @@ const EditEmployee = ({
         </div>
       </div>
       <div className="row"></div>
+      <ol className="breadcrumb">
+        <li><Link to={routes.viewEmployees()}>All Employees</Link></li>
+        <li className="active">{user.firstName} {user.lastName}</li>
+      </ol>
 
       {/* flash messages */}
 
@@ -67,7 +68,7 @@ const EditEmployee = ({
                 leaves={leaves}
                 department={user?.department}
                 leaveTypes={leaveTypes}
-                submitAllowanceAdjustment = {submitAllowanceAdjustment}
+                submitAllowanceAdjustment={submitAllowanceAdjustment}
                 allowanceAdjustmentChangeError={allowanceAdjustmentChangeError}
                 allowanceAdjustmentChangeLoading={allowanceAdjustmentChangeLoading}
               />

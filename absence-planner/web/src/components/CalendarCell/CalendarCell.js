@@ -30,13 +30,13 @@ export const QUERY = gql`
         name,
         allowance,
         isAccruedAllowance
-      }
-    },
-    allowanceAdjustment: userAllowanceAdjustmentByUserId(userId: $userId){
-      id,
-      year,
-      adjustment,
-      carriedOverAllowance
+      },
+      allowanceAdjustment{
+        id,
+        year,
+        adjustment,
+        carriedOverAllowance
+      },
     },
     leaveTypes: leaveTypes{
       id,
@@ -54,11 +54,14 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ leaves, user, allowanceAdjustment, leaveTypes }) => {
-  return  <Calendar
-      leaves={leaves}
-      department={user.department}
-      allowanceAdjustment={allowanceAdjustment}
-      leaveTypes = {leaveTypes}
-    />
+export const Success = ({ leaves, user, leaveTypes }) => {
+
+  const {allowanceAdjustment} = user;
+
+  return <Calendar
+    leaves={leaves}
+    department={user.department}
+    allowanceAdjustment={allowanceAdjustment}
+    leaveTypes={leaveTypes}
+  />
 }

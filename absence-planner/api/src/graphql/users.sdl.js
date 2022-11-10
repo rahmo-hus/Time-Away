@@ -16,7 +16,8 @@ export const schema = gql`
     company: Company
     department: Department
     approvedLeaves: [Leave],
-    schedule: Schedule
+    schedule: Schedule,
+    allowanceAdjustment: UserAllowanceAdjustment
   }
 
   type Query {

@@ -19,6 +19,12 @@ export const QUERY = gql`
         dateStart,
         dateEnd
       },
+      allowanceAdjustment{
+        id,
+        year,
+        adjustment,
+        carriedOverAllowance
+      },
       department{
         id,
         name,
@@ -45,6 +51,8 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ users, company, departments }) => {
   return (
-    <ViewEmployees employees = {users} company={company} departments={departments}/>
+    <ViewEmployees employees={users}
+      company={company}
+      departments={departments} />
   )
 }

@@ -3,14 +3,8 @@ import {
   Form,
   Label,
   NumberField,
-  TextField,
-  FormError,
-  DateField,
-  SelectField,
-  Submit,
-  CheckboxField
+  Submit
 } from '@redwoodjs/forms'
-import { toast, Toaster } from '@redwoodjs/web/toast'
 import AllowanceBreakdown from 'src/components/AllowanceBreakdown';
 
 const Absences = ({
@@ -32,8 +26,12 @@ const Absences = ({
     return total;
   }
 
+  const returnZeroIfValueIsNull = val => {
+    return val ? val : 0;
+  }
+
   const calculateTotalAllowance = () => {
-    return department.allowance + allowanceAdjustment?.adjustment + allowanceAdjustment?.carriedOverAllowance;
+    return department.allowance + returnZeroIfValueIsNull(allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(allowanceAdjustment?.carriedOverAllowance);
   }
 
   const onSubmit = (input) => {
@@ -53,23 +51,23 @@ const Absences = ({
             <div className="progress bigger">
               <div
                 className="progress-bar progress-bar-success"
-                style={{ width: calculateDaysTaken() * 100 / calculateTotalAllowance() + '%' }}
+                style={{ width: 100 - calculateDaysTaken() * 100 / calculateTotalAllowance() + '%' }}
                 data-content="Rahmo in current year used 10 days from allowance"
                 data-placement="top"
                 data-toggle="popover"
                 data-trigger="focus hover"
               >
-                {calculateDaysTaken()} days remaining
+                {calculateTotalAllowance() - calculateDaysTaken()} days remaining
               </div>
               <div
                 className="progress-bar progress-bar-warning"
-                style={{ width: 100 - calculateDaysTaken() * 100 / calculateTotalAllowance() + '%' }}
+                style={{ width: calculateDaysTaken() * 100 / calculateTotalAllowance() + '%'  }}
                 data-content="{{# with employee }}{{this.full_name }}{{/with}} in current year has {{ leave_statistics.remaining }} remaining days in allowance"
                 data-placement="top"
                 data-toggle="popover"
                 data-trigger="focus hover"
               >
-                {calculateTotalAllowance() - calculateDaysTaken()} days used so far
+                {calculateDaysTaken()} days used so far
               </div>
             </div>
           </div>
@@ -100,7 +98,7 @@ const Absences = ({
           </div>
 
           <div className="form-group">
-            <Label for="carried_over_allowance_inp" className="control-label">Allowance carried over from previous year</Label>
+            <Label className="control-label">Allowance carried over from previous year</Label>
             <div className="input-group col-md-4">
               <NumberField className="form-control" step="1" disabled name="carriedOverAllowance" defaultValue={allowanceAdjustment?.carriedOverAllowance} />
               <span className="input-group-addon">working days</span>
@@ -112,9 +110,9 @@ const Absences = ({
           </div>
 
           <div className="form-group">
-            <Label for="adjustment_inp" className="control-label">Allowance adjustment in current year</Label>
+            <Label className="control-label">Allowance adjustment in current year</Label>
             <div className="input-group col-md-4">
-              <NumberField className="form-control" step={1} name="adjustment" defaultValue={allowanceAdjustment?.adjustment} />
+              <NumberField className="form-control" step={1} name="adjustment" defaultValue={returnZeroIfValueIsNull(allowanceAdjustment?.adjustment)} />
               <span className="input-group-addon">working days</span>
             </div>
             <div className="help-block">

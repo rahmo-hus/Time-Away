@@ -10,15 +10,9 @@ export const userAllowanceAdjustment = ({ id }) => {
   })
 }
 
-export const userAllowanceAdjustmentByUserId = ({ userId }) => {
-  return db.userAllowanceAdjustment.findUnique({
-    where: { userId:userId },
-  })
-}
-
 export const createUserAllowanceAdjustment = ({ input }) => {
   return db.userAllowanceAdjustment.create({
-    data: input,
+    data: input
   })
 }
 

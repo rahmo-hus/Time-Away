@@ -54,4 +54,9 @@ export const User = {
   department: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).department()
   },
+  allowanceAdjustment: (_obj, { root }) => {
+    return db.userAllowanceAdjustment.findUnique({
+      where: { userId: root?.id },
+    })
+  }
 }

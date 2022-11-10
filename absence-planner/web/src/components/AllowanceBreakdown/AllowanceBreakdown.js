@@ -4,25 +4,20 @@ const AllowanceBreakdown = ({allowanceDetails}) => {
     return 0;
   }
 
+  const returnZeroIfValueIsNull = val =>{
+    return val ? val : 0;
+  }
+
   return (
     <div>
       <dl>
-        <dt>Allowance breakdown
-          <i className="fa fa-question-circle"
-            data-content="This is explanation how we get the total allowance. Hover on each number to get details what does one mean."
-            data-placement="top"
-            data-toggle="popover"
-            data-trigger="focus hover"
-          ></i>
-        </dt>
+        <dt>Allowance breakdown</dt>
         <dd>
           <em>Nominal allowance </em>
           <span className="pull-right"
-            data-content="Allowance derived from department current user belongs to."
             data-placement="top"
             data-toggle="popover"
             data-trigger="focus hover"
-            id='nominalAllowancePart'
           >{ allowanceDetails.nominalAllowance }</span>
         </dd>
         <dd>
@@ -33,7 +28,7 @@ const AllowanceBreakdown = ({allowanceDetails}) => {
             data-toggle="popover"
             data-trigger="focus hover"
             id="allowanceCarriedOverPart"
-          >{ allowanceDetails.carriedOverAllowance }</span>
+          >{ returnZeroIfValueIsNull(allowanceDetails.carriedOverAllowance) }</span>
         </dd>
         <dd>
           <em>Individual adjustment</em>
@@ -42,7 +37,7 @@ const AllowanceBreakdown = ({allowanceDetails}) => {
             data-placement="top"
             data-toggle="popover"
             data-trigger="focus hover"
-          >{ allowanceDetails.adjustment }</span>
+          >{ returnZeroIfValueIsNull(allowanceDetails.adjustment) }</span>
         </dd>
         <dd>
           <em>Used so far</em>

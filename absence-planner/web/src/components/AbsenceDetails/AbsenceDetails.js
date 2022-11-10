@@ -102,8 +102,12 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
     return data;
   }
 
+  const returnZeroIfValueIsNull = val =>{
+    return val ? val : 0;
+  }
+
   const calculateTotalAvailableAllowance = () => {
-    return department.allowance + allowanceAdjustment?.adjustment + allowanceAdjustment?.carriedOverAllowance;
+    return department.allowance + returnZeroIfValueIsNull(allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(allowanceAdjustment?.carriedOverAllowance);
   }
 
   const isLeaveCell = (date) => {
