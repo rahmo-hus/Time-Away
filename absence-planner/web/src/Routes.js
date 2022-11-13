@@ -14,14 +14,15 @@ const Routes = () => {
   return (
     <Router>
       <Set wrap={PublicLayout}>
-        <Route path="/login" page={LoginPage} name="login"/>
+        <Route path="/login" page={LoginPage} name="login" />
         <Route path="/register" page={RegisterPage} name="register" />
         <Private unauthenticated="login">
+          <Route path="/team-view" page={TeamViewPage} name="teamView" />
           <Route path="/employee/edit/{id:Int!}" page={EditEmployeePage} name="editEmployee" />
           <Route path="/employees/all" page={ViewEmployeesPage} name="viewEmployees" />
           <Route path="/new-absence" page={NewAbsencePage} name="newAbsence" />
           <Route path="/add-employee" page={AddEmployeePage} name="addEmployee" />
-          <Route path="/calendar" page={CalendarPage} name="calendar" />
+          <Route path="/" page={CalendarPage} name="calendar" />
         </Private>
       </Set>
       <Route notfound page={NotFoundPage} />

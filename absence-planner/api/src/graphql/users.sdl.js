@@ -16,6 +16,7 @@ export const schema = gql`
     company: Company
     department: Department
     approvedLeaves: [Leave],
+    requestedLeaves: [Leave],
     schedule: Schedule,
     allowanceAdjustment: UserAllowanceAdjustment
   }

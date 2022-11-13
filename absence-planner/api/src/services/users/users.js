@@ -48,6 +48,9 @@ export const User = {
   approvedLeaves: (_obj, { root }) => {
     return db.leave.findMany({ where: { status: 2, requesterId: root?.id } });
   },
+  requestedLeaves: (_obj, { root }) => {
+    return db.leave.findMany({ where: { status: 1, requesterId: root?.id } });
+  },
   schedule: (_obj, { root }) => {
     return db.schedule.findUnique({ where: { userId: root?.id } });
   },

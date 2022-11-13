@@ -19,7 +19,7 @@ const PublicLayout = ({ children }) => {
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav navbar-left">
                   <li><Link to={routes.calendar()}>Calendar</Link></li>
-                  <li><a href="/calendar/teamview/">Team View</a></li>
+                  <li><Link to={routes.teamView()}>Team View</Link></li>
                   {
                     hasRole('manager') &&
                   <li className="hidden-xs"><Link to={routes.viewEmployees()}>Employees</Link></li>
