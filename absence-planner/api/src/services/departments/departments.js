@@ -10,9 +10,9 @@ export const department = ({ id }) => {
   })
 }
 
-export const departmentsByCompanyId = ({companyId}) =>{
+export const departmentsByCompanyId = ({ companyId }) => {
   return db.department.findMany({
-    where:{
+    where: {
       companyId: companyId
     }
   });
@@ -41,7 +41,10 @@ export const Department = {
   company: (_obj, { root }) => {
     return db.department.findUnique({ where: { id: root?.id } }).company()
   },
-  User: (_obj, { root }) => {
-    return db.department.findUnique({ where: { id: root?.id } }).User()
+  departmentSupervisor: (_obj, { root }) => {
+    return db.departmentSupervisor.findFirst({ where: { departmentId: root?.id } });
   },
+  numberOfEmployees: async (_obj, { root }) => {
+    return (await db.user.findMany({ where: { departmentId: root?.id } })).length;
+  }
 }

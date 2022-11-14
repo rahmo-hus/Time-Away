@@ -9,7 +9,9 @@ export const schema = gql`
     updatedAt: DateTime
     companyId: Int,
     company: Company
-    User: [User]!
+    users: [User]!
+    departmentSupervisor: DepartmentSupervisor
+    numberOfEmployees: Int
   }
 
   type Query {
