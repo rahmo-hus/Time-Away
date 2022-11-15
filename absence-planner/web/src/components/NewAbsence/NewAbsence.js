@@ -141,7 +141,7 @@ const NewAbsence = ({ users, leaveTypes }) => {
           </div>
 
           <div className="form-group">
-            <Label htmlFor="to" className="control-label">To:</Label>
+            <Label className="control-label">To:</Label>
             <div className="row">
               <div className="col-md-5">
                 <SelectField className="form-control" required name="to_date_part">

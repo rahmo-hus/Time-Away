@@ -2,7 +2,6 @@ import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 
 export const companies = () => {
-
   return db.findMany();
 }
 
@@ -35,4 +34,11 @@ export const Company = {
   Department: (_obj, { root }) => {
     return db.company.findUnique({ where: { id: root?.id } }).Department()
   },
+  employees: (_obj, {root})=>{
+    return db.user.findMany({
+      where: {
+        companyId: root?.id
+      }
+    });
+  }
 }

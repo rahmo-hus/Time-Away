@@ -27,8 +27,6 @@ const EditEmployee = ({
         <div className="col-md-3 lead">Employee details</div>
         <div className="col-md-1 col-md-offset-8">
           <button className="pull-right btn btn-danger single-click"
-            data-toggle="tooltip"
-            data-placement="top"
             onClick={deleteEmployee}
           >
             <i className="fa fa-trash"></i> Delete

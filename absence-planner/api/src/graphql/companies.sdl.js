@@ -16,6 +16,7 @@ export const schema = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
     departments: [Department]
+    employees: [User]
   }
 
   type Query {
