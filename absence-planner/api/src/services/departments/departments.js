@@ -31,6 +31,12 @@ export const updateDepartment = ({ id, input }) => {
   })
 }
 
+export const createDepartmentSupervisor = ({ input }) => {
+  return db.departmentSupervisor.create({
+    data: input,
+  });
+}
+
 export const deleteDepartment = ({ id }) => {
   return db.department.delete({
     where: { id },

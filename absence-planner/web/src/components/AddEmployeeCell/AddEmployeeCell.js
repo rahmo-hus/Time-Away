@@ -5,7 +5,7 @@ export const beforeQuery = ({ userId }) => ({
 })
 
 export const QUERY = gql`
-  query DepartmentsQuery($userId: Int!) {
+  query UserQuery($userId: Int!) {
     user: user(id: $userId){
       company{
         id,

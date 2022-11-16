@@ -72,11 +72,11 @@ const EditDepartment = ({ department, onUpdate, error,onDelete, deleteLoading, l
 
           <div className="form-group">
             <Label className="control-label">Manager</Label>
-            <SelectField className="form-control" name="manager">
+            <SelectField defaultValue={user.id} className="form-control" name="manager">
               {
                 employees.map((employee) => (
                   <React.Fragment key={employee.id}>
-                    <option value={employee.id} selected={employee.id === user.id}>{employee.firstName} {employee.lastName}</option>
+                    <option value={employee.id}>{employee.firstName} {employee.lastName}</option>
                   </React.Fragment>
                 ))
               }
@@ -88,10 +88,10 @@ const EditDepartment = ({ department, onUpdate, error,onDelete, deleteLoading, l
           <div className="form-group">
             <Label name="allowanceSelect">Allowance</Label>
 
-            <SelectField className="form-control" name="allowance" >
+            <SelectField defaultValue={department.allowance} className="form-control" name="allowance" >
               {
                 getAllowanceOptions().map((option) => (
-                  <option selected={option === department.allowance} key={option}>{option}</option>
+                  <option key={option}>{option}</option>
                 ))
               }
             </SelectField>

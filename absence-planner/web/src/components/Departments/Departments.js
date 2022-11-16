@@ -9,7 +9,7 @@ const Departments = ({ departments }) => {
       <div className="row">
         <div className="col-md-4 lead">All departments</div>
         <div className="col-md-4 col-md-offset-4">
-          <button className="btn btn-info pull-right" data-toggle="modal" data-target="#add_new_department_modal" type="button" id="add_new_department_btn">Add new department</button>
+          <Link className="btn btn-info pull-right" to={routes.addDepartment()}> Add new department</Link>
         </div>
       </div>
 

@@ -91,7 +91,7 @@ const ViewEmployees = ({ employees, company, departments }) => {
                         !employee.isActivated ? <s>{employee.firstName} {employee.lastName}</s> :
                           <div>{employee.firstName} {employee.lastName}</div>
                       }</Link></td>
-                    <td className="user_department"><a href="/settings/departments/edit/{{ this.department_id }}/">{employee.department ? employee.department.name : ''}</a></td>
+                    <td className="user_department"><Link to ={routes.editDepartment({id: employee?.department.id})}>{employee.department ? employee.department.name : ''}</Link></td>
                     <td>{employee.isAdmin ? "Yes" : "No"}</td>
                     <td className="vpp-days-remaining">{calculateTotalAllowance(employee) - calculateDaysTaken(employee.approvedLeaves)}</td>
                     <td className="vpp-days-used">{calculateDaysTaken(employee.approvedLeaves)}</td>

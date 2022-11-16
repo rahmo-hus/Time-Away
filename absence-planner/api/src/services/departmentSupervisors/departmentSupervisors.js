@@ -4,7 +4,6 @@ export const departmentSupervisors = () => {
   return db.departmentSupervisor.findMany()
 }
 
-
 export const DepartmentSupervisor = {
   user: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.userId } })

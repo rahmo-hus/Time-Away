@@ -40,6 +40,7 @@ export const schema = gql`
     createDepartment(input: CreateDepartmentInput!): Department! @requireAuth
     updateDepartment(id: Int!, input: UpdateDepartmentInput!): Department!
       @requireAuth
+    createDepartmentSupervisor(input: CreateDepartmentSupervisorInput!): DepartmentSupervisor! @requireAuth
     deleteDepartment(id: Int!): Department! @requireAuth
   }
 `
