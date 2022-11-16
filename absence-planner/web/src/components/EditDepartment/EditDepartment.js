@@ -13,7 +13,7 @@ import {
 
 import { useForm } from 'react-hook-form';
 
-const EditDepartment = ({ department, onSubmit, error, loading }) => {
+const EditDepartment = ({ department, onUpdate, error,onDelete, deleteLoading, loading }) => {
 
   const { employees } = department?.company;
   const {user} = department?.departmentSupervisor;
@@ -34,7 +34,7 @@ const EditDepartment = ({ department, onSubmit, error, loading }) => {
         <div className="col-md-3 lead">Edit department</div>
         <div className="col-md-3 col-md-offset-6">
           <div className="btn-group pull-right">
-            <button className="pull-right btn btn-danger single-click"
+            <button disabled={deleteLoading} onClick={() => { if(window.confirm('Are you sure you want to delete this department?')) {onDelete()}}} className="pull-right btn btn-danger single-click"
             >
               <i className="fa fa-trash"></i> Delete
             </button>
@@ -46,7 +46,7 @@ const EditDepartment = ({ department, onSubmit, error, loading }) => {
         <button className="list-group-item selected-item">General details</button>
       </div>
 
-      <Form onSubmit={onSubmit}
+      <Form onSubmit={onUpdate}
         config={{ mode: 'onBlur' }}
         formMethods={formMethods}>
         <div className="col-md-7">

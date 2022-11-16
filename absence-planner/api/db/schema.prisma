@@ -11,12 +11,12 @@ generator client {
 // to create migrations for them and apply to your dev DB.
 // TODO: Please remove the following example:
 model Company {
-  id                 Int         @id @default(autoincrement())
+  id                 Int          @id @default(autoincrement())
   name               String?
   country            String?
   startOfNewYear     Int?
-  shareAllAbsences   Boolean?    @default(false)
-  isTeamViewHidden   Boolean?    @default(false)
+  shareAllAbsences   Boolean?     @default(false)
+  isTeamViewHidden   Boolean?     @default(false)
   ldapAuthEnabled    Boolean?
   ldapAuthConfig     String?
   dateFormat         String?
@@ -24,7 +24,7 @@ model Company {
   mode               Int?
   timezone           String?
   carryOver          Int?
-  createdAt          DateTime?   @default(now())
+  createdAt          DateTime?    @default(now())
   updatedAt          DateTime?
   Department         Department[]
   User               User[]
@@ -50,24 +50,23 @@ model Department {
 
 model User {
   id                      Int                       @id @default(autoincrement())
-  email                   String?                   @unique
-  password                String?
-  firstName               String?
-  lastName                String?
+  email                   String                    @unique
+  firstName               String
+  lastName                String
   isActivated             Boolean                   @default(false)
   isAdmin                 Boolean                   @default(false)
   isAutoApprove           Boolean                   @default(false)
   startDate               DateTime?
   updatedAt               DateTime?
-  companyId               Int?
-  departmentId            Int?
+  companyId               Int
+  departmentId            Int
   hashedPassword          String
   salt                    String
   roles                   String                    @default("employee")
   resetToken              String?
   resetTokenExpiresAt     DateTime?
-  company                 Company?                  @relation(fields: [companyId], references: [id])
-  department              Department?               @relation(fields: [departmentId], references: [id])
+  company                 Company                   @relation(fields: [companyId], references: [id])
+  department              Department                @relation(fields: [departmentId], references: [id])
   DepartmentSupervisor    DepartmentSupervisor[]
   LeavesRequested         Leave[]                   @relation("requester")
   LeavesToApprove         Leave[]                   @relation("approver")
@@ -107,7 +106,7 @@ model DepartmentSupervisor {
   userId       Int
   departmentId Int
   user         User       @relation(fields: [userId], references: [id])
-  department   Department @relation(fields: [departmentId], references: [id])
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
 
   @@id([userId, departmentId])
 }
