@@ -1,6 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 import { useAuth} from '@redwoodjs/auth'
-import NewAbsenceCell from 'src/components/NewAbsenceCell'
+import NotificationCell from 'src/components/NotificationCell'
 
 const PublicLayout = ({ children }) => {
 
@@ -26,21 +26,14 @@ const PublicLayout = ({ children }) => {
                   }
                   <li className="navbar-form navbar-left">
                     <div className="form-group">
-                      <Link className="btn btn-info" to={routes.newAbsence()} id="book_time_off_btn">New absence</Link>
+                      <Link className="btn btn-info" to={routes.newAbsence()}>New absence</Link>
                     </div>
                   </li>
                 </ul>
 
                 <ul className="nav navbar-nav navbar-right">
-                  <li className="dropdown" id="header-notification-dropdown">
-                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                      <span className="fa fa-bell-o"></span>
-                      <span className="label label-info notification-badge hidden"></span>
-                    </a>
-                    <ul className="dropdown-menu" role="menu">
-                      <li className="dropdown-header">No notifications</li>
-                    </ul>
-                  </li>
+                    <NotificationCell id={currentUser.id}/>
+
                   { hasRole('manager') &&
                   <li className="dropdown hidden-xs">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><span className="fa fa-gears"></span> <span className="caret"></span></a>

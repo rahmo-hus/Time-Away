@@ -17,14 +17,17 @@ const Routes = () => {
         <Route path="/login" page={LoginPage} name="login" />
         <Route path="/register" page={RegisterPage} name="register" />
         <Private unauthenticated="login">
-          <Route path="/add-department" page={AddDepartmentPage} name="addDepartment" />
-          <Route path="/department/edit/{id:Int!}" page={EditDepartmentPage} name="editDepartment" />
-          <Route path="/departments" page={DepartmentsPage} name="departments" />
+          <Private roles="manager" unauthenticated="login">
+            <Route path="/requests" page={RequestsPage} name="requests" />
+            <Route path="/add-department" page={AddDepartmentPage} name="addDepartment" />
+            <Route path="/department/edit/{id:Int!}" page={EditDepartmentPage} name="editDepartment" />
+            <Route path="/departments" page={DepartmentsPage} name="departments" />
+            <Route path="/employee/edit/{id:Int!}" page={EditEmployeePage} name="editEmployee" />
+            <Route path="/add-employee" page={AddEmployeePage} name="addEmployee" />
+          </Private>
           <Route path="/team-view" page={TeamViewPage} name="teamView" />
-          <Route path="/employee/edit/{id:Int!}" page={EditEmployeePage} name="editEmployee" />
           <Route path="/employees/all" page={ViewEmployeesPage} name="viewEmployees" />
           <Route path="/new-absence" page={NewAbsencePage} name="newAbsence" />
-          <Route path="/add-employee" page={AddEmployeePage} name="addEmployee" />
           <Route path="/" page={CalendarPage} name="calendar" />
         </Private>
       </Set>
