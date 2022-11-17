@@ -1,14 +1,22 @@
 import AllowanceBreakdown from 'src/components/AllowanceBreakdown'
 import CalendarBody from 'src/components/CalendarBody'
 import { useAuth } from '@redwoodjs/auth'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves }) => {
 
   const { hasRole } = useAuth();
   const [showFullYear, setShowFullYear] = useState(false);
+  const [currentYear, setCurrentYear] = useState(new Date());
+  const [previousYear, setPreviousYear] = useState(null);
+  const [nextYear, setNextYear] = useState(null);
   const weekDays = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  useEffect(() => {
+      setNextYear(currentYear.getFullYear() + 1);
+      setPreviousYear(currentYear.getFullYear() - 1);
+  },[currentYear]);
 
   const getCalendar = (year, month) => {
 
@@ -76,9 +84,9 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
     if (!showFullYear) {
       for (let i = 0; i < 4; i++) {
         if (month === 12) {
-          month = 0;
+          month = 1;
           year += 1;
-          data.push({ month: month + 1, year: year });
+          data.push({ month: month, year: year });
         }
         else {
           data.push({ month: month + 1, year: year });
@@ -87,6 +95,8 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
       }
     }
     else {
+      year = currentYear.getFullYear();
+      month = 0;
       for (let i = 0; i < 12; i++) {
         if (month === 12) {
           month = 0;
@@ -102,7 +112,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
     return data;
   }
 
-  const returnZeroIfValueIsNull = val =>{
+  const returnZeroIfValueIsNull = val => {
     return val ? val : 0;
   }
 
@@ -156,11 +166,11 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
         <div className="flex-center">
           <div className="col-xs-2">
             {showFullYear &&
-              <a className="btn btn-default"><span aria-hidden="true" className="fa fa-chevron-left"></span> {new Date().getFullYear() - 1} </a>}
+              <a className="btn btn-default" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() - 1, 1,1))} ><span aria-hidden="true" className="fa fa-chevron-left"></span> {previousYear} </a>}
           </div>
           <div className="col-xs-8 calendar-section-caption">
 
-            {showFullYear ? <strong>January - December {new Date().getFullYear()}</strong> : <strong>Upcoming Months</strong>}
+            {showFullYear ? <strong>January - December {currentYear.getFullYear()}</strong> : <strong>Show entire year</strong>}
             &nbsp;
             {!showFullYear ?
               <button className="btn btn-default" onClick={() => setShowFullYear(true)}>More... &nbsp;<span className="fa fa-plus"></span></button>
@@ -169,9 +179,9 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
 
           </div>
           <div className="col-xs-2">
-            {/* {{ #if show_full_year }}
-<a className="btn btn-default pull-right" href="/calendar/?year={{next_year}}{{#if show_full_year}}&show_full_year=1{{/if}}">{{ next_year }} <span aria-hidden="true" className="fa fa-chevron-right"></span></a>
-{{/if}} */}
+            {showFullYear &&
+              <a className="btn btn-default pull-right" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() + 1, 1,1))}  >{nextYear} <span aria-hidden="true" className="fa fa-chevron-right"></span></a>
+            }
           </div>
         </div>
 
