@@ -1,10 +1,10 @@
-const AllowanceBreakdown = ({allowanceDetails}) => {
+const AllowanceBreakdown = ({ allowanceDetails }) => {
 
-  const getAccruedAdjustment = () =>{
+  const getAccruedAdjustment = () => {
     return 0;
   }
 
-  const returnZeroIfValueIsNull = val =>{
+  const returnZeroIfValueIsNull = val => {
     return val ? val : 0;
   }
 
@@ -15,49 +15,33 @@ const AllowanceBreakdown = ({allowanceDetails}) => {
         <dd>
           <em>Nominal allowance </em>
           <span className="pull-right"
-            data-placement="top"
-            data-toggle="popover"
-            data-trigger="focus hover"
-          >{ allowanceDetails.nominalAllowance }</span>
+          >{allowanceDetails.nominalAllowance}</span>
         </dd>
         <dd>
-          <em>Carried over from {new Date().getFullYear() -1 }</em>
+          <em>Carried over from {new Date().getFullYear() - 1}</em>
           <span className="pull-right"
-            data-content="Allowance carried over from previous year. Note: this amount is calculated on the very first day of the year."
-            data-placement="top"
-            data-toggle="popover"
-            data-trigger="focus hover"
             id="allowanceCarriedOverPart"
-          >{ returnZeroIfValueIsNull(allowanceDetails.carriedOverAllowance) }</span>
+          >{returnZeroIfValueIsNull(allowanceDetails.carriedOverAllowance)}</span>
         </dd>
         <dd>
           <em>Individual adjustment</em>
           <span className="pull-right"
-            data-content="Adjustment to allowance done by admin user."
-            data-placement="top"
-            data-toggle="popover"
-            data-trigger="focus hover"
-          >{ returnZeroIfValueIsNull(allowanceDetails.adjustment) }</span>
+          >{returnZeroIfValueIsNull(allowanceDetails.adjustment)}</span>
         </dd>
         <dd>
           <em>Used so far</em>
           <span className="pull-right"
-            data-content="Number of days already taken from allowance."
-            data-placement="top"
-            data-toggle="popover"
             data-trigger="focus hover"
-          >{ allowanceDetails.daysTaken }</span>
+          >{allowanceDetails.daysTaken}</span>
         </dd>
-        {allowanceDetails.isAccruedAllowance &&
-        <dd>
-          <em>Locked so far</em>
-          <span className="pull-right"
-            data-content="Number of unavailable days in allowance due to accrual nature of vacation entitlement."
-            data-placement="top"
-            data-toggle="popover"
-            data-trigger="focus hover"
-          >{getAccruedAdjustment()}</span>
-        </dd>
+
+        {allowanceDetails.isAccruedAllowance ?
+          <dd>
+            <em>Locked so far</em>
+            <span className="pull-right"
+            >{getAccruedAdjustment()}</span>
+          </dd>
+          : <></>
         }
       </dl>
 

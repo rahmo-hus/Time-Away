@@ -1,5 +1,5 @@
 import Calendar from "src/components/Calendar"
-import {routes, navigate} from '@redwoodjs/router'
+import { routes, navigate } from '@redwoodjs/router'
 import { useEffect } from "react"
 
 export const beforeQuery = ({ userId }) => ({
@@ -8,7 +8,7 @@ export const beforeQuery = ({ userId }) => ({
 
 export const QUERY = gql`
   query LeavesQuery($userId: Int!) {
-    leaves: leavesByUserId(userId: $userId) {
+    leavesByCurrentUser: leavesByUserId(userId: $userId) {
       id,
       status,
       employeeComment,
@@ -24,6 +24,23 @@ export const QUERY = gql`
         name,
         color,
         limit
+      }
+    },
+    leaves: leaves{
+      id,
+      status,
+      employeeComment,
+      approverComment,
+      dateStart,
+      dateEnd,
+      approver{
+        firstName,
+        lastName
+      },
+      leaveType{
+        id,
+        name,
+        color
       }
     },
     user: user(id: $userId){
@@ -56,13 +73,14 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ leaves, user, leaveTypes }) => {
+export const Success = ({ leavesByCurrentUser,leaves,  user, leaveTypes }) => {
 
-  const {allowanceAdjustment} = user;
+  const { allowanceAdjustment } = user;
 
   return <Calendar
-    leaves={leaves}
+    leavesByCurrentUser={leavesByCurrentUser}
     department={user.department}
+    leaveRequests={leaves}
     allowanceAdjustment={allowanceAdjustment}
     leaveTypes={leaveTypes}
   />

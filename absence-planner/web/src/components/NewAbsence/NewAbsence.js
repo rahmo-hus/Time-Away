@@ -1,8 +1,3 @@
-import { useAuth } from "@redwoodjs/auth";
-
-import { useState, useEffect } from 'react';
-import { toast, Toaster } from '@redwoodjs/web/toast';
-
 import {
   FieldError,
   Form,
@@ -15,60 +10,14 @@ import {
   SelectField,
 } from '@redwoodjs/forms';
 
-import { useMutation } from '@redwoodjs/web'
-
-const CREATE_APPROVED_LEAVE = gql`
-  mutation CreateApprovedLeaveMutation($leave: CreateLeaveInput!) {
-    createLeave(input: $leave) {
-      id
-    }
-  }
-`
-
-const NewAbsence = ({ users, leaveTypes }) => {
-
-  const [request, setRequest] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
-  const { hasRole } = useAuth();
-
-  const [create, { loading, error }] = useMutation(CREATE_APPROVED_LEAVE, {
-    onCompleted: (data) => {
-      toast.success("submission success");
-      setSubmissionSuccess(true);
-    }
-  })
-
-  const onSubmit = data => {
-    setRequest({
-      dateStart: data["Date from"],
-      dateEnd: data["Date to"],
-      approverId: parseInt(data.employee),
-      requesterId: parseInt(data.employee),
-      status: 2,
-      approverComment: data.reason,
-      dayPartStart: parseInt(data.from_date_part),
-      dayPartEnd: parseInt(data.to_date_part),
-      leaveTypeId: parseInt(data.leave_type)
-    });
-    setSubmitted(true);
-  }
-
+const NewAbsence = ({ users, leaveTypes, onSubmit, loading, submissionSuccess, hasRole, error }) => {
   const dateFormatted = (date) => {
     return date.toISOString().split("T")[0];
   }
 
-  useEffect(() => {
-    if (submitted) {
-      create({ variables: { leave: request } });
-      setSubmitted(false);
-    }
-  }, [request, submitted])
-
   return (
     <div className="container flex-center">
       <Form config={{ mode: 'onBlur' }} onSubmit={onSubmit}>
-        <Toaster />
         <FormError error={error} wrapperClassName="error" />
         <h1 style={{ textAlign: 'center' }}>New absence</h1>
         <hr></hr>
@@ -119,15 +68,6 @@ const NewAbsence = ({ users, leaveTypes }) => {
               <div className="col-md-7">
                 <div className="input-group">
                   <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
-                  {/* <TextField type="text"
-                    className="form-control book-leave-from-input"
-                    id="from"
-                    data-provide="datepicker"
-                    data-date-autoclose="1"
-                    data-date-format="YYYY-MM-DD"
-                    data-date-week-start="1"
-                    value="2022-05-05"
-                    name="from_date" /> */}
                   <DateField name="Date from"
                     required
                     errorClassName="form-control error"

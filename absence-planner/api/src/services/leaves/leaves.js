@@ -65,6 +65,15 @@ export const deleteLeave = ({ id }) => {
   })
 }
 
+export const requestedLeaves = ({id}) =>{
+  return db.leave.findMany({
+    where:{
+      approverId: id,
+      status:1
+    }
+  })
+}
+
 export const Leave = {
   requester: (_obj, { root }) => {
     return db.leave.findUnique({ where: { id: root?.id } }).requester()

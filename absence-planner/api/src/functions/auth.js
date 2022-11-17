@@ -117,7 +117,6 @@ export const handler = async (event, context) => {
           isActivated: userAttributes.isActivated,
           isAutoApprove: userAttributes.isAutoApprove,
           companyId: userAttributes.companyId,
-          departmentId: userAttributes.departmentId,
           roles: userAttributes.roles
           // name: userAttributes.name
         },

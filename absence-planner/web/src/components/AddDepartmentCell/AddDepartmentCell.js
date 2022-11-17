@@ -48,7 +48,7 @@ export const Success = ({ users, companyId }) => {
   const [createDepartmentSupervisor, { loading: createDepartmentSupervisorLoading, error: createDepartmentSupervisorError }] =
     useMutation(ADD_DEPARTMENT_SUPERVISOR_MUTATION, {
       onCompleted: () => {
-        toast('Department successfully created')
+        toast.success('Department successfully created')
       },
       onError: (error) => {
         toast.error('Unable to add new department')
