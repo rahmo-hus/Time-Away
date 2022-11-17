@@ -37,10 +37,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createDepartment(input: CreateDepartmentInput!): Department! @requireAuth
+    createDepartment(input: CreateDepartmentInput!): Department! @skipAuth
     updateDepartment(id: Int!, input: UpdateDepartmentInput!): Department!
       @requireAuth
-    createDepartmentSupervisor(input: CreateDepartmentSupervisorInput!): DepartmentSupervisor! @requireAuth
+    createDepartmentSupervisor(input: CreateDepartmentSupervisorInput!): DepartmentSupervisor! @skipAuth
     deleteDepartment(id: Int!): Department! @requireAuth
   }
 `

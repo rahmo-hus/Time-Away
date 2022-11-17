@@ -20,8 +20,8 @@ export const departmentsByCompanyId = ({ companyId }) => {
 
 export const createDepartment = ({ input }) => {
   return db.department.create({
-    data: input,
-  })
+    data: input
+  });
 }
 
 export const updateDepartment = ({ id, input }) => {

@@ -14,9 +14,9 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   useEffect(() => {
-      setNextYear(currentYear.getFullYear() + 1);
-      setPreviousYear(currentYear.getFullYear() - 1);
-  },[currentYear]);
+    setNextYear(currentYear.getFullYear() + 1);
+    setPreviousYear(currentYear.getFullYear() - 1);
+  }, [currentYear]);
 
   const getCalendar = (year, month) => {
 
@@ -117,7 +117,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
   }
 
   const calculateTotalAvailableAllowance = () => {
-    return department.allowance + returnZeroIfValueIsNull(allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(allowanceAdjustment?.carriedOverAllowance);
+    return returnZeroIfValueIsNull(department?.allowance) + returnZeroIfValueIsNull(allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(allowanceAdjustment?.carriedOverAllowance);
   }
 
   const isLeaveCell = (date) => {
@@ -132,7 +132,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
     <><div>
       <div className="flex-center">
         <div className="col-md-4 secondary-leave-type-statistics hidden-xs">
-          <AllowanceBreakdown allowanceDetails={{ isAccruedAllowance: department.isAccruedAllowance, daysTaken: calculateDaysTaken(), nominalAllowance: department.allowance, ...allowanceAdjustment }} />
+          <AllowanceBreakdown allowanceDetails={{ isAccruedAllowance: returnZeroIfValueIsNull(department?.isAccruedAllowance), daysTaken: calculateDaysTaken(), nominalAllowance: returnZeroIfValueIsNull(department?.allowance), ...allowanceAdjustment }} />
         </div>
 
         <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
@@ -154,7 +154,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
         <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
           <dl>
             <dt>Details</dt>
-            <dd><em>Department:</em> <span className="pull-right"><a href="/calendar/teamview/?department={{ current_user.department.id }}">{department.name}</a></span></dd>
+            <dd><em>Department:</em> <span className="pull-right"><a href="/calendar/teamview/?department={{ current_user.department.id }}">{department ? department.name : 'N/A'}</a></span></dd>
             <dd><em>Allowance in 2022:</em><span className="pull-right"> {calculateTotalAvailableAllowance()}</span></dd>
           </dl>
         </div>
@@ -166,7 +166,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
         <div className="flex-center">
           <div className="col-xs-2">
             {showFullYear &&
-              <a className="btn btn-default" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() - 1, 1,1))} ><span aria-hidden="true" className="fa fa-chevron-left"></span> {previousYear} </a>}
+              <a className="btn btn-default" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() - 1, 1, 1))} ><span aria-hidden="true" className="fa fa-chevron-left"></span> {previousYear} </a>}
           </div>
           <div className="col-xs-8 calendar-section-caption">
 
@@ -180,7 +180,7 @@ const AbsenceDetails = ({ allowanceAdjustment, leaveTypes, department, leaves })
           </div>
           <div className="col-xs-2">
             {showFullYear &&
-              <a className="btn btn-default pull-right" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() + 1, 1,1))}  >{nextYear} <span aria-hidden="true" className="fa fa-chevron-right"></span></a>
+              <a className="btn btn-default pull-right" onClick={() => setCurrentYear(new Date(currentYear.getFullYear() + 1, 1, 1))}  >{nextYear} <span aria-hidden="true" className="fa fa-chevron-right"></span></a>
             }
           </div>
         </div>

@@ -13,6 +13,10 @@ const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
     return total;
   }
 
+  const returnZeroIfValueIsNull = value =>{
+    return value ? value : 0;
+  }
+
   const { isAuthenticated, currentUser } = useAuth();
   return (
     <>
@@ -36,9 +40,9 @@ const Calendar = ({ leaves, department, allowanceAdjustment, leaveTypes }) => {
       <div className="row">
         <div className="col-md-2 top-leave-type-statistics">
           <dl>
-            <dt data-tom-days-available-in-allowance>{department.allowance - calculateDaysTaken()}</dt>
+            <dt data-tom-days-available-in-allowance>{returnZeroIfValueIsNull(department?.allowance) - calculateDaysTaken()}</dt>
             <dd>Days available</dd>
-            <dd>out of <span data-tom-total-days-in-allowance>{department.allowance +allowanceAdjustment?.adjustment + allowanceAdjustment?.carriedOverAllowance}</span> in allowance</dd>
+            <dd>out of <span data-tom-total-days-in-allowance>{returnZeroIfValueIsNull(department?.allowance) + returnZeroIfValueIsNull(allowanceAdjustment?.adjustment) + returnZeroIfValueIsNull(allowanceAdjustment?.carriedOverAllowance)}</span> in allowance</dd>
           </dl>
         </div>
         <AbsenceDetails
