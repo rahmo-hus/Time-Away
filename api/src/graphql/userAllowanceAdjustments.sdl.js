@@ -12,7 +12,6 @@ export const schema = gql`
   type Query {
     userAllowanceAdjustments: [UserAllowanceAdjustment!]! @requireAuth
     userAllowanceAdjustment(id: Int!): UserAllowanceAdjustment @requireAuth
-    userAllowanceAdjustmentByUserId(userId: Int): UserAllowanceAdjustment @requireAuth
   }
 
   input CreateUserAllowanceAdjustmentInput {
