@@ -1,19 +1,14 @@
-import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 
+import RequestsCell from 'src/components/RequestsCell'
 const RequestsPage = () => {
+  const { currentUser } = useAuth()
+
   return (
     <>
       <MetaTags title="Requests" description="Requests page" />
-
-      <h1>RequestsPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/RequestsPage/RequestsPage.js</code>
-      </p>
-      <p>
-        My default route is named <code>requests</code>, link to me with `
-        <Link to={routes.requests()}>Requests</Link>`
-      </p>
+      <RequestsCell id={currentUser.id} />
     </>
   )
 }

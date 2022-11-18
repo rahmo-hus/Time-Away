@@ -1,5 +1,4 @@
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
 
 export const users = () => {
   return db.user.findMany()
@@ -8,15 +7,15 @@ export const users = () => {
 export const user = ({ id }) => {
   return db.user.findUnique({
     where: { id },
-  });
+  })
 }
 
 export const usersByCompanyId = ({ companyId }) => {
   return db.user.findMany({
     where: {
-      companyId: companyId
-    }
-  });
+      companyId: companyId,
+    },
+  })
 }
 
 export const createUser = ({ input }) => {
@@ -40,19 +39,26 @@ export const deleteUser = ({ id }) => {
 
 export const User = {
   company: async (_obj, { root }) => {
-    const company = await db.user.findUnique({ where: { id: root?.id } }).company();
-    company.departments = await db.department.findMany({ where: { companyId: company.id } });
+    const company = await db.user
+      .findUnique({ where: { id: root?.id } })
+      .company()
+    company.departments = await db.department.findMany({
+      where: { companyId: company.id },
+    })
 
-    return company;
+    return company
   },
   approvedLeaves: (_obj, { root }) => {
-    return db.leave.findMany({ where: { status: 2, requesterId: root?.id } });
+    return db.leave.findMany({ where: { status: 2, requesterId: root?.id } })
   },
   requestedLeaves: (_obj, { root }) => {
-    return db.leave.findMany({ where: { status: 1, requesterId: root?.id } });
+    return db.leave.findMany({ where: { status: 1, requesterId: root?.id } })
+  },
+  allLeaves: (_obj, { root }) => {
+    return db.leave.findMany({ where: { requesterId: root?.id } })
   },
   schedule: (_obj, { root }) => {
-    return db.schedule.findUnique({ where: { userId: root?.id } });
+    return db.schedule.findUnique({ where: { userId: root?.id } })
   },
   department: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).department()
@@ -61,5 +67,5 @@ export const User = {
     return db.userAllowanceAdjustment.findUnique({
       where: { userId: root?.id },
     })
-  }
+  },
 }

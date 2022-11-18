@@ -1,21 +1,21 @@
-import AddEmployee from "src/components/AddEmployee"
+import AddEmployee from 'src/components/AddEmployee'
 
 export const beforeQuery = ({ userId }) => ({
-  variables: { userId }
+  variables: { userId },
 })
 
 export const QUERY = gql`
   query UserQuery($userId: Int!) {
-    user: user(id: $userId){
-      company{
-        id,
-        departments{
-          id,
+    user: user(id: $userId) {
+      company {
+        id
+        departments {
+          id
           name
         }
       }
+    }
   }
-}
 `
 
 export const Loading = () => <div>Loading...</div>

@@ -28,6 +28,19 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.link {
+  background-color: #5ba4e5;
+  border: none;
+  color: white;
+  padding: 20px 34px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 /*
   Add special class to remove default buttom space
 */

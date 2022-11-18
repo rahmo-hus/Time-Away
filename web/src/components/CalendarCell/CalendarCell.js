@@ -1,65 +1,65 @@
-import Calendar from "src/components/Calendar"
-import { routes, navigate } from '@redwoodjs/router'
-import { useEffect } from "react"
+import Calendar from 'src/components/Calendar'
 
 export const beforeQuery = ({ userId }) => ({
-  variables: { userId }
+  variables: { userId },
 })
 
 export const QUERY = gql`
   query LeavesQuery($userId: Int!) {
-    leavesByCurrentUser: leavesByUserId(userId: $userId) {
-      id,
-      status,
-      employeeComment,
-      approverComment,
-      dateStart,
-      dateEnd,
-      approver{
-        firstName,
+    leaves: leaves {
+      id
+      status
+      employeeComment
+      approverComment
+      dateStart
+      dateEnd
+      deductedDays
+      approver {
+        firstName
         lastName
-      },
-      leaveType{
-        id,
-        name,
-        color,
-        limit
       }
-    },
-    leaves: leaves{
-      id,
-      status,
-      employeeComment,
-      approverComment,
-      dateStart,
-      dateEnd,
-      approver{
-        firstName,
-        lastName
-      },
-      leaveType{
-        id,
-        name,
+      leaveType {
+        id
+        name
         color
       }
-    },
-    user: user(id: $userId){
-      department{
-        id,
-        name,
-        allowance,
+    }
+    user: user(id: $userId) {
+      department {
+        id
+        name
+        allowance
         isAccruedAllowance
-      },
-      allowanceAdjustment{
-        id,
-        year,
-        adjustment,
+      }
+      allowanceAdjustment {
+        id
+        year
+        adjustment
         carriedOverAllowance
-      },
-    },
-    leaveTypes: leaveTypes{
-      id,
-      name,
+      }
+      allLeaves {
+        id
+        status
+        employeeComment
+        approverComment
+        dateStart
+        deductedDays
+        dateEnd
+        approver {
+          firstName
+          lastName
+        }
+        leaveType {
+          id
+          name
+          color
+          limit
+        }
+      }
+    }
+    leaveTypes: leaveTypes {
+      id
+      name
       color
     }
   }
@@ -73,15 +73,16 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ leavesByCurrentUser,leaves,  user, leaveTypes }) => {
+export const Success = ({ leaves, user, leaveTypes }) => {
+  const { allowanceAdjustment, allLeaves } = user
 
-  const { allowanceAdjustment } = user;
-
-  return <Calendar
-    leavesByCurrentUser={leavesByCurrentUser}
-    department={user.department}
-    leaveRequests={leaves}
-    allowanceAdjustment={allowanceAdjustment}
-    leaveTypes={leaveTypes}
-  />
+  return (
+    <Calendar
+      leavesByCurrentUser={allLeaves}
+      department={user.department}
+      leaveRequests={leaves}
+      allowanceAdjustment={allowanceAdjustment}
+      leaveTypes={leaveTypes}
+    />
+  )
 }

@@ -1,44 +1,47 @@
 import TeamView from 'src/components/TeamView'
 
 export const beforeQuery = ({ userId }) => ({
-  variables: { userId }
+  variables: { userId },
 })
 
 export const QUERY = gql`
   query FindTeamViewQuery($userId: Int!) {
-    company: user(id: $userId){
-      company{
-        id,
-        departments{
-          id,
+    company: user(id: $userId) {
+      company {
+        id
+        departments {
+          id
           name
         }
       }
-    },
+    }
 
     users: users {
-      id,
-      firstName,
-      lastName,
-      department{
-        id,
+      id
+      firstName
+      lastName
+      department {
+        id
         name
-      },
-      approvedLeaves{
-        dateStart,
-        dateEnd,
-        leaveType{
-          id,
-          name,
+      }
+      approvedLeaves {
+        id
+        dateStart
+        dateEnd
+        status
+        leaveType {
+          id
+          name
           color
         }
-      },
-      requestedLeaves{
-        dateStart,
-        dateEnd,
-        leaveType{
-          id,
-          name,
+      }
+      requestedLeaves {
+        dateStart
+        status
+        dateEnd
+        leaveType {
+          id
+          name
           color
         }
       }
@@ -55,5 +58,5 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ users, company }) => {
-  return <TeamView users={users} departments = {company?.company?.departments} />
+  return <TeamView users={users} departments={company?.company?.departments} />
 }

@@ -15,9 +15,10 @@ export const schema = gql`
     departmentId: Int
     company: Company
     department: Department
-    approvedLeaves: [Leave],
-    requestedLeaves: [Leave],
-    schedule: Schedule,
+    approvedLeaves: [Leave]
+    requestedLeaves: [Leave]
+    allLeaves: [Leave]
+    schedule: Schedule
     allowanceAdjustment: UserAllowanceAdjustment
   }
 

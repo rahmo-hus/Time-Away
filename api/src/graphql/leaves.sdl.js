@@ -6,6 +6,7 @@ export const schema = gql`
     approverComment: String
     decidedAt: DateTime
     dateStart: DateTime
+    deductedDays: Int
     dateEnd: DateTime
     dayPartStart: Int
     dayPartEnd: Int
@@ -54,8 +55,14 @@ export const schema = gql`
     leaveTypeId: Int
   }
 
+  input ApproveLeaveInput {
+    status: Int
+    decidedAt: DateTime
+  }
+
   type Mutation {
     createLeave(input: CreateLeaveInput!): Leave! @requireAuth
+    approveLeave(id: Int!, input: ApproveLeaveInput!): Leave! @requireAuth
     updateLeave(id: Int!, input: UpdateLeaveInput!): Leave! @requireAuth
     deleteLeave(id: Int!): Leave! @requireAuth
   }
