@@ -1,37 +1,36 @@
-import { toast, Toaster } from '@redwoodjs/web/toast'
-import { routes, Link } from '@redwoodjs/router'
+/* eslint-disable react/jsx-no-undef */
+import { useState } from 'react'
+
+import { useForm } from 'react-hook-form'
+
 import {
+  CheckboxField,
+  DateField,
   FieldError,
   Form,
   Label,
-  TextField,
-  FormError,
-  DateField,
   SelectField,
   Submit,
-  CheckboxField
+  TextField,
 } from '@redwoodjs/forms'
+import { Link, routes } from '@redwoodjs/router'
 
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-
-const GeneralDetails = ({ user, onSubmit, loading, error }) => {
-
-  const formMethods = useForm();
-  const [passwordValue, setPassword] = useState('');
+const GeneralDetails = ({ user, onSubmit }) => {
+  const formMethods = useForm()
+  const [passwordValue, setPassword] = useState('')
 
   const dateFormatted = (date) => {
-    return new Date(date).toISOString().split("T")[0];
+    return new Date(date).toISOString().split('T')[0]
   }
 
   return (
     <div className="col-md-7">
-      <Form className="form-horizontal"
+      <Form
+        className="form-horizontal"
         config={{ mode: 'onBlur' }}
         onSubmit={onSubmit}
         formMethods={formMethods}
       >
-
         <div className="form-group">
           <Label name="First name" className="control-label">
             First name
@@ -67,7 +66,9 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
         </div>
 
         <div className="form-group">
-          <Label name="Email" className="control-label">Email Address</Label>
+          <Label name="Email" className="control-label">
+            Email Address
+          </Label>
           <TextField
             name="Email"
             defaultValue={user?.email}
@@ -86,38 +87,37 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
         </div>
 
         <div className="form-group">
-          <Label name="Department" className="control-label">Department</Label>
+          <Label name="Department" className="control-label">
+            Department
+          </Label>
           <SelectField
             name="Department"
             defaultValue={user?.departmentId}
             validation={{
-              required: true
+              required: true,
             }}
             errorClassName="form-control error"
             className="form-control"
           >
-            {
-              user.company.departments.map((dept) => (
-                <React.Fragment key={dept.id}>
-                  <option value={dept.id}>{dept.name}</option>
-                </React.Fragment>
-              ))
-            }
+            {user.company.departments.map((dept) => (
+              <React.Fragment key={dept.id}>
+                <option value={dept.id}>{dept.name}</option>
+              </React.Fragment>
+            ))}
           </SelectField>
         </div>
 
         <div className="form-group">
           <Label name="admin">
-            <CheckboxField name="admin"
-              defaultChecked={user?.isAdmin}
-            />
+            <CheckboxField name="admin" defaultChecked={user?.isAdmin} />
             Is administrator user
           </Label>
         </div>
 
         <div className="form-group">
           <Label name="auto_approve" className="control-label">
-            <CheckboxField name="auto_approve"
+            <CheckboxField
+              name="auto_approve"
               defaultChecked={user?.isAutoApprove}
             />
             Auto approve leave requests
@@ -125,9 +125,12 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
         </div>
 
         <div className="form-group">
-          <Label name="Start date" className="control-label">Started on</Label>
+          <Label name="Start date" className="control-label">
+            Started on
+          </Label>
           <div className="date">
-            <DateField name="Start date"
+            <DateField
+              name="Start date"
               required
               defaultValue={dateFormatted(user?.startDate)}
               errorClassName="form-control error"
@@ -137,19 +140,21 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
         </div>
 
         <div className="form-group">
-          <Label name="Password" className="control-label">Password</Label>
+          <Label name="Password" className="control-label">
+            Password
+          </Label>
           <div className="date">
             <TextField
               name="Password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="***********"
               type="password"
               validation={{
                 required: false,
                 minLength: {
                   value: 8,
-                  message: "Password must be at least 8 characters long"
-                }
+                  message: 'Password must be at least 8 characters long',
+                },
               }}
               errorClassName="form-control error"
               className="form-control"
@@ -159,14 +164,17 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
         </div>
 
         <div className="form-group">
-          <Label name="Password confirm" className="control-label">Confirm password</Label>
+          <Label name="Password confirm" className="control-label">
+            Confirm password
+          </Label>
           <TextField
             name="Password confirm"
             placeholder="***********"
             type="password"
             validation={{
               required: false,
-              validate: value => value === passwordValue || 'Passwords must match'
+              validate: (value) =>
+                value === passwordValue || 'Passwords must match',
             }}
             errorClassName="form-control error"
             className="form-control"
@@ -176,8 +184,15 @@ const GeneralDetails = ({ user, onSubmit, loading, error }) => {
 
         <div className="form-group">
           <div className="col-md-12">
-            <Submit className="btn btn-success pull-right single-click">Save changes</Submit>
-            <Link className="btn btn-link pull-right" to={routes.viewEmployees()}>Cancel</Link>
+            <Submit className="btn btn-success pull-right single-click">
+              Save changes
+            </Submit>
+            <Link
+              className="btn btn-link pull-right"
+              to={routes.viewEmployees()}
+            >
+              Cancel
+            </Link>
           </div>
         </div>
       </Form>

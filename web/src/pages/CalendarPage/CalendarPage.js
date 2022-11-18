@@ -1,19 +1,17 @@
-import { Link, routes } from '@redwoodjs/router'
-import {useAuth} from "@redwoodjs/auth"
-import CalendarCell from 'src/components/CalendarCell'
+import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
-import NewAbsenceCell from 'src/components/NewAbsenceCell'
+
+import CalendarCell from 'src/components/CalendarCell'
 
 const CalendarPage = () => {
-
-  const {isAuthenticated, currentUser} = useAuth();
+  const { currentUser } = useAuth()
 
   return (
     <>
       <MetaTags title="Calendar" description="Calendar page" />
-      <CalendarCell userId={currentUser.id}/>
-      </>
-      )
+      <CalendarCell userId={currentUser.id} />
+    </>
+  )
 }
 
-      export default CalendarPage
+export default CalendarPage

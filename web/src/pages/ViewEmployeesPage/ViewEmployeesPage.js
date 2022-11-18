@@ -1,16 +1,15 @@
-import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
-import ViewEmployeesCell  from 'src/components/ViewEmployeesCell'
-import {useAuth} from '@redwoodjs/auth'
+
+import ViewEmployeesCell from 'src/components/ViewEmployeesCell'
 
 const ViewEmployeesPage = () => {
-
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth()
 
   return (
     <>
       <MetaTags title="ViewEmployees" description="ViewEmployees page" />
-      <ViewEmployeesCell companyId = {currentUser.companyId}/>
+      <ViewEmployeesCell companyId={currentUser.companyId} />
     </>
   )
 }

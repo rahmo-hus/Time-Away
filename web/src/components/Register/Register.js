@@ -1,42 +1,46 @@
-import { Link, routes, navigate } from '@redwoodjs/router'
-import { MetaTags, useMutation } from '@redwoodjs/web'
+import { useState } from 'react'
+
 import {
   FieldError,
   Form,
   Label,
-  TextField,
-  TextAreaField,
-  FormError,
-  Submit,
   SelectField,
+  Submit,
+  TextAreaField,
+  TextField,
+  useForm,
 } from '@redwoodjs/forms'
-import {useForm} from '@redwoodjs/forms'
-import { useState } from 'react'
 
-const Register = ({onSubmit, loading}) => {
-
-
-  const [passwordValue, setPassword] = useState('');
-  const formMethods = useForm();
+const Register = ({ onSubmit, loading }) => {
+  const [passwordValue, setPassword] = useState('')
+  const formMethods = useForm()
 
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>New company</h1>
 
       {/* {{> show_flash_messages }} */}
-      <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="lead">Register new company account and supervisor user</div>
+      <div
+        className="row"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
+        <div className="lead">
+          Register new company account and supervisor user
+        </div>
       </div>
       <hr></hr>
 
-      <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        className="row"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <div className="col-md-9">
-          <Form className="form-horizontal"
+          <Form
+            className="form-horizontal"
             config={{ mode: 'onBlur' }}
             onSubmit={onSubmit}
             formMethods={formMethods}
           >
-
             <div className="form-group">
               <Label name="Company name" className="col-md-4 control-label">
                 Company name
@@ -47,7 +51,7 @@ const Register = ({onSubmit, loading}) => {
                   name="Company name"
                   validation={{
                     required: true,
-                    message: 'Company name is required'
+                    message: 'Company name is required',
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -66,7 +70,7 @@ const Register = ({onSubmit, loading}) => {
                   name="Company info"
                   validation={{
                     required: true,
-                    message: 'Company info is required'
+                    message: 'Company info is required',
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -158,15 +162,15 @@ const Register = ({onSubmit, loading}) => {
               <div className="col-md-6">
                 <TextField
                   name="Password"
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="***********"
                   type="password"
                   validation={{
                     required: true,
                     minLength: {
                       value: 8,
-                      message: "Password must be at least 8 characters long"
-                    }
+                      message: 'Password must be at least 8 characters long',
+                    },
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -186,7 +190,8 @@ const Register = ({onSubmit, loading}) => {
                   type="password"
                   validation={{
                     required: true,
-                    validate: value => value === passwordValue || 'Passwords must match'
+                    validate: (value) =>
+                      value === passwordValue || 'Passwords must match',
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -203,7 +208,7 @@ const Register = ({onSubmit, loading}) => {
                 <SelectField
                   name="country"
                   validation={{
-                    required: true
+                    required: true,
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -222,7 +227,7 @@ const Register = ({onSubmit, loading}) => {
                 <SelectField
                   name="timezone"
                   validation={{
-                    required: true
+                    required: true,
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -235,7 +240,9 @@ const Register = ({onSubmit, loading}) => {
             <hr></hr>
             <div className="form-group">
               <div className="col-md-offset-4 col-md-6">
-                <Submit disabled={loading} className='btn btn-success'>Create</Submit>
+                <Submit disabled={loading} className="btn btn-success">
+                  Create
+                </Submit>
               </div>
             </div>
           </Form>

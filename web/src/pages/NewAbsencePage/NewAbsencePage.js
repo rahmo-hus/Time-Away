@@ -1,16 +1,15 @@
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
-import NewAbsenceCell from 'src/components/NewAbsenceCell'
 import { useAuth } from '@redwoodjs/auth'
+import { MetaTags } from '@redwoodjs/web'
+
+import NewAbsenceCell from 'src/components/NewAbsenceCell'
 
 const NewAbsencePage = () => {
-
-  const {currentUser} = useAuth()
+  const { currentUser } = useAuth()
 
   return (
     <>
       <MetaTags title="NewAbsence" description="NewAbsence page" />
-      <NewAbsenceCell userId = {currentUser.id}/>
+      <NewAbsenceCell userId={currentUser.id} />
     </>
   )
 }

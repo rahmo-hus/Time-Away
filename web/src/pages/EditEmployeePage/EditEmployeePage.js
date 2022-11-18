@@ -1,12 +1,12 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+
 import EditEmployeeCell from 'src/components/EditEmployeeCell'
 
-const EditEmployeePage = ({id}) => {
+const EditEmployeePage = ({ id }) => {
   return (
     <>
       <MetaTags title="EditEmployee" description="EditEmployee page" />
-      <EditEmployeeCell id={parseInt(id)}/>
+      <EditEmployeeCell id={parseInt(id)} />
     </>
   )
 }

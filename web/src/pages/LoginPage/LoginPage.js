@@ -1,34 +1,28 @@
-import { Link, routes, navigate } from '@redwoodjs/router'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { useEffect } from 'react'
+
+import { useForm } from 'react-hook-form'
+
+import { useAuth } from '@redwoodjs/auth'
+import { FieldError, Form, Label, Submit, TextField } from '@redwoodjs/forms'
+import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-
-import {
-  FieldError,
-  Form,
-  Label,
-  TextField,
-  FormError,
-  Submit
-} from '@redwoodjs/forms'
-
-import { useRef, useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import {useAuth} from '@redwoodjs/auth'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const LoginPage = () => {
-
-  const formMethods = useForm();
-  const {isAuthenticated, logIn} = useAuth();
+  const formMethods = useForm()
+  const { isAuthenticated, logIn } = useAuth()
 
   const onSubmit = async (data) => {
-      const response = await logIn({username:data.Email, password:data.Password});
+    const response = await logIn({
+      username: data.Email,
+      password: data.Password,
+    })
 
-      if(response.message){
-        navigate(routes.calendar());
-      }
-      else if(response.error){
-        toast.error(response.error);
-      }
+    if (response.message) {
+      navigate(routes.calendar())
+    } else if (response.error) {
+      toast.error(response.error)
+    }
   }
 
   useEffect(() => {
@@ -45,15 +39,22 @@ const LoginPage = () => {
       {/* {{> show_flash_messages }} */}
       <Toaster />
 
-      <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        className="row"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <div className="col-md-9">
-          <Form className="form-horizontal"
+          <Form
+            className="form-horizontal"
             config={{ mode: 'onBlur' }}
             onSubmit={onSubmit}
             formMethods={formMethods}
           >
             {/* <FormError error={error} wrapperClassName="error text-center" /> */}
-            <div className="row" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              className="row"
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
               <div className="lead">Sign in into your account</div>
             </div>
             <hr></hr>
@@ -92,8 +93,8 @@ const LoginPage = () => {
                     required: true,
                     minLength: {
                       value: 8,
-                      message: "Password must be at least 8 characters long"
-                    }
+                      message: 'Password must be at least 8 characters long',
+                    },
                   }}
                   errorClassName="form-control error"
                   className="form-control"
@@ -104,10 +105,13 @@ const LoginPage = () => {
             <hr></hr>
             <div className="form-group">
               <div className="col-md-offset-4 col-md-1">
-                <Submit className='btn btn-success'>Login</Submit>
+                <Submit className="btn btn-success">Login</Submit>
               </div>
               <div className="col-md-5">
-                <p className="pull-right"><a href="/forgot-password/">Forgot password?</a> | <a href="/register/">Register new company</a> </p>
+                <p className="pull-right">
+                  <a href="/forgot-password/">Forgot password?</a> |{' '}
+                  <a href="/register/">Register new company</a>{' '}
+                </p>
               </div>
             </div>
           </Form>
