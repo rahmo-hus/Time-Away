@@ -9,6 +9,7 @@ export const QUERY = gql`
   query FindAllRequestedLeaves($id: Int!) {
     requests: requestedLeaves(id: $id) {
       id
+      status
       requester {
         id
         firstName

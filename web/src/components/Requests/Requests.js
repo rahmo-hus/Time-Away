@@ -60,14 +60,21 @@ const Requests = ({
                       <i className="fa fa-long-arrow-right"></i>{' '}
                       {parseDate(request.dateEnd)}
                     </td>
-                    <td>{request?.leaveType.name}</td>
+                    <td>
+                      {request.status === 4 ? <b>REVOKE</b> : ''}{' '}
+                      {request?.leaveType.name}
+                    </td>
                     <td data-vpp="days_used">{request.deductedDays}</td>
                     <td>{request.comment}</td>
                     <td>
                       <button
                         disabled={loading || submissionSuccess === request.id}
                         className="btn btn-warning single-click"
-                        onClick={() => onReject({ id: request.id })}
+                        onClick={() =>
+                          request.status === 1
+                            ? onReject({ id: request.id })
+                            : onApprove({ id: request.id })
+                        }
                       >
                         Reject
                       </button>
@@ -76,7 +83,11 @@ const Requests = ({
                       <button
                         disabled={loading || submissionSuccess === request.id}
                         className="btn btn-success single-click"
-                        onClick={() => onApprove({ id: request.id })}
+                        onClick={() =>
+                          request.status === 1
+                            ? onApprove({ id: request.id })
+                            : onReject({ id: request.id })
+                        }
                       >
                         Approve
                       </button>

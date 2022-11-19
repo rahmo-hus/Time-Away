@@ -84,13 +84,22 @@ export const approveLeave = ({ id, input }) => {
   })
 }
 
-export const requestedLeaves = ({ id }) => {
-  return db.leave.findMany({
+export const requestedLeaves = async ({ id }) => {
+  const forApproval = await db.leave.findMany({
     where: {
       approverId: id,
       status: 1,
     },
   })
+
+  const forRevoke = await db.leave.findMany({
+    where: {
+      approverId: id,
+      status: 4,
+    },
+  })
+
+  return forApproval.concat(forRevoke)
 }
 
 export const Leave = {

@@ -8,6 +8,8 @@ const Calendar = ({
   department,
   allowanceAdjustment,
   leaveTypes,
+  onRevoke,
+  onCancel,
 }) => {
   const calculateDaysTaken = () => {
     return leavesByCurrentUser
@@ -73,7 +75,11 @@ const Calendar = ({
           leaves={leavesByCurrentUser}
         />
         <hr></hr>
-        <UserRequests leaves={leavesByCurrentUser} />
+        <UserRequests
+          leaves={leavesByCurrentUser}
+          onCancel={onCancel}
+          onRevoke={onRevoke}
+        />
       </div>
     </>
   )

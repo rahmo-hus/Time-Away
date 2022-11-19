@@ -51,8 +51,22 @@ export const User = {
   approvedLeaves: (_obj, { root }) => {
     return db.leave.findMany({ where: { status: 2, requesterId: root?.id } })
   },
-  requestedLeaves: (_obj, { root }) => {
-    return db.leave.findMany({ where: { status: 1, requesterId: root?.id } })
+  requestedLeaves: async (_obj, { root }) => {
+    const forApproval = await db.leave.findMany({
+      where: {
+        approverId: root?.id,
+        status: 1,
+      },
+    })
+
+    const forRevoke = await db.leave.findMany({
+      where: {
+        approverId: root?.id,
+        status: 4,
+      },
+    })
+
+    return forApproval.concat(forRevoke)
   },
   allLeaves: (_obj, { root }) => {
     return db.leave.findMany({ where: { requesterId: root?.id } })

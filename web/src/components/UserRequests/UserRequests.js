@@ -1,4 +1,4 @@
-const UserRequests = ({ leaves }) => {
+const UserRequests = ({ leaves, onRevoke, onCancel }) => {
   return (
     <div className="row">
       {!leaves || leaves.length === 0 ? (
@@ -47,13 +47,23 @@ const UserRequests = ({ leaves }) => {
                     </td>
                     <td>
                       {leave.status === 2 ? (
-                        <button className="pull-right btn btn-default btn-xs revoke-btn single-click">
+                        <button
+                          onClick={() => onRevoke({ id: leave.id })}
+                          className="pull-right btn btn-default btn-xs revoke-btn single-click"
+                        >
                           <i className="fa fa-trash"></i> Revoke
                         </button>
-                      ) : (
-                        <button className="pull-right btn btn-default btn-xs revoke-btn single-click">
+                      ) : leave.status === 1 || leave.status === 4 ? (
+                        <button
+                          onClick={() =>
+                            onCancel({ id: leave.id, status: leave.status })
+                          }
+                          className="pull-right btn btn-default btn-xs revoke-btn single-click"
+                        >
                           <i className="fa fa-trash"></i> Cancel
                         </button>
+                      ) : (
+                        <></>
                       )}
                     </td>
                     <td>{leave.employeeComment}</td>
@@ -63,9 +73,9 @@ const UserRequests = ({ leaves }) => {
                           ? 'Pending'
                           : leave.status === 2
                           ? 'Approved'
-                          : leave.status === 3
-                          ? 'Rejected'
-                          : 'Revoked'}
+                          : leave.status === 4
+                          ? 'Pending revoke'
+                          : ''}
                       </span>
                     </td>
                   </tr>
