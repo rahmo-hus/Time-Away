@@ -74,6 +74,7 @@ model User {
   Comment                 Comment[]
   Schedule                Schedule[]
   UserAllowanceAdjustment UserAllowanceAdjustment[]
+  Notification            Notification[]
 }
 
 model Holiday {
@@ -184,4 +185,14 @@ model UserAllowanceAdjustment {
 model Country {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+model Notification {
+  id        Int       @id @default(autoincrement())
+  text      String
+  seen      Boolean
+  createdAt DateTime  @default(now())
+  seenAt    DateTime?
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
 }

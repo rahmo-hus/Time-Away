@@ -20,6 +20,7 @@ export const schema = gql`
     allLeaves: [Leave]
     schedule: Schedule
     allowanceAdjustment: UserAllowanceAdjustment
+    notifications: [Notification]
   }
 
   type Query {

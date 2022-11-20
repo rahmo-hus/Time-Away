@@ -158,13 +158,16 @@ const AbsenceDetails = ({
     )
   }
 
-  const isLeaveCell = (date) => {
-    for (let i = 0; i < leaves.length; i++) {
-      if (
-        date >= new Date(leaves[i].dateStart.split('T')[0]) &&
-        date <= new Date(leaves[i].dateEnd.split('T')[0])
-      )
-        return leaves[i]
+  const isLeaveCell = (year, month, day) => {
+    if (day) {
+      const date = new Date(year, month - 1, parseInt(day), 1, 0, 0, 0)
+      for (let i = 0; i < leaves.length; i++) {
+        if (
+          date >= new Date(leaves[i].dateStart.split('T')[0]) &&
+          date <= new Date(leaves[i].dateEnd.split('T')[0])
+        )
+          return leaves[i]
+      }
     }
     return null
   }
@@ -321,9 +324,9 @@ const AbsenceDetails = ({
                               data={{
                                 day: week.M,
                                 leave: isLeaveCell(
-                                  new Date(
-                                    data.year + '-' + data.month + '-' + week.M
-                                  )
+                                  data.year,
+                                  data.month,
+                                  week.M
                                 ),
                               }}
                             ></CalendarBody>
@@ -331,9 +334,9 @@ const AbsenceDetails = ({
                               data={{
                                 day: week.Tu,
                                 leave: isLeaveCell(
-                                  new Date(
-                                    data.year + '-' + data.month + '-' + week.Tu
-                                  )
+                                  data.year,
+                                  data.month,
+                                  week.Tu
                                 ),
                               }}
                             ></CalendarBody>
@@ -341,9 +344,9 @@ const AbsenceDetails = ({
                               data={{
                                 day: week.W,
                                 leave: isLeaveCell(
-                                  new Date(
-                                    data.year + '-' + data.month + '-' + week.W
-                                  )
+                                  data.year,
+                                  data.month,
+                                  week.W
                                 ),
                               }}
                             ></CalendarBody>
@@ -351,9 +354,9 @@ const AbsenceDetails = ({
                               data={{
                                 day: week.Th,
                                 leave: isLeaveCell(
-                                  new Date(
-                                    data.year + '-' + data.month + '-' + week.Th
-                                  )
+                                  data.year,
+                                  data.month,
+                                  week.Th
                                 ),
                               }}
                             ></CalendarBody>
@@ -361,9 +364,9 @@ const AbsenceDetails = ({
                               data={{
                                 day: week.F,
                                 leave: isLeaveCell(
-                                  new Date(
-                                    data.year + '-' + data.month + '-' + week.F
-                                  )
+                                  data.year,
+                                  data.month,
+                                  week.F
                                 ),
                               }}
                             ></CalendarBody>

@@ -37,6 +37,21 @@ const APPROVE_REQUEST_MUTATION = gql`
   mutation ApproveRequestMutation($id: Int!, $input: ApproveLeaveInput!) {
     approveLeave(id: $id, input: $input) {
       id
+      status
+      requesterId
+      dateStart
+      dateEnd
+      leaveType {
+        name
+      }
+    }
+  }
+`
+
+const SEND_NOTIFICATION_MUTATION = gql`
+  mutation SendNotificationMutation($input: CreateNotificationInput!) {
+    createNotification(input: $input) {
+      id
     }
   }
 `
@@ -55,12 +70,37 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ requests }) => {
   const [submissionSuccess, setSubmissionSuccess] = useState(0)
+  const [sendNotification] = useMutation(SEND_NOTIFICATION_MUTATION, {
+    onCompleted: () => {
+      toast.success('Request processed successfully')
+    },
+    onError: () => {
+      toast.error('Request could not be processed')
+    },
+  })
   const [approveLeave, { loading: loading }] = useMutation(
     APPROVE_REQUEST_MUTATION,
     {
       onCompleted: (data) => {
         setSubmissionSuccess(data.approveLeave.id)
-        toast.success('Request processed successfully')
+        sendNotification({
+          variables: {
+            input: {
+              userId: data.approveLeave.requesterId,
+              seen: false,
+              seenAt: null,
+              text:
+                'Your request for ' +
+                data.approveLeave.leaveType?.name +
+                ' scheduled from ' +
+                data.approveLeave.dateStart +
+                ' to ' +
+                data.approveLeave.dateEnd +
+                ' has been ' +
+                (data.approveLeave.status === 2 ? 'approved' : 'rejected'),
+            },
+          },
+        })
       },
       onError: () => {
         toast.error('Request could not be processed')

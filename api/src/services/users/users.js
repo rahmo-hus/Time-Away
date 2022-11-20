@@ -82,4 +82,9 @@ export const User = {
       where: { userId: root?.id },
     })
   },
+  notifications: (_obj, { root }) => {
+    return db.notification.findMany({
+      where: { userId: root?.id },
+    })
+  },
 }
