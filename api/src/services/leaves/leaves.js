@@ -31,6 +31,9 @@ export const createLeave = async ({ input }) => {
   const leaves = await db.leave.findMany({
     where: {
       requesterId: input.requesterId,
+      NOT: {
+        status: 3,
+      },
     },
   })
 

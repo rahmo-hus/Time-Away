@@ -1,6 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect } from 'react'
-
 import { Link, routes } from '@redwoodjs/router'
 
 export const QUERY = gql`
@@ -11,6 +9,7 @@ export const QUERY = gql`
     user: user(id: $id) {
       notifications {
         id
+        seen
       }
     }
   }
@@ -43,11 +42,9 @@ export const Failure = ({ error }) => (
 export const Success = ({ requestedLeaves, hasRole, user }) => {
   const requestedLeavesLength = requestedLeaves.length
   const { notifications } = user
-  const notificationsLength = notifications.length
-
-  useEffect(() => {
-    console.log(notifications)
-  })
+  const notificationsLength = notifications.filter(
+    (notification) => notification.seen === false
+  ).length
 
   if (hasRole('manager')) {
     if (requestedLeavesLength === 0) {
@@ -78,32 +75,28 @@ export const Success = ({ requestedLeaves, hasRole, user }) => {
       )
     }
   } else {
-    if (notificationsLength === 0) {
-      return <Empty />
-    } else {
-      return (
-        <li className="dropdown" id="header-notification-dropdown">
-          <a
-            href="#"
-            className="dropdown-toggle"
-            data-toggle="dropdown"
-            role="button"
-            aria-expanded="false"
-          >
-            <span className="fa fa-bell-o"></span>
-            <span className="label label-info notification-badge">
-              {notificationsLength}
-            </span>
-          </a>
-          <ul className="dropdown-menu" role="menu">
-            <li className="dropdown-header">
-              <Link to={routes.requests()}>
-                New notifications: {notificationsLength}
-              </Link>
-            </li>
-          </ul>
-        </li>
-      )
-    }
+    return (
+      <li className="dropdown" id="header-notification-dropdown">
+        <a
+          href="#"
+          className="dropdown-toggle"
+          data-toggle="dropdown"
+          role="button"
+          aria-expanded="false"
+        >
+          <span className="fa fa-bell-o"></span>
+          <span className="label label-info notification-badge">
+            {notificationsLength}
+          </span>
+        </a>
+        <ul className="dropdown-menu" role="menu">
+          <li className="dropdown-header">
+            <Link to={routes.employeeNotifications()}>
+              New notifications: {notificationsLength}
+            </Link>
+          </li>
+        </ul>
+      </li>
+    )
   }
 }

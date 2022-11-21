@@ -72,8 +72,14 @@ const Requests = ({
                         className="btn btn-warning single-click"
                         onClick={() =>
                           request.status === 1
-                            ? onReject({ id: request.id })
-                            : onApprove({ id: request.id })
+                            ? onReject({
+                                id: request.id,
+                                previousStatus: request.status,
+                              })
+                            : onApprove({
+                                id: request.id,
+                                previousStatus: request.status,
+                              })
                         }
                       >
                         Reject
@@ -85,8 +91,14 @@ const Requests = ({
                         className="btn btn-success single-click"
                         onClick={() =>
                           request.status === 1
-                            ? onApprove({ id: request.id })
-                            : onReject({ id: request.id })
+                            ? onApprove({
+                                id: request.id,
+                                previousStatus: 1,
+                              })
+                            : onReject({
+                                id: request.id,
+                                previousStatus: request.status,
+                              })
                         }
                       >
                         Approve

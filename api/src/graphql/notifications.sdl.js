@@ -22,10 +22,8 @@ export const schema = gql`
   }
 
   input UpdateNotificationInput {
-    text: String
     seen: Boolean
     seenAt: DateTime
-    userId: Int
   }
 
   type Mutation {

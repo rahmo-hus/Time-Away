@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react'
 
 import { Label, Form, CheckboxField } from '@redwoodjs/forms'
@@ -41,7 +42,7 @@ const Schedule = ({ user }) => {
               <p>
                 Current employee uses{' '}
                 <strong>
-                  <button className="link">company wide</button>
+                  <a href="#">company wide</a>
                 </strong>{' '}
                 schedule.
               </p>

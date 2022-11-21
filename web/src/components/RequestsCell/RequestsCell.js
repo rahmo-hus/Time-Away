@@ -70,6 +70,39 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ requests }) => {
   const [submissionSuccess, setSubmissionSuccess] = useState(0)
+  const [previousStatus, setPreviousStatus] = useState(0)
+
+  const determineDecisionStatus = (
+    currentStatus,
+    previousStatus,
+    name,
+    dateStart,
+    dateEnd
+  ) => {
+    console.log(previousStatus)
+    console.log(currentStatus)
+
+    const revoke = previousStatus === 4 && currentStatus === 3 ? 'revoke ' : ''
+    const approval =
+      (previousStatus === 4 && currentStatus === 3) ||
+      (previousStatus === 1 && currentStatus === 2)
+        ? 'approved'
+        : 'rejected'
+
+    return (
+      'Your ' +
+      revoke +
+      'request for ' +
+      name +
+      ' scheduled from ' +
+      dateStart.split('T')[0] +
+      ' to ' +
+      dateEnd.split('T')[0] +
+      ' has been ' +
+      approval
+    )
+  }
+
   const [sendNotification] = useMutation(SEND_NOTIFICATION_MUTATION, {
     onCompleted: () => {
       toast.success('Request processed successfully')
@@ -89,15 +122,13 @@ export const Success = ({ requests }) => {
               userId: data.approveLeave.requesterId,
               seen: false,
               seenAt: null,
-              text:
-                'Your request for ' +
-                data.approveLeave.leaveType?.name +
-                ' scheduled from ' +
-                data.approveLeave.dateStart +
-                ' to ' +
-                data.approveLeave.dateEnd +
-                ' has been ' +
-                (data.approveLeave.status === 2 ? 'approved' : 'rejected'),
+              text: determineDecisionStatus(
+                data.approveLeave.status,
+                previousStatus,
+                data.approveLeave.leaveType?.name,
+                data.approveLeave.dateStart,
+                data.approveLeave.dateEnd
+              ),
             },
           },
         })
@@ -109,6 +140,7 @@ export const Success = ({ requests }) => {
   )
 
   const onApprove = (input) => {
+    setPreviousStatus(input.previousStatus)
     approveLeave({
       variables: {
         id: input.id,
@@ -121,6 +153,7 @@ export const Success = ({ requests }) => {
   }
 
   const onReject = (input) => {
+    setPreviousStatus(input.previousStatus)
     approveLeave({
       variables: {
         id: input.id,
