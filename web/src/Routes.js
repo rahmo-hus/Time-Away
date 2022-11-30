@@ -20,14 +20,16 @@ const Routes = () => {
         <Private unauthenticated="login">
           <Private roles="employee" unauthenticated="login">
             <Route path="/notifications" page={EmployeeNotificationsPage} name="employeeNotifications" />
+            <Route path="/user-requests" page={UserRequestsPage} name="userRequests" />
           </Private>
           <Private roles="manager" unauthenticated="login">
             <Route path="/requests" page={RequestsPage} name="requests" />
-            <Route path="/add-department" page={AddDepartmentPage} name="addDepartment" />
-            <Route path="/department/edit/{id:Int!}" page={EditDepartmentPage} name="editDepartment" />
-            <Route path="/departments" page={DepartmentsPage} name="departments" />
+            <Route path="/settings/general" page={SettingsPage} name="settings" />
+            <Route path="/settings/add-department" page={AddDepartmentPage} name="addDepartment" />
+            <Route path="/settings/department/edit/{id:Int!}" page={EditDepartmentPage} name="editDepartment" />
+            <Route path="/settings/departments" page={DepartmentsPage} name="departments" />
             <Route path="/employee/edit/{id:Int!}" page={EditEmployeePage} name="editEmployee" />
-            <Route path="/add-employee" page={AddEmployeePage} name="addEmployee" />
+            <Route path="/employee/add" page={AddEmployeePage} name="addEmployee" />
           </Private>
           <Route path="/team-view" page={TeamViewPage} name="teamView" />
           <Route path="/employees/all" page={ViewEmployeesPage} name="viewEmployees" />

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-no-undef */
@@ -222,24 +223,20 @@ const TeamView = ({ users, departments }) => {
                             aria-labelledby="dropdownMenu1"
                           >
                             <li>
-                              <button
-                                className="link"
-                                onClick={() => setSelectedDepartment(0)}
-                              >
+                              <a onClick={() => setSelectedDepartment(0)}>
                                 All
-                              </button>
+                              </a>
                             </li>
                             <li role="separator" className="divider"></li>
                             {departments.map((department) => (
                               <li key={department.id}>
-                                <button
-                                  className="link"
+                                <a
                                   onClick={() =>
                                     setSelectedDepartment(department.id)
                                   }
                                 >
                                   {department.name}
-                                </button>
+                                </a>
                               </li>
                             ))}
                           </ul>

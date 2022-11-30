@@ -1,6 +1,12 @@
 const UserRequests = ({ leaves, onRevoke, onCancel }) => {
   return (
     <div className="row">
+      {/* {{> show_flash_messages}} */}
+
+      <div className="row main-row_header">
+        <p className="col-md-12">Leave requests</p>
+      </div>
+
       {!leaves || leaves.length === 0 ? (
         <div className="col-md-12 text-muted">
           There are no leave requests yet.
@@ -38,7 +44,7 @@ const UserRequests = ({ leaves, onRevoke, onCancel }) => {
                         {leave.dateEnd.split('T')[0]}
                       </p>
                     </td>
-                    <td>{leave?.leaveType.name}</td>
+                    <td>{leave.leaveType?.name}</td>
                     <td>{leave?.deductedDays}</td>
                     <td className="user-request-table-approver">
                       {leave?.approver.firstName +

@@ -328,6 +328,10 @@ div.feeds-holder {
   background: #00BCD4 !important;
 }
 
+.leave_type_color_6{
+  background: #edf05b !important;
+}
+
 [data-tooltip]{
   position:relative;
 }

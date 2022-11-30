@@ -1,19 +1,19 @@
 export const schema = gql`
   type Schedule {
     id: Int!
-    monday: String
-    tuesday: String
-    wednesday: String
-    thursday: String
-    friday: String
-    saturday: String
-    sunday: String
+    monday: Boolean!
+    tuesday: Boolean!
+    wednesday: Boolean!
+    thursday: Boolean!
+    friday: Boolean!
+    saturday: Boolean!
+    sunday: Boolean!
     createdAt: DateTime!
     updatedAt: DateTime
-    companyId: Int!
-    userId: Int!
-    company: Company!
-    user: User!
+    companyId: Int
+    userId: Int
+    company: Company
+    user: User
   }
 
   type Query {
@@ -22,25 +22,25 @@ export const schema = gql`
   }
 
   input CreateScheduleInput {
-    monday: String
-    tuesday: String
-    wednesday: String
-    thursday: String
-    friday: String
-    saturday: String
-    sunday: String
-    companyId: Int!
-    userId: Int!
+    monday: Boolean!
+    tuesday: Boolean!
+    wednesday: Boolean!
+    thursday: Boolean!
+    friday: Boolean!
+    saturday: Boolean!
+    sunday: Boolean!
+    companyId: Int
+    userId: Int
   }
 
   input UpdateScheduleInput {
-    monday: String
-    tuesday: String
-    wednesday: String
-    thursday: String
-    friday: String
-    saturday: String
-    sunday: String
+    monday: Boolean
+    tuesday: Boolean
+    wednesday: Boolean
+    thursday: Boolean
+    friday: Boolean
+    saturday: Boolean
+    sunday: Boolean
     companyId: Int
     userId: Int
   }

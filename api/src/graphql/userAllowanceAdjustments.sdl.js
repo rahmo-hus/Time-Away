@@ -38,5 +38,6 @@ export const schema = gql`
     ): UserAllowanceAdjustment! @requireAuth
     deleteUserAllowanceAdjustment(id: Int!): UserAllowanceAdjustment!
       @requireAuth
+    carryOverFromPreviousYear: UserAllowanceAdjustment! @requireAuth
   }
 `

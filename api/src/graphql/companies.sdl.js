@@ -1,7 +1,7 @@
 export const schema = gql`
   type Company {
     id: Int!
-    country: String!
+    countryId: Int!
     startOfNewYear: Int!
     shareAllAbsences: Boolean!
     isTeamViewHidden: Boolean!
@@ -15,6 +15,8 @@ export const schema = gql`
     carryOver: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
+    country: Country
+    schedule: Schedule
     departments: [Department]
     employees: [User]
   }
@@ -25,23 +27,19 @@ export const schema = gql`
   }
 
   input CreateCompanyInput {
-    country: String!
+    countryId: Int!
     name: String
     companyWideMessage: String!
     timezone: String!
   }
 
   input UpdateCompanyInput {
-    country: String
+    countryId: Int
     startOfNewYear: Int
+    name: String
     shareAllAbsences: Boolean
     isTeamViewHidden: Boolean
-    ldapAuthEnabled: Boolean
-    ldapAuthConfig: String
-    dateFormat: String
     companyWideMessage: String
-    mode: Int
-    timezone: String
     carryOver: Int
   }
 

@@ -45,6 +45,9 @@ export const User = {
     company.departments = await db.department.findMany({
       where: { companyId: company.id },
     })
+    company.schedule = await db.schedule.findUnique({
+      where: { companyId: company.id },
+    })
 
     return company
   },
@@ -75,7 +78,7 @@ export const User = {
     return db.schedule.findUnique({ where: { userId: root?.id } })
   },
   department: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).department()
+    return db.department.findUnique({ where: { id: root?.departmentId } })
   },
   allowanceAdjustment: (_obj, { root }) => {
     return db.userAllowanceAdjustment.findUnique({

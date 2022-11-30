@@ -13,17 +13,17 @@ generator client {
 model Company {
   id                 Int          @id @default(autoincrement())
   name               String?
-  country            String?
+  countryId          Int?
   startOfNewYear     Int?
-  shareAllAbsences   Boolean?     @default(false)
-  isTeamViewHidden   Boolean?     @default(false)
+  shareAllAbsences   Boolean      @default(true)
+  isTeamViewHidden   Boolean      @default(true)
   ldapAuthEnabled    Boolean?
   ldapAuthConfig     String?
   dateFormat         String?
   companyWideMessage String?
   mode               Int?
   timezone           String?
-  carryOver          Int?
+  carryOver          Int          @default(1000)
   createdAt          DateTime?    @default(now())
   updatedAt          DateTime?
   Department         Department[]
@@ -32,6 +32,7 @@ model Company {
   LeaveType          LeaveType[]
   Comment            Comment[]
   Schedule           Schedule[]
+  Country            Country?     @relation(fields: [countryId], references: [id])
 }
 
 model Department {
@@ -157,19 +158,19 @@ model Comment {
 
 model Schedule {
   id        Int       @id @default(autoincrement())
-  monday    String?
-  tuesday   String?
-  wednesday String?
-  thursday  String?
-  friday    String?
-  saturday  String?
-  sunday    String?
+  monday    Boolean
+  tuesday   Boolean
+  wednesday Boolean
+  thursday  Boolean
+  friday    Boolean
+  saturday  Boolean
+  sunday    Boolean
   createdAt DateTime  @default(now())
   updatedAt DateTime?
-  companyId Int
-  userId    Int       @unique
-  company   Company   @relation(fields: [companyId], references: [id])
-  user      User      @relation(fields: [userId], references: [id])
+  companyId Int?      @unique
+  userId    Int?      @unique
+  company   Company?  @relation(fields: [companyId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id])
 }
 
 model UserAllowanceAdjustment {
@@ -183,8 +184,9 @@ model UserAllowanceAdjustment {
 }
 
 model Country {
-  id   Int    @id @default(autoincrement())
-  name String
+  id      Int       @id @default(autoincrement())
+  name    String
+  Company Company[]
 }
 
 model Notification {

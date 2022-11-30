@@ -25,16 +25,26 @@ describe('schedules', () => {
     expect(result).toEqual(scenario.schedule.one)
   })
 
-  scenario('creates a schedule', async (scenario) => {
+  scenario('creates a schedule', async () => {
     const result = await createSchedule({
       input: {
-        companyId: scenario.schedule.two.companyId,
-        userId: scenario.schedule.two.userId,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
       },
     })
 
-    expect(result.companyId).toEqual(scenario.schedule.two.companyId)
-    expect(result.userId).toEqual(scenario.schedule.two.userId)
+    expect(result.monday).toEqual(true)
+    expect(result.tuesday).toEqual(true)
+    expect(result.wednesday).toEqual(true)
+    expect(result.thursday).toEqual(true)
+    expect(result.friday).toEqual(true)
+    expect(result.saturday).toEqual(true)
+    expect(result.sunday).toEqual(true)
   })
 
   scenario('updates a schedule', async (scenario) => {
@@ -43,10 +53,10 @@ describe('schedules', () => {
     })
     const result = await updateSchedule({
       id: original.id,
-      input: { companyId: scenario.schedule.two.companyId },
+      input: { monday: false },
     })
 
-    expect(result.companyId).toEqual(scenario.schedule.two.companyId)
+    expect(result.monday).toEqual(false)
   })
 
   scenario('deletes a schedule', async (scenario) => {

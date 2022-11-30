@@ -1,8 +1,7 @@
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
 
 export const companies = () => {
-  return db.findMany();
+  return db.findMany()
 }
 
 export const company = ({ id }) => {
@@ -12,9 +11,9 @@ export const company = ({ id }) => {
 }
 
 export const createCompany = ({ input }) => {
-  return  db.company.create({
+  return db.company.create({
     data: input,
-  });
+  })
 }
 
 export const updateCompany = ({ id, input }) => {
@@ -34,11 +33,18 @@ export const Company = {
   Department: (_obj, { root }) => {
     return db.company.findUnique({ where: { id: root?.id } }).Department()
   },
-  employees: (_obj, {root})=>{
+  employees: (_obj, { root }) => {
     return db.user.findMany({
       where: {
-        companyId: root?.id
-      }
-    });
-  }
+        companyId: root?.id,
+      },
+    })
+  },
+  schedule: (_obj, { root }) => {
+    return db.schedule.findUnique({
+      where: {
+        companyId: root?.id,
+      },
+    })
+  },
 }

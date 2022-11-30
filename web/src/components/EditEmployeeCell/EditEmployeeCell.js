@@ -6,27 +6,11 @@ import EditEmployee from 'src/components/EditEmployee'
 
 export const QUERY = gql`
   query EditEmployeeQuery($id: Int!) {
-    leaves: leavesByUserId(userId: $id) {
-      id
-      status
-      employeeComment
-      approverComment
-      dateStart
-      dateEnd
-      approver {
-        firstName
-        lastName
-      }
-      leaveType {
-        id
-        name
-        color
-        limit
-      }
-    }
     leaveTypes: leaveTypes {
       id
       name
+      useAllowance
+      limit
       color
     }
     user: user(id: $id) {
@@ -38,12 +22,6 @@ export const QUERY = gql`
       isAdmin
       startDate
       departmentId
-      department {
-        id
-        name
-        allowance
-        isAccruedAllowance
-      }
       schedule {
         id
         monday
@@ -54,17 +32,44 @@ export const QUERY = gql`
         saturday
         sunday
       }
+      company {
+        id
+        departments {
+          id
+          name
+        }
+      }
+
+      department {
+        id
+        name
+        allowance
+        isAccruedAllowance
+      }
       allowanceAdjustment {
         id
         year
         adjustment
         carriedOverAllowance
       }
-      company {
+      allLeaves {
         id
-        departments {
+        status
+        employeeComment
+        approverComment
+        dateStart
+        deductedDays
+        dateEnd
+        approver {
+          firstName
+          lastName
+        }
+        leaveType {
           id
           name
+          useAllowance
+          color
+          limit
         }
       }
     }
@@ -116,8 +121,8 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ user, leaveTypes, leaves, id }) => {
-  const { allowanceAdjustment } = user
+export const Success = ({ user, leaveTypes, id }) => {
+  const { allowanceAdjustment, allLeaves } = user
 
   const [updateUser, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_USER_MUTATION, {
@@ -193,6 +198,8 @@ export const Success = ({ user, leaveTypes, leaves, id }) => {
     })
   }
 
+  const processedLeaves = allLeaves.filter((leave) => leave.status !== 3)
+
   const deleteEmployee = () => {}
   return (
     <>
@@ -202,7 +209,7 @@ export const Success = ({ user, leaveTypes, leaves, id }) => {
         onSubmit={updateUserData}
         leaveTypes={leaveTypes}
         allowanceAdjustment={allowanceAdjustment}
-        leaves={leaves}
+        leaves={processedLeaves}
         deleteEmployee={deleteEmployee}
         loading={updateLoading}
         error={updateError}

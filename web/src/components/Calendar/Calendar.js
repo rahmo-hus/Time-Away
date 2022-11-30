@@ -13,7 +13,11 @@ const Calendar = ({
 }) => {
   const calculateDaysTaken = () => {
     return leavesByCurrentUser
-      .filter((leave) => leave.status === 2)
+      .filter(
+        (leave) =>
+          (leave.status === 2 || leave.status === 4) &&
+          leave.leaveType?.useAllowance === true
+      )
       .reduce((acc, leave) => acc + leave.deductedDays, 0)
   }
 

@@ -125,7 +125,7 @@ export const Leave = {
       // clone date to avoid messing up original date and time
       var frD = new Date(fromDate.getTime()),
         toD = new Date(this.getTime()),
-        numOfWorkingDays = 1
+        numOfWorkingDays = frD.getDay() === 0 ? 0 : 1
 
       // reset time portion
       frD.setHours(0, 0, 0, 0)
@@ -134,7 +134,7 @@ export const Leave = {
       while (frD < toD) {
         frD.setDate(frD.getDate() + 1)
         var day = frD.getDay()
-        if (day != 0 && day != 6) {
+        if (day !== 0 && day !== 6) {
           numOfWorkingDays++
         }
       }

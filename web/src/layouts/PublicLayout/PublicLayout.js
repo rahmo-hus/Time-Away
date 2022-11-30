@@ -61,7 +61,7 @@ const PublicLayout = ({ children }) => {
                         </a>
                         <ul className="dropdown-menu" role="menu">
                           <li>
-                            <a href="/settings/general/">General</a>
+                            <Link to={routes.settings()}>General</Link>
                           </li>
                           <li role="separator" className="divider"></li>
                           <li>
@@ -74,9 +74,6 @@ const PublicLayout = ({ children }) => {
                             <Link to={routes.addEmployee()}>Add employees</Link>
                           </li>
                           <li role="separator" className="divider"></li>
-                          <li>
-                            <a href="/audit/email/">Emails audit</a>
-                          </li>
                           <li>
                             <a href="/reports/">Reports</a>
                           </li>
@@ -96,10 +93,7 @@ const PublicLayout = ({ children }) => {
                       </a>
                       <ul className="dropdown-menu" role="menu">
                         <li>
-                          <a href="/requests/">Requests</a>
-                        </li>
-                        <li className="hidden-xs">
-                          <a href="/calendar/feeds/">Feeds</a>
+                          <Link to={routes.userRequests()}>Requests</Link>
                         </li>
                         <li role="separator" className="divider hidden-xs"></li>
                         <li>

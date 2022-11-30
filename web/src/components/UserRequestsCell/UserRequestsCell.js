@@ -1,14 +1,13 @@
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
-import Calendar from 'src/components/Calendar'
-
+import UserRequests from 'src/components/UserRequests'
 export const beforeQuery = ({ userId }) => ({
   variables: { userId },
 })
 
 export const QUERY = gql`
-  query LeavesQuery($userId: Int!) {
+  query UserRequestsQuery($userId: Int!) {
     user: user(id: $userId) {
       department {
         id
@@ -34,21 +33,7 @@ export const QUERY = gql`
           firstName
           lastName
         }
-        leaveType {
-          id
-          name
-          useAllowance
-          color
-          limit
-        }
       }
-    }
-    leaveTypes: leaveTypes {
-      id
-      name
-      limit
-      useAllowance
-      color
     }
   }
 `
@@ -63,15 +48,14 @@ const ALTER_REQUEST_MUTATION = gql`
 
 export const Loading = () => <div>Loading...</div>
 
-//  export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Empty</div>
 
 export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ user, leaveTypes }) => {
-  const { allowanceAdjustment, allLeaves } = user
-
+export const Success = ({ user }) => {
+  const { allLeaves } = user
   const [alternateRequest] = useMutation(ALTER_REQUEST_MUTATION, {
     onCompleted: () => {
       toast.success('Revoke request sent for approval')
@@ -116,16 +100,13 @@ export const Success = ({ user, leaveTypes }) => {
   const processedLeaves = allLeaves.filter((leave) => leave.status !== 3)
 
   return (
-    <>
+    <div>
       <Toaster />
-      <Calendar
-        leavesByCurrentUser={processedLeaves}
-        department={user.department}
-        allowanceAdjustment={allowanceAdjustment}
-        leaveTypes={leaveTypes}
-        onRevoke={onRevokeRequest}
+      <UserRequests
+        leaves={processedLeaves}
         onCancel={onCancelRequest}
+        onRevoke={onRevokeRequest}
       />
-    </>
+    </div>
   )
 }

@@ -13,14 +13,9 @@ const Absences = ({
   submitAllowanceAdjustment,
 }) => {
   const calculateDaysTaken = () => {
-    let total = 0
-    for (let i = 0; i < leaves.length; i++) {
-      const diffTime = Math.abs(
-        new Date(leaves[i].dateEnd) - new Date(leaves[i].dateStart)
-      )
-      total += parseInt(Math.ceil(diffTime / (1000 * 60 * 60 * 24)))
-    }
-    return total
+    return leaves
+      .filter((leave) => leave.leaveType?.useAllowance === true)
+      .reduce((acc, leave) => acc + leave.deductedDays, 0)
   }
 
   const returnZeroIfValueIsNull = (val) => {
@@ -104,20 +99,13 @@ const Absences = ({
                       <dd>
                         <em>{leaveType.name}</em>{' '}
                         <span className="pull-right">
-                          {leaves.reduce(
-                            (acc, obj) =>
-                              acc +
-                              parseInt(
-                                Math.ceil(
-                                  Math.abs(
-                                    new Date(obj.dateEnd) -
-                                      new Date(obj.dateStart)
-                                  ) /
-                                    (1000 * 60 * 60 * 24)
-                                )
-                              ),
-                            0
-                          )}
+                          {leaves
+                            .filter(
+                              (o) =>
+                                (o.status === 2 || o.status === 4) &&
+                                o.leaveType?.name === leaveType.name
+                            )
+                            .reduce((acc, obj) => acc + obj.deductedDays, 0)}
                         </span>
                       </dd>
                     </React.Fragment>

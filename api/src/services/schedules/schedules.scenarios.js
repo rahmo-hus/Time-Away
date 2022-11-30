@@ -2,14 +2,24 @@ export const standard = defineScenario({
   schedule: {
     one: {
       data: {
-        company: { create: {} },
-        user: { create: { hashedPassword: 'String', salt: 'String' } },
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
       },
     },
     two: {
       data: {
-        company: { create: {} },
-        user: { create: { hashedPassword: 'String', salt: 'String' } },
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
       },
     },
   },

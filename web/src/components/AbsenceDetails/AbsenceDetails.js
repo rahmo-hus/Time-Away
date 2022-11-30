@@ -52,14 +52,19 @@ const AbsenceDetails = ({
   const calculateDaysTaken = () => {
     let total = 0
     for (let i = 0; i < leaves.length; i++) {
-      total += leaves[i].deductedDays
+      total +=
+        leaves[i].leaveType?.useAllowance === true ? leaves[i].deductedDays : 0
     }
     return total
   }
 
   const calculateDaysTakenForLeaveTypeName = (name) => {
     return leaves
-      .filter((leave) => leave.status === 2 && leave?.leaveType.name === name)
+      .filter(
+        (leave) =>
+          (leave.status === 2 || leave.status === 4) &&
+          leave?.leaveType.name === name
+      )
       .reduce((accumulator, leave) => accumulator + leave.deductedDays, 0)
   }
 
@@ -165,8 +170,9 @@ const AbsenceDetails = ({
         if (
           date >= new Date(leaves[i].dateStart.split('T')[0]) &&
           date <= new Date(leaves[i].dateEnd.split('T')[0])
-        )
+        ) {
           return leaves[i]
+        }
       }
     }
     return null
@@ -201,7 +207,7 @@ const AbsenceDetails = ({
                     <em> {leaveType.name}</em>
                     <span className="pull-right">
                       {calculateDaysTakenForLeaveTypeName(leaveType.name)} out
-                      of {calculateTotalAvailableAllowance()}
+                      of {leaveType.limit}
                     </span>
                   </dd>
                 </React.Fragment>

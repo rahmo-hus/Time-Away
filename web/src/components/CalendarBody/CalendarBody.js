@@ -7,10 +7,10 @@ const CalendarBody = ({ data }) => {
           (data.day ? data.day : '') +
           (data.weekend ? ' weekend_cell' : '') +
           (data.leave?.status === 2 && !data.weekend
-            ? ' leave_cell leave_type_color_1'
+            ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
             : '') +
           (data.leave?.status === 4 && !data.weekend
-            ? ' leave_cell leave_type_color_4'
+            ? ' leave_cell leave_type_color_6'
             : '') +
           (data.leave?.status === 1 && !data.weekend
             ? ' leave_cell_pended'
@@ -41,10 +41,10 @@ const CalendarBody = ({ data }) => {
           (data.day ? data.day : '') +
           (data.weekend ? ' weekend_cell' : '') +
           (data.leave?.status === 2 && !data.weekend
-            ? ' leave_cell leave_type_color_1'
+            ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
             : '') +
           (data.leave?.status === 4 && !data.weekend
-            ? ' leave_cell leave_type_color_4'
+            ? ' leave_cell leave_type_color_6'
             : '') +
           (data.leave?.status === 1 && !data.weekend
             ? ' leave_cell_pended'
