@@ -46,7 +46,11 @@ export const handler = async (event, context) => {
     // by the `logIn()` function from `useAuth()` in the form of:
     // `{ message: 'Error message' }`
     handler: (user) => {
-      return user
+      if (user.isActivated) return user
+      else
+        throw Error(
+          'Your account is not active. Please contact system administrator'
+        )
     },
 
     errors: {
@@ -103,7 +107,6 @@ export const handler = async (event, context) => {
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
     handler: async ({ username, hashedPassword, salt, userAttributes }) => {
-
       const user = await db.user.create({
         data: {
           email: username,
@@ -117,13 +120,13 @@ export const handler = async (event, context) => {
           isActivated: userAttributes.isActivated,
           isAutoApprove: userAttributes.isAutoApprove,
           companyId: userAttributes.companyId,
-          roles: userAttributes.roles
+          roles: userAttributes.roles,
           // name: userAttributes.name
         },
-      });
+      })
 
-      return user.id;
-     // return "Company registered successfully";
+      return user.id
+      // return "Company registered successfully";
     },
 
     // Include any format checks for password here. Return `true` if the
