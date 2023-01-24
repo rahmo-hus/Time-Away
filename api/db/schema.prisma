@@ -17,15 +17,12 @@ model Company {
   startOfNewYear     Int?
   shareAllAbsences   Boolean      @default(true)
   isTeamViewHidden   Boolean      @default(true)
-  ldapAuthEnabled    Boolean?
-  ldapAuthConfig     String?
-  dateFormat         String?
   companyWideMessage String?
-  mode               Int?
   timezone           String?
   carryOver          Int          @default(1000)
   createdAt          DateTime?    @default(now())
   updatedAt          DateTime?
+  verified           Boolean      @default(false)
   Department         Department[]
   User               User[]
   Holiday            Holiday[]
@@ -40,7 +37,6 @@ model Department {
   name                  String?
   allowance             Int?
   includePublicHolidays Boolean?
-  isAccruedAllowance    Boolean?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime?
   companyId             Int?
@@ -59,23 +55,32 @@ model User {
   isAutoApprove           Boolean                   @default(false)
   startDate               DateTime?
   updatedAt               DateTime?
-  companyId               Int
+  companyId               Int?
   departmentId            Int?
   hashedPassword          String
   salt                    String
-  roles                   String                    @default("employee")
+  roles                   String
   resetToken              String?
   resetTokenExpiresAt     DateTime?
-  company                 Company                   @relation(fields: [companyId], references: [id])
+  company                 Company?                  @relation(fields: [companyId], references: [id])
   department              Department?               @relation(fields: [departmentId], references: [id])
   DepartmentSupervisor    DepartmentSupervisor[]
   LeavesRequested         Leave[]                   @relation("requester")
   LeavesToApprove         Leave[]                   @relation("approver")
-  Feed                    Feed[]
   Comment                 Comment[]
   Schedule                Schedule[]
   UserAllowanceAdjustment UserAllowanceAdjustment[]
   Notification            Notification[]
+  audits                  Audit[]
+}
+
+model Audit {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  log       String
 }
 
 model Holiday {
@@ -94,7 +99,6 @@ model LeaveType {
   color        String?
   useAllowance Boolean?
   limit        Int?
-  sortOrder    Int?
   autoApprove  Boolean?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime?
@@ -133,27 +137,14 @@ model Leave {
   leaveType       LeaveType @relation(fields: [leaveTypeId], references: [id])
 }
 
-model Feed {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  token     String?
-  type      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-}
-
 model Comment {
-  id         Int       @id @default(autoincrement())
-  entityType String?
-  entityId   String?
-  comment    String?
-  at         DateTime?
-  companyId  Int
-  byUserId   Int
-  company    Company   @relation(fields: [companyId], references: [id])
-  user       User      @relation(fields: [byUserId], references: [id])
+  id        Int       @id @default(autoincrement())
+  comment   String?
+  at        DateTime?
+  companyId Int
+  byUserId  Int
+  company   Company   @relation(fields: [companyId], references: [id])
+  user      User      @relation(fields: [byUserId], references: [id])
 }
 
 model Schedule {
