@@ -68,14 +68,6 @@ const AddDepartment = ({ users, loading, addDepartment }) => {
           </div>
 
           <div className="form-group">
-            <CheckboxField name="isAccruedAllowance" />
-            &nbsp;
-            <Label name="isAccruedAllowance" className="control-label">
-              Accrued Allowance?
-            </Label>
-          </div>
-
-          <div className="form-group">
             <Label name="Department supervisor" className="control-label">
               Supervisor
             </Label>

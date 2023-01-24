@@ -1,8 +1,4 @@
 const AllowanceBreakdown = ({ allowanceDetails }) => {
-  const getAccruedAdjustment = () => {
-    return 0
-  }
-
   const returnZeroIfValueIsNull = (val) => {
     return val ? val : 0
   }
@@ -35,15 +31,6 @@ const AllowanceBreakdown = ({ allowanceDetails }) => {
             {allowanceDetails.daysTaken}
           </span>
         </dd>
-
-        {allowanceDetails.isAccruedAllowance ? (
-          <dd>
-            <em>Locked so far</em>
-            <span className="pull-right">{getAccruedAdjustment()}</span>
-          </dd>
-        ) : (
-          <></>
-        )}
       </dl>
     </div>
   )

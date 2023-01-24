@@ -41,21 +41,30 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
-    email: String
-    password: String
-    firstName: String
-    lastName: String
-    isActivated: Boolean
-    roles: String
-    isAdmin: Boolean
-    isAutoApprove: Boolean
-    startDate: DateTime
-    departmentId: Int
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    isActivated: Boolean!
+    roles: String!
+    isAdmin: Boolean!
+    isAutoApprove: Boolean!
+    startDate: DateTime!
+    departmentId: Int!
+  }
+
+  input EmailUserInput {
+    email: String!
+    firstName: String!
+    lastName: String!
+    companyWideMessage: String
+    name: String
   }
 
   type Mutation {
     createUser(input: CreateUserInput!): User! @requireAuth
     updateUser(id: Int!, input: UpdateUserInput!): User! @requireAuth
     deleteUser(id: Int!): User! @requireAuth
+    emailUser(id: Int!, input: EmailUserInput): User! @skipAuth
   }
 `

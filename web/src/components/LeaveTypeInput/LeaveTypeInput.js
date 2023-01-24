@@ -26,7 +26,7 @@ const LeaveType = ({ leaveType, index, setLeaveTypes, leaveTypes }) => {
 
   return (
     <div className="row" key={localLeaveType.id}>
-      <div className="col-md-6">
+      <div className="col-md-6" style={{ marginBottom: 20 }}>
         <div className="input-group">
           <span className="input-group-addon">
             <RadioField name="first_record"></RadioField>
@@ -125,11 +125,13 @@ const LeaveType = ({ leaveType, index, setLeaveTypes, leaveTypes }) => {
           <Label
             name={'useAllowance' + localLeaveType.id}
             className="control-label"
+            style={{ marginBottom: 0, marginTop: -6 }}
           >
             Use allowance
             <CheckboxField
               name={'useAllowance' + localLeaveType.id}
               defaultChecked={localLeaveType.useAllowance}
+              style={{ marginLeft: 10 }}
               onChange={(e) => {
                 localLeaveType.useAllowance = e.target.value === 'on'
                 setLocalLeaveType({ ...localLeaveType })
@@ -143,6 +145,7 @@ const LeaveType = ({ leaveType, index, setLeaveTypes, leaveTypes }) => {
             Auto approve
             <CheckboxField
               name={'autoApprove' + index}
+              style={{ marginLeft: 16 }}
               defaultChecked={localLeaveType.autoApprove}
               onChange={(e) => {
                 localLeaveType.autoApprove = e.target.value === 'on'
@@ -190,7 +193,7 @@ const LeaveTypeInput = ({ leaveTypes, onLeaveChange }) => {
   const [newLeaveTypes, setNewLeaveTypes] = useState([])
 
   useEffect(() => {
-    if (leaveTypes) {
+    if (leaveTypes && localLeaveTypes.length === 0) {
       leaveTypes.map((element) => {
         const { __typename, ...other } = element
         localLeaveTypes.push({ ...other })

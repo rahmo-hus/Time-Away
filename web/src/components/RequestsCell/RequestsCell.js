@@ -56,7 +56,7 @@ const SEND_NOTIFICATION_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => (
   <div className="col-md-12 text-muted">
@@ -79,9 +79,6 @@ export const Success = ({ requests }) => {
     dateStart,
     dateEnd
   ) => {
-    console.log(previousStatus)
-    console.log(currentStatus)
-
     const revoke = previousStatus === 4 && currentStatus === 3 ? 'revoke ' : ''
     const approval =
       (previousStatus === 4 && currentStatus === 3) ||

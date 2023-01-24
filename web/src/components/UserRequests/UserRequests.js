@@ -52,7 +52,9 @@ const UserRequests = ({ leaves, onRevoke, onCancel }) => {
                         leave?.approver.lastName}
                     </td>
                     <td>
-                      {leave.status === 2 ? (
+                      {leave.status === 2 &&
+                      new Date(leave.dateStart).getTime() >=
+                        new Date().getTime() ? (
                         <button
                           onClick={() => onRevoke({ id: leave.id })}
                           className="pull-right btn btn-default btn-xs revoke-btn single-click"

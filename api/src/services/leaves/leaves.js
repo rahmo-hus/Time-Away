@@ -10,11 +10,11 @@ function multipleDateRangeOverlaps(data, requestedDates) {
         data[i].dateStart <= requestedDates.dateEnd &&
         requestedDates.dateStart <= data[i].dateEnd
       ) {
-        return true
+        return data[i]
       }
     }
   }
-  return false
+  return null
 }
 
 export const leaves = () => {
@@ -43,14 +43,17 @@ export const createLeave = async ({ input }) => {
     )
   }
 
-  if (
-    multipleDateRangeOverlaps(leaves, {
-      dateStart: input.dateStart,
-      dateEnd: input.dateEnd,
-    })
-  ) {
+  const overlappingLeave = multipleDateRangeOverlaps(leaves, {
+    dateStart: input.dateStart,
+    dateEnd: input.dateEnd,
+  })
+  if (overlappingLeave) {
     throw new RedwoodGraphQLError(
-      'Unable to add absence - overlapping dates exist'
+      'Absence from ' +
+        new Date(overlappingLeave.dateStart).toISOString().split('T')[0] +
+        ' to ' +
+        new Date(overlappingLeave.dateEnd).toISOString().split('T')[0] +
+        ' is present'
     )
   }
 

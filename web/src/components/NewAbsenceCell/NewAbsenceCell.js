@@ -7,11 +7,13 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 import NewAbsence from 'src/components/NewAbsence'
 
 export const QUERY = gql`
-  query UsersQuery($userId: Int!) {
-    users {
-      id
-      firstName
-      lastName
+  query UsersQuery($userId: Int!, $companyId: Int!) {
+    company: company(id: $companyId) {
+      employees {
+        id
+        firstName
+        lastName
+      }
     }
     leaveTypes {
       id
@@ -35,7 +37,7 @@ const CREATE_APPROVED_LEAVE = gql`
     }
   }
 `
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => <div>Empty</div>
 
@@ -43,7 +45,8 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ users, leaveTypes, user }) => {
+export const Success = ({ company, leaveTypes, user }) => {
+  const { employees } = company
   const { hasRole } = useAuth()
   const [submissionSuccess, setSubmissionSuccess] = useState(false)
 
@@ -84,7 +87,7 @@ export const Success = ({ users, leaveTypes, user }) => {
     <>
       <Toaster />
       <NewAbsence
-        users={users}
+        users={employees}
         leaveTypes={leaveTypes}
         loading={loading}
         onSubmit={onSubmit}

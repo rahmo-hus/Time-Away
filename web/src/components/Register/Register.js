@@ -11,7 +11,7 @@ import {
   useForm,
 } from '@redwoodjs/forms'
 
-const Register = ({ onSubmit, loading }) => {
+const Register = ({ onSubmit, loading, countries }) => {
   const [passwordValue, setPassword] = useState('')
   const formMethods = useForm()
 
@@ -25,7 +25,7 @@ const Register = ({ onSubmit, loading }) => {
         style={{ display: 'flex', justifyContent: 'center' }}
       >
         <div className="lead">
-          Register new company account and supervisor user
+          Create request for new company account and manager
         </div>
       </div>
       <hr></hr>
@@ -213,7 +213,11 @@ const Register = ({ onSubmit, loading }) => {
                   errorClassName="form-control error"
                   className="form-control"
                 >
-                  <option>Bosnia and Herzegovina</option>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
                 </SelectField>
                 <FieldError name="country" className="error" />
               </div>

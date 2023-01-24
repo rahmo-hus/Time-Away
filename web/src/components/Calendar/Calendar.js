@@ -8,6 +8,7 @@ const Calendar = ({
   department,
   allowanceAdjustment,
   leaveTypes,
+  holidays,
   onRevoke,
   onCancel,
 }) => {
@@ -42,8 +43,8 @@ const Calendar = ({
         <div className="row">
           <div className="lead">
             {' '}
-            {currentUser.firstName} {currentUser.lastName} calendar for{' '}
-            {new Date().getFullYear()}
+            {currentUser.firstName} {currentUser.lastName}
+            {"'"}s calendar for {new Date().getFullYear()}
           </div>
           <div className="col-md-6"></div>
         </div>
@@ -74,6 +75,7 @@ const Calendar = ({
         </div>
         <AbsenceDetails
           allowanceAdjustment={allowanceAdjustment}
+          holidays={holidays}
           leaveTypes={leaveTypes}
           department={department}
           leaves={leavesByCurrentUser}

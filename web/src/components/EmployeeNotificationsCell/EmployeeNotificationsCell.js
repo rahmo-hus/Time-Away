@@ -1,5 +1,7 @@
+import { useState } from 'react'
+
 import { useMutation } from '@redwoodjs/web'
-import { Toaster, toast } from '@redwoodjs/web/toast'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import EmployeeNotifications from 'src/components/EmployeeNotifications'
 
@@ -36,7 +38,7 @@ const DELETE_NOTIFICATION_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => <div>Empty</div>
 
@@ -46,23 +48,38 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ user }) => {
   const { notifications } = user
+  const [localNotifications, setLocalNotifications] = useState([
+    ...notifications,
+  ])
+
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION_MUTATION, {
-    onCompleted: () => {
-      window.location.reload()
-    },
+    onCompleted: () => {},
     onError: () => {
       toast.error('Something went wrong')
     },
   })
 
   const [deleteNotification] = useMutation(DELETE_NOTIFICATION_MUTATION, {
-    onCompleted: () => {
-      window.location.reload()
-    },
+    onCompleted: () => {},
     onError: () => {
       toast.error('Something went wrong')
     },
   })
+
+  const updateLocalNotification = (id, seen) => {
+    const index = localNotifications.map((n) => n.id).indexOf(id)
+    var temp = [...localNotifications]
+    let requiredNotification = { ...temp[index] }
+    requiredNotification.seen = seen
+    temp[index] = requiredNotification
+    setLocalNotifications(temp)
+  }
+
+  const removeLocalNotification = (id) => {
+    const index = localNotifications.map((holiday) => holiday.id).indexOf(id)
+    localNotifications.splice(index, 1)
+    setLocalNotifications([...localNotifications])
+  }
 
   const onUpdate = (input) => {
     updateNotification({
@@ -74,6 +91,7 @@ export const Success = ({ user }) => {
         },
       },
     })
+    updateLocalNotification(input.id, input.seen)
   }
 
   const onDelete = (input) => {
@@ -82,6 +100,7 @@ export const Success = ({ user }) => {
         id: input.id,
       },
     })
+    removeLocalNotification(input.id)
   }
 
   return (
@@ -90,7 +109,7 @@ export const Success = ({ user }) => {
       <EmployeeNotifications
         onUpdate={onUpdate}
         onDelete={onDelete}
-        notifications={notifications
+        notifications={localNotifications
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
       />

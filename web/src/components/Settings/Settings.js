@@ -11,7 +11,9 @@ import {
   SelectField,
   CheckboxField,
   Submit,
+  NumberField,
 } from '@redwoodjs/forms'
+import { Link, routes } from '@redwoodjs/router'
 
 import LeaveTypeInput from 'src/components/LeaveTypeInput'
 
@@ -49,14 +51,6 @@ const Settings = ({
     }
   }, [schedule])
 
-  const getOptions = () => {
-    const options = []
-    for (let i = 0; i < 20; i++) {
-      options.push(i + 1)
-    }
-    return options
-  }
-
   const onCompanyUpdate = (input) => {
     updateCompanyDetails({
       countryId: parseInt(input.country),
@@ -73,9 +67,9 @@ const Settings = ({
 
   return (
     <div>
-      <h1>General settings</h1>
+      <h1 className="text-center">General settings</h1>
 
-      <p className="lead">Account main settings</p>
+      <p className="lead text-center">Account main settings</p>
 
       <div className="row">&nbsp;</div>
 
@@ -128,24 +122,16 @@ const Settings = ({
                         Carried over days
                       </Label>
                       <div className="col-md-8">
-                        <SelectField
-                          defaultValue={company.carryOver}
-                          className="form-control"
+                        <NumberField
                           name="carryOver"
-                        >
-                          {getOptions().map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                          <option key={1000} value={1000}>
-                            All
-                          </option>
-                        </SelectField>
+                          className="form-control"
+                          min="0"
+                          max="20"
+                        ></NumberField>
                         <p>
                           <em>
-                            Number of days in employee allowance that are
-                            carried over to the next year.
+                            Maximum number of days in employee allowance that
+                            are carried over to the next year.
                           </em>
                         </p>
                       </div>
@@ -156,6 +142,7 @@ const Settings = ({
                           <Label name="shareAllAbsences">
                             <CheckboxField
                               defaultChecked={company.shareAllAbsences}
+                              style={{ marginTop: 0 }}
                               name="shareAllAbsences"
                             ></CheckboxField>
                             Share all absences
@@ -164,26 +151,6 @@ const Settings = ({
                             <em>
                               If enabled all employees can see information about
                               everybodys absences regardless departments.
-                            </em>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <div className="col-md-offset-4 col-md-8">
-                        <div className="checkbox">
-                          <Label name="isTeamViewHidden">
-                            <CheckboxField
-                              defaultChecked={company.isTeamViewHidden}
-                              name="isTeamViewHidden"
-                            ></CheckboxField>
-                            Is team hidden
-                          </Label>
-                          <p>
-                            <em>
-                              If marked Team view page is shown only to admin
-                              users.
                             </em>
                           </p>
                         </div>
@@ -201,35 +168,6 @@ const Settings = ({
                 </div>
 
                 <div className="col-md-offset-1 col-md-5">
-                  <Form className="form-horizontal">
-                    <div className="form-group">
-                      <Label name="backup" className="col-md-7 control-label">
-                        Backup leave data in .csv format
-                      </Label>
-                    </div>
-                    <div className="form-group">
-                      <div className="col-md-offset-2">
-                        <em>
-                          Download the full list of employees with all their
-                          leave requests. The file is in <strong>.CSV</strong>{' '}
-                          format which is compatible with MS Excel.
-                        </em>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="col-md-offset-2 col-md-11">
-                        <a
-                          className="btn btn-success pull-right"
-                          href="/settings/company/backup/"
-                        >
-                          <i className="fa fa-download"></i> Download backup
-                        </a>
-                      </div>
-                    </div>
-                  </Form>
-
-                  <hr></hr>
-
                   <Form
                     onSubmit={onOverrideSchedule}
                     className="form-horizontal"
@@ -439,12 +377,12 @@ const Settings = ({
 
         <div className="col-md-5 setting-general-2nd-column">
           <div className="panel panel-default">
-            <div className="panel-heading">Bank Holidays</div>
+            <div className="panel-heading">Public Holidays</div>
             <div className="panel-body">
               <div className="row">
                 <div className="col-md-12 tst-no-bank-holidays">
-                  Bank holidays could be found{' '}
-                  <a href="/settings/bankholidays/">here</a>
+                  Public holidays could be found{' '}
+                  <Link to={routes.bankHolidays()}>here</Link>
                 </div>
               </div>
             </div>
@@ -475,14 +413,6 @@ const Settings = ({
                       </p>
                       <p>
                         <em> This is action cannot be reverted.</em>
-                      </p>
-                      <p>
-                        <em>
-                          {' '}
-                          It is strongly recommended to{' '}
-                          <a href="/settings/company/backup/">download</a>{' '}
-                          employees leave data first.
-                        </em>
                       </p>
                     </div>
                     <div className="col-md-6">

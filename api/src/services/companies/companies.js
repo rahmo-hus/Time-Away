@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 
 export const companies = () => {
-  return db.findMany()
+  return db.company.findMany()
 }
 
 export const company = ({ id }) => {
@@ -17,6 +17,19 @@ export const createCompany = ({ input }) => {
 }
 
 export const updateCompany = ({ id, input }) => {
+  return db.company.update({
+    data: input,
+    where: { id },
+  })
+}
+
+export const verifyCompany = async ({ id, input }) => {
+  await db.user.updateMany({
+    data: {
+      isActivated: input.verified,
+    },
+    where: { companyId: id },
+  })
   return db.company.update({
     data: input,
     where: { id },
@@ -40,11 +53,38 @@ export const Company = {
       },
     })
   },
+  departments: (_obj, { root }) => {
+    return db.department.findMany({ where: { companyId: root?.id } })
+  },
+  country: (_obj, { root }) => {
+    return db.country.findUnique({
+      where: {
+        id: root?.countryId,
+      },
+    })
+  },
   schedule: (_obj, { root }) => {
     return db.schedule.findUnique({
       where: {
         companyId: root?.id,
       },
     })
+  },
+  holidays: (_obj, { root }) => {
+    return db.holiday.findMany({
+      where: { id: root?.companyId },
+    })
+  },
+  manager: async (_obj, { root }) => {
+    const users = await db.user.findMany({
+      where: {
+        companyId: root?.id,
+        isAdmin: true,
+      },
+    })
+    if (users) {
+      return users[0]
+    }
+    return null
   },
 }

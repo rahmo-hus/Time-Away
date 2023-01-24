@@ -139,22 +139,8 @@ const EditDepartment = ({
             />
             <span className="help-block">
               Determine if employees from {department.name} have{' '}
-              <button className="link" />
-              bank holidays in addition to their allowance
-            </span>
-          </div>
-
-          <div className="form-group">
-            <Label name="isAccrued" className="control-label">
-              Is accrued allowance &nbsp;
-            </Label>
-            <CheckboxField name="isAccrued" />
-            <span className="help-block">
-              If enabled, holiday allowance starts to build up - or accrue -
-              from the first day of employment. It accrues in proportion to the
-              annual entitlement. E.g. an employee in the ninth month of
-              employment would have built up 9/12ths (or three-quarters) of
-              annual entitlement.
+              <Link to={routes.bankHolidays()}>bank holidays</Link> in addition
+              to their allowance
             </span>
           </div>
         </div>
@@ -167,12 +153,6 @@ const EditDepartment = ({
             >
               Save changes to department
             </Submit>
-            <a
-              className="btn btn-link pull-right"
-              href="/settings/departments/"
-            >
-              Cancel
-            </a>
           </div>
         </div>
       </Form>

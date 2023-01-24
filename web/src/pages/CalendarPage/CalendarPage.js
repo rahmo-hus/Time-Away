@@ -9,7 +9,7 @@ const CalendarPage = () => {
   return (
     <>
       <MetaTags title="Calendar" description="Calendar page" />
-      <CalendarCell userId={currentUser.id} />
+      <CalendarCell userId={currentUser.id} companyId={currentUser.companyId} />
     </>
   )
 }

@@ -15,7 +15,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div></div>
 
 const Empty = () => (
   <li className="dropdown" id="header-notification-dropdown">

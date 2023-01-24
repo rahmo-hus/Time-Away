@@ -9,6 +9,9 @@ const CalendarBody = ({ data }) => {
           (data.leave?.status === 2 && !data.weekend
             ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
             : '') +
+          (data.leave?.status === 0 && !data.weekend
+            ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
+            : '') +
           (data.leave?.status === 4 && !data.weekend
             ? ' leave_cell leave_type_color_6'
             : '') +
@@ -20,7 +23,9 @@ const CalendarBody = ({ data }) => {
         {data.leave ? (
           <span
             data-tooltip={
-              data.leave?.status === 1
+              data.leave?.status === 0
+                ? 'Company holiday: ' + data.leave?.leaveType?.name
+                : data.leave?.status === 1
                 ? 'Pending approval: ' + data.leave?.leaveType?.name
                 : data.leave?.status === 2
                 ? 'Approved absence: ' + data.leave?.leaveType?.name
@@ -41,6 +46,9 @@ const CalendarBody = ({ data }) => {
           (data.day ? data.day : '') +
           (data.weekend ? ' weekend_cell' : '') +
           (data.leave?.status === 2 && !data.weekend
+            ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
+            : '') +
+          (data.leave?.status === 0 && !data.weekend
             ? ' leave_cell leave_type_color_' + data.leave?.leaveType?.color
             : '') +
           (data.leave?.status === 4 && !data.weekend

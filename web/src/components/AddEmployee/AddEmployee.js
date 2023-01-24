@@ -13,7 +13,6 @@ import {
   Submit,
   CheckboxField,
 } from '@redwoodjs/forms'
-import { routes, Link } from '@redwoodjs/router'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const AddEmployee = ({ data }) => {
@@ -65,20 +64,7 @@ const AddEmployee = ({ data }) => {
 
       {/* {{> show_flash_messages }} */}
 
-      <div className="row">
-        <div className="col-md-6">
-          <ol className="breadcrumb">
-            <li>
-              <Link to={routes.viewEmployees()}>All Employees</Link>
-            </li>
-            <li className="active">Add new employee</li>
-          </ol>
-        </div>
-      </div>
-
-      <div className="row main-row_header">
-        <p className="col-md-12 text-center">Details of new employee</p>
-      </div>
+      <hr></hr>
       <Toaster />
 
       <div className="row">
@@ -178,18 +164,9 @@ const AddEmployee = ({ data }) => {
 
             <div className="form-group">
               <div className="col-md-3 col-md-offset-3">
-                <Label name="admin" className="_col-md-2 control-label">
-                  <CheckboxField name="admin" />
-                  Is administrator user
-                </Label>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="col-md-3 col-md-offset-3">
                 <Label name="auto_approve" className="control-label">
-                  <CheckboxField name="auto_approve" />
-                  Auto approve leave requests
+                  <CheckboxField name="auto_approve" /> {'  '}Auto approve leave
+                  requests
                 </Label>
               </div>
               <span className="help-block">

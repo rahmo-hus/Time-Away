@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/jsx-no-undef */
-import { useEffect, useState, Fragment } from 'react'
-
-import { useAuth } from '@redwoodjs/auth'
+import { useEffect, useState } from 'react'
 
 import AllowanceBreakdown from 'src/components/AllowanceBreakdown'
 import CalendarBody from 'src/components/CalendarBody'
@@ -11,9 +9,9 @@ const AbsenceDetails = ({
   allowanceAdjustment,
   leaveTypes,
   department,
+  holidays,
   leaves,
 }) => {
-  const { hasRole } = useAuth()
   const [showFullYear, setShowFullYear] = useState(false)
   const [currentYear, setCurrentYear] = useState(new Date())
   const [previousYear, setPreviousYear] = useState(null)
@@ -164,6 +162,23 @@ const AbsenceDetails = ({
   }
 
   const isLeaveCell = (year, month, day) => {
+    if (holidays) {
+      for (let i = 0; i < holidays.length; i++) {
+        if (
+          new Date(holidays[i].date).getFullYear() === year &&
+          new Date(holidays[i].date).getMonth() === month - 1 &&
+          new Date(holidays[i].date).getUTCDate() === parseInt(day)
+        ) {
+          return {
+            status: 0,
+            leaveType: {
+              name: holidays[i].name,
+              color: 7,
+            },
+          }
+        }
+      }
+    }
     if (day) {
       const date = new Date(year, month - 1, parseInt(day), 1, 0, 0, 0)
       for (let i = 0; i < leaves.length; i++) {
@@ -212,9 +227,6 @@ const AbsenceDetails = ({
                   </dd>
                 </React.Fragment>
               ))}
-              {!hasRole('manager') && (
-                <dd className="text-muted">No approved requests so far.</dd>
-              )}
             </dl>
           </div>
 
@@ -230,7 +242,7 @@ const AbsenceDetails = ({
                 </span>
               </dd>
               <dd>
-                <em>Allowance in 2022:</em>
+                <em>Allowance in {new Date().getFullYear()}:</em>
                 <span className="pull-right">
                   {' '}
                   {calculateTotalAvailableAllowance()}

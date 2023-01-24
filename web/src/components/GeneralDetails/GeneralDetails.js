@@ -109,14 +109,23 @@ const GeneralDetails = ({ user, onSubmit }) => {
 
         <div className="form-group">
           <Label name="admin">
-            <CheckboxField name="admin" defaultChecked={user?.isAdmin} />
+            <CheckboxField
+              style={{ marginRight: 7, paddingBottom: -2 }}
+              name="admin"
+              defaultChecked={user?.isAdmin}
+            />
             Is administrator user
           </Label>
         </div>
 
         <div className="form-group">
-          <Label name="auto_approve" className="control-label">
+          <Label
+            name="auto_approve"
+            style={{ marginBottom: 0, marginTop: -7 }}
+            className="control-label"
+          >
             <CheckboxField
+              style={{ marginRight: 5 }}
               name="auto_approve"
               defaultChecked={user?.isAutoApprove}
             />

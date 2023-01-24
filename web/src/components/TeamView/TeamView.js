@@ -10,7 +10,7 @@ import { Link, routes } from '@redwoodjs/router'
 
 import CalendarBody from 'src/components/CalendarBody'
 
-const TeamView = ({ users, departments }) => {
+const TeamView = ({ users, departments, holidays }) => {
   const formatDate = (date) => {
     return date.toISOString().slice(0, 7)
   }
@@ -90,13 +90,31 @@ const TeamView = ({ users, departments }) => {
 
   const isLeaveCell = (date, user) => {
     const { approvedLeaves } = user
-
+    let holiday = null
+    for (let i = 0; i < holidays.length; i++) {
+      if (
+        new Date(holidays[i].date).getFullYear() === date.getFullYear() &&
+        new Date(holidays[i].date).getMonth() === date.getMonth() &&
+        new Date(holidays[i].date).getDate() === date.getDate()
+      ) {
+        holiday = {
+          status: 0,
+          leaveType: {
+            name: holidays[i].name,
+            color: 7,
+          },
+        }
+      }
+    }
     const leaves = approvedLeaves.filter(
       (approvedLeave) =>
         date >= new Date(approvedLeave.dateStart.split('T')[0]) &&
         date <= new Date(approvedLeave.dateEnd.split('T')[0])
     )
-    return leaves.length === 0 ? null : leaves[0]
+
+    if (holiday !== null) {
+      return holiday
+    } else return leaves.length === 0 ? null : leaves[0]
   }
 
   const getDateInGeneralFormat = (selectedMonth, day) => {
@@ -155,14 +173,16 @@ const TeamView = ({ users, departments }) => {
 
   return (
     <div>
-      <div className="row">&nbsp;</div>
-      <h1>Team View</h1>
-      <div className="row">
-        <div className="col-md-6 lead">
-          {currentUser.firstName} {currentUser.lastName}
-          {"'s team "}
+      <h1 className="text-center">Team View</h1>
+      <div className="row flex-center">
+        <div className="row">
+          <div className="lead">
+            {currentUser.firstName} {currentUser.lastName}
+            {"'s team absences "}
+          </div>
         </div>
       </div>
+      <hr></hr>
 
       <nav>
         <div className="row">

@@ -12,16 +12,17 @@ const EmployeeNotifications = ({ notifications, onUpdate, onDelete }) => {
 
   return (
     <div>
-      <h1>
+      <h1 className="flex-center">
         {currentUser.firstName} {currentUser.lastName + "'s"} messages
       </h1>
 
       {/* {{> show_flash_messages}} */}
 
       <div className="row main-row_header">
-        <p className="col-md-12">Notifications</p>
+        <p className="col-md-12 flex-center">Notifications</p>
       </div>
 
+      <hr></hr>
       <div className="row">
         <div className="col-md-12">
           <p className="visible-xs-block">

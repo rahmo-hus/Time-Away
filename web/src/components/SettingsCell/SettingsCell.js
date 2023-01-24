@@ -88,7 +88,7 @@ const ADD_NEW_LEAVE_TYPE_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => <div>Empty</div>
 

@@ -5,20 +5,21 @@ export const schema = gql`
     startOfNewYear: Int!
     shareAllAbsences: Boolean!
     isTeamViewHidden: Boolean!
-    ldapAuthEnabled: Boolean!
-    ldapAuthConfig: String!
     dateFormat: String!
     companyWideMessage: String!
     name: String!
     mode: Int!
+    verified: Boolean!
     timezone: String!
     carryOver: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
     country: Country
     schedule: Schedule
+    holidays: [Holiday]
     departments: [Department]
     employees: [User]
+    manager: User
   }
 
   type Query {
@@ -31,6 +32,10 @@ export const schema = gql`
     name: String
     companyWideMessage: String!
     timezone: String!
+  }
+
+  input VerifyCompanyInput {
+    verified: Boolean
   }
 
   input UpdateCompanyInput {
@@ -47,5 +52,6 @@ export const schema = gql`
     createCompany(input: CreateCompanyInput!): Company! @skipAuth
     updateCompany(id: Int!, input: UpdateCompanyInput!): Company! @requireAuth
     deleteCompany(id: Int!): Company! @requireAuth
+    verifyCompany(id: Int!, input: VerifyCompanyInput!): Company! @requireAuth
   }
 `

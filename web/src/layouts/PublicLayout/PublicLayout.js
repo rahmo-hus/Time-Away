@@ -15,7 +15,7 @@ const PublicLayout = ({ children }) => {
             <nav className="navbar navbar-default">
               <div className="navbar-header">
                 <Link className="navbar-brand" to={routes.login()}>
-                  Absence planner
+                  TimeAway
                 </Link>
               </div>
               {isAuthenticated && (
@@ -68,22 +68,18 @@ const PublicLayout = ({ children }) => {
                             <Link to={routes.departments()}>Departments</Link>
                           </li>
                           <li>
-                            <a href="/settings/bankholidays/">Bank Holidays</a>
+                            <Link to={routes.bankHolidays()}>
+                              Public Holidays
+                            </Link>
                           </li>
                           <li>
                             <Link to={routes.addEmployee()}>Add employees</Link>
-                          </li>
-                          <li role="separator" className="divider"></li>
-                          <li>
-                            <a href="/reports/">Reports</a>
                           </li>
                         </ul>
                       </li>
                     )}
                     <li className="dropdown hidden-xs">
                       <a
-                        id="me_menu"
-                        href="#"
                         className="dropdown-toggle"
                         data-toggle="dropdown"
                         role="button"
@@ -93,7 +89,13 @@ const PublicLayout = ({ children }) => {
                       </a>
                       <ul className="dropdown-menu" role="menu">
                         <li>
-                          <Link to={routes.userRequests()}>Requests</Link>
+                          {hasRole('manager') ? (
+                            <Link to={routes.requestManagement()}>
+                              Leaves Management
+                            </Link>
+                          ) : (
+                            <Link to={routes.userRequests()}>Requests</Link>
+                          )}
                         </li>
                         <li role="separator" className="divider hidden-xs"></li>
                         <li>
@@ -122,6 +124,29 @@ const PublicLayout = ({ children }) => {
           </div>
         </header>
         {children}
+        <div>&nbsp;</div>
+        {/* <footer className="footer custom-footer">
+          <p>
+            <span className="pull-left">
+              © <a href="http://time.away">TimeAway ETFBL</a> 2023
+            </span>
+            <span className="pull-right">
+              <a
+                href="//github.com/rahmo-hus/Absence-planner"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="fa fa-github fa-lg"></i>
+              </a>
+              <a href="//twitter.com" target="_blank" rel="noreferrer">
+                <i className="fa fa-twitter fa-lg"></i>
+              </a>
+              <a href="mailto:huseinagicrahmo@gmail.com">
+                <i className="fa fa-envelope fa-lg"></i>
+              </a>
+            </span>
+          </p>
+        </footer> */}
       </div>
     </>
   )

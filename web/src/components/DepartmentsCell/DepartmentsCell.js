@@ -3,24 +3,27 @@ import { Link, routes } from '@redwoodjs/router'
 import Departments from 'src/components/Departments'
 
 export const QUERY = gql`
-  query FindDepartmentsQuery {
-    departments {
-      id
-      name
-      departmentSupervisor {
-        user {
-          firstName
-          lastName
+  query FindDepartmentsQuery($companyId: Int!) {
+    company: company(id: $companyId) {
+      departments {
+        id
+        name
+        departmentSupervisor {
+          user {
+            id
+            firstName
+            lastName
+          }
         }
+        allowance
+        numberOfEmployees
+        includePublicHolidays
       }
-      allowance
-      numberOfEmployees
-      includePublicHolidays
     }
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => (
   <div>
@@ -42,7 +45,8 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ departments }) => {
+export const Success = ({ company }) => {
+  const { departments } = company
   return (
     <>
       <h1>Departments</h1>

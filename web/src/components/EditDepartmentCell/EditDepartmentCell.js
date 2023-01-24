@@ -45,7 +45,7 @@ const DELETE_DEPARTMENT_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => <div>Empty</div>
 

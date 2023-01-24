@@ -9,7 +9,10 @@ const NewAbsencePage = () => {
   return (
     <>
       <MetaTags title="NewAbsence" description="NewAbsence page" />
-      <NewAbsenceCell userId={currentUser.id} />
+      <NewAbsenceCell
+        userId={currentUser.id}
+        companyId={currentUser.companyId}
+      />
     </>
   )
 }

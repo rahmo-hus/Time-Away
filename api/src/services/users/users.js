@@ -1,4 +1,5 @@
 import { db } from 'src/lib/db'
+import { sendEmail } from 'src/lib/email'
 
 export const users = () => {
   return db.user.findMany()
@@ -35,6 +36,59 @@ export const deleteUser = ({ id }) => {
   return db.user.delete({
     where: { id },
   })
+}
+
+export const emailUser = async ({ id, input }) => {
+  const user = await db.user.findUnique({
+    where: { id },
+  })
+
+  await sendTestEmail(input)
+
+  return user
+}
+
+function sendTestEmail(input) {
+  const subject = 'Company verification'
+  const text = ''
+  const html = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Company Information</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center my-5">Company Information</h1>
+      <p class="text-center ">The following information is subject to verification. Please click the button below to open page for company verification.</p>
+     <table class="table table-bordered">
+    <tr>
+      <th>Company Name</th>
+      <td>${input.name}</td>
+    </tr>
+    <tr>
+      <th>Manager Name</th>
+      <td>${input.firstName} ${input.lastName}</td>
+    </tr>
+    <tr>
+      <th>Manager Email</th>
+      <td>${input.email}</td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td>Bosnia and Herzegovina</td>
+    </tr>
+  </table>
+  <div class="text-center my-3">
+    <a href="#" _target="blank" class="btn btn-success">Verify</a>
+  </div>
+    </div>
+  </body>
+  </html>
+  `
+
+  return sendEmail({ to: 'huseinagicrahmo@gmail.com', subject, text, html })
 }
 
 export const User = {
@@ -78,7 +132,9 @@ export const User = {
     return db.schedule.findUnique({ where: { userId: root?.id } })
   },
   department: (_obj, { root }) => {
-    return db.department.findUnique({ where: { id: root?.departmentId } })
+    return db.department.findFirst({
+      where: { id: root?.departmentId },
+    })
   },
   allowanceAdjustment: (_obj, { root }) => {
     return db.userAllowanceAdjustment.findUnique({

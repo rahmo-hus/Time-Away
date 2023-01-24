@@ -15,15 +15,16 @@ const Requests = ({
 
   return (
     <div>
-      <h1>
-        {currentUser.firstName} {currentUser.lastName} messages
+      <h1 className="flex-center">
+        {currentUser.firstName} {currentUser.lastName} employee requests
       </h1>
 
       {/* {{> show_flash_messages}} */}
 
       <div className="row main-row_header">
-        <p className="col-md-12">Leave request to approve</p>
+        <p className="col-md-12 flex-center">Leave request to approve</p>
       </div>
+      <hr></hr>
 
       <div className="row">
         <div className="col-md-12">

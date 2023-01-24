@@ -13,7 +13,7 @@ const Departments = ({ departments }) => {
                 <th>Name</th>
                 <th>Manager</th>
                 <th>Allowance</th>
-                <th>Number Employees</th>
+                <th>Number of employees</th>
                 <th>
                   Public Holidays
                   <button
@@ -21,12 +21,6 @@ const Departments = ({ departments }) => {
                     className="btn btn-xs btn-link"
                     data-trigger="focus hover"
                   >
-                    <span className="fa fa-question-circle"> </span>
-                  </button>
-                </th>
-                <th>
-                  Accrued Allowance
-                  <button type="button" className="btn btn-xs btn-link">
                     <span className="fa fa-question-circle"> </span>
                   </button>
                 </th>
@@ -43,7 +37,11 @@ const Departments = ({ departments }) => {
                       </Link>
                     </td>
                     <td>
-                      <Link to={routes.editEmployee({ id: 10 })}>
+                      <Link
+                        to={routes.editEmployee({
+                          id: department.departmentSupervisor?.user?.id,
+                        })}
+                      >
                         {department.departmentSupervisor?.user?.firstName}{' '}
                         {department.departmentSupervisor?.user?.lastName}
                       </Link>
@@ -51,7 +49,7 @@ const Departments = ({ departments }) => {
                     <td>{department.allowance}</td>
                     <td>{department.numberOfEmployees}</td>
                     <td>{department.includePublicHolidays ? 'Yes' : 'No'}</td>
-                    <td>No</td>
+
                     <td>
                       <Link
                         to={routes.editDepartment({ id: department.id })}

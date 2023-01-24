@@ -3,12 +3,20 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import Calendar from 'src/components/Calendar'
 
-export const beforeQuery = ({ userId }) => ({
-  variables: { userId },
+export const beforeQuery = ({ userId, companyId }) => ({
+  variables: { userId, companyId },
 })
 
 export const QUERY = gql`
-  query LeavesQuery($userId: Int!) {
+  query LeavesQuery($userId: Int!, $companyId: Int!) {
+    company(id: $companyId) {
+      name
+      holidays {
+        id
+        name
+        date
+      }
+    }
     user: user(id: $userId) {
       department {
         id
@@ -61,7 +69,11 @@ const ALTER_REQUEST_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <div>
+    <div className="loader"></div>
+  </div>
+)
 
 //  export const Empty = () => <div>Empty</div>
 
@@ -69,8 +81,9 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-export const Success = ({ user, leaveTypes }) => {
+export const Success = ({ user, leaveTypes, company }) => {
   const { allowanceAdjustment, allLeaves } = user
+  const { holidays } = company
 
   const [alternateRequest] = useMutation(ALTER_REQUEST_MUTATION, {
     onCompleted: () => {
@@ -121,6 +134,7 @@ export const Success = ({ user, leaveTypes }) => {
       <Calendar
         leavesByCurrentUser={processedLeaves}
         department={user.department}
+        holidays={holidays}
         allowanceAdjustment={allowanceAdjustment}
         leaveTypes={leaveTypes}
         onRevoke={onRevokeRequest}

@@ -10,7 +10,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const LoginPage = () => {
   const formMethods = useForm()
-  const { isAuthenticated, logIn } = useAuth()
+  const { isAuthenticated, logIn, hasRole } = useAuth()
 
   const onSubmit = async (data) => {
     const response = await logIn({
@@ -19,7 +19,9 @@ const LoginPage = () => {
     })
 
     if (response.message) {
-      navigate(routes.calendar())
+      if (hasRole('admin')) {
+        navigate(routes.companyVerification())
+      } else navigate(routes.calendar())
     } else if (response.error) {
       toast.error(response.error)
     }
@@ -27,7 +29,9 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(routes.calendar())
+      if (hasRole('admin')) {
+        navigate(routes.companyVerification())
+      } else navigate(routes.calendar())
     }
   }, [isAuthenticated])
 
@@ -109,7 +113,7 @@ const LoginPage = () => {
               </div>
               <div className="col-md-5">
                 <p className="pull-right">
-                  <a href="/forgot-password/">Forgot password?</a> |{' '}
+                  <a href="/forgot-password/">Forgot password?</a>|{' '}
                   <a href="/register/">Register new company</a>{' '}
                 </p>
               </div>

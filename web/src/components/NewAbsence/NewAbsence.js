@@ -25,7 +25,12 @@ const NewAbsence = ({
   return (
     <div className="container flex-center">
       <Form config={{ mode: 'onBlur' }} onSubmit={onSubmit}>
-        <FormError error={error} wrapperClassName="error" />
+        <FormError
+          style={{ textAlign: 'center' }}
+          error={error}
+          wrapperClassName="error flex-center"
+        />
+
         <h1 style={{ textAlign: 'center' }}>New absence</h1>
         <hr></hr>
         <div className="modal-body">

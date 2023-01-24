@@ -23,6 +23,13 @@ const CREATE_COMPANY = gql`
     }
   }
 `
+const EMAIL_USER_MUTATION = gql`
+  mutation EmailUserMutation($id: Int!, $input: EmailUserInput!) {
+    emailUser(id: $id, input: $input) {
+      id
+    }
+  }
+`
 
 const ADD_DEPARTMENT_SUPERVISOR_MUTATION = gql`
   mutation AddDepartmentSupervisorMutation(
@@ -43,7 +50,7 @@ const ADD_DEPARTMENT_MUTATION = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div className="loader"></div>
 
 export const Empty = () => <div>Empty</div>
 
@@ -61,18 +68,31 @@ export const Success = ({ countries }) => {
   })
 
   const [userData, setUserData] = useState(null)
+  const [userEmailData, setUserEmailData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [deptName, setDeptName] = useState('')
   const [companyId, setCompanyId] = useState(null)
-
+  const [emailUser] = useMutation(EMAIL_USER_MUTATION, {
+    onCompleted: () => {
+      toast.success('Company request created')
+    },
+    onError: () => {
+      toast.error('Unable to create request')
+    },
+  })
   const [createDepartmentSupervisor] = useMutation(
     ADD_DEPARTMENT_SUPERVISOR_MUTATION,
     {
       onCompleted: () => {
-        toast.success('Company created successfully')
+        emailUser({
+          variables: {
+            id: 1,
+            input: userEmailData,
+          },
+        })
       },
       onError: () => {
-        toast.error('Unable to add new company')
+        toast.error('Unable to create request')
       },
     }
   )
@@ -113,7 +133,6 @@ export const Success = ({ countries }) => {
             name: deptName,
             allowance: 20,
             includePublicHolidays: true,
-            isAccruedAllowance: false,
             companyId: data.createCompany.id,
           },
         },
@@ -128,21 +147,27 @@ export const Success = ({ countries }) => {
       password: data.Password,
       firstName: data['First name'],
       lastName: data['Last name'],
-      isActivated: true,
+      isActivated: false,
       isAdmin: true,
       isAutoApprove: true,
       roles: 'manager',
     })
-
     createCompany({
       variables: {
         company: {
           name: data['Company name'],
-          country: data.country,
+          countryId: parseInt(data.country),
           timezone: data.timezone,
           companyWideMessage: data['Company info'],
         },
       },
+    })
+    setUserEmailData({
+      email: data.Email,
+      firstName: data['First name'],
+      lastName: data['Last name'],
+      name: data['Company name'],
+      companyWideMessage: data['Company info'],
     })
   }
 
