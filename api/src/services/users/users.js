@@ -81,7 +81,7 @@ function sendTestEmail(input) {
     </tr>
   </table>
   <div class="text-center my-3">
-    <a href="#" _target="blank" class="btn btn-success">Verify</a>
+    <a href="http://localhost:8910/login" _target="blank" class="btn btn-success">Verify</a>
   </div>
     </div>
   </body>

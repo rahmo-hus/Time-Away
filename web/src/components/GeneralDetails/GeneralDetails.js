@@ -114,7 +114,7 @@ const GeneralDetails = ({ user, onSubmit }) => {
               name="admin"
               defaultChecked={user?.isAdmin}
             />
-            Is administrator user
+            Is manager
           </Label>
         </div>
 

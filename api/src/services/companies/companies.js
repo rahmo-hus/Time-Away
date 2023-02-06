@@ -46,6 +46,14 @@ export const Company = {
   Department: (_obj, { root }) => {
     return db.company.findUnique({ where: { id: root?.id } }).Department()
   },
+  schedule: (_obj, { root }) => {
+    return db.schedule.findFirst({
+      where: {
+        companyId: root?.id,
+        userId: null,
+      },
+    })
+  },
   employees: (_obj, { root }) => {
     return db.user.findMany({
       where: {
@@ -60,13 +68,6 @@ export const Company = {
     return db.country.findUnique({
       where: {
         id: root?.countryId,
-      },
-    })
-  },
-  schedule: (_obj, { root }) => {
-    return db.schedule.findUnique({
-      where: {
-        companyId: root?.id,
       },
     })
   },

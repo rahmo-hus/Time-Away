@@ -69,7 +69,7 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ requests }) => {
-  const [submissionSuccess, setSubmissionSuccess] = useState(0)
+  const [submissionSuccess, setSubmissionSuccess] = useState([])
   const [previousStatus, setPreviousStatus] = useState(0)
 
   const determineDecisionStatus = (
@@ -112,7 +112,9 @@ export const Success = ({ requests }) => {
     APPROVE_REQUEST_MUTATION,
     {
       onCompleted: (data) => {
-        setSubmissionSuccess(data.approveLeave.id)
+        const submissionLocal = submissionSuccess
+        submissionLocal.push(data.approveLeave.id)
+        setSubmissionSuccess(submissionLocal)
         sendNotification({
           variables: {
             input: {

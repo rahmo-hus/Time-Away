@@ -53,6 +53,7 @@ model User {
   isActivated             Boolean                   @default(false)
   isAdmin                 Boolean                   @default(false)
   isAutoApprove           Boolean                   @default(false)
+  isTeamViewHidden        Boolean                   @default(false)
   startDate               DateTime?
   updatedAt               DateTime?
   companyId               Int?

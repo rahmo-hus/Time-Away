@@ -10,7 +10,7 @@ import { Link, routes } from '@redwoodjs/router'
 
 import CalendarBody from 'src/components/CalendarBody'
 
-const TeamView = ({ users, departments, holidays }) => {
+const TeamView = ({ users, departments, holidays, schedule }) => {
   const formatDate = (date) => {
     return date.toISOString().slice(0, 7)
   }
@@ -89,23 +89,26 @@ const TeamView = ({ users, departments, holidays }) => {
   }
 
   const isLeaveCell = (date, user) => {
-    const { approvedLeaves } = user
+    const { approvedLeaves, department } = user
     let holiday = null
-    for (let i = 0; i < holidays.length; i++) {
-      if (
-        new Date(holidays[i].date).getFullYear() === date.getFullYear() &&
-        new Date(holidays[i].date).getMonth() === date.getMonth() &&
-        new Date(holidays[i].date).getDate() === date.getDate()
-      ) {
-        holiday = {
-          status: 0,
-          leaveType: {
-            name: holidays[i].name,
-            color: 7,
-          },
+    if (department.includePublicHolidays) {
+      for (let i = 0; i < holidays.length; i++) {
+        if (
+          new Date(holidays[i].date).getFullYear() === date.getFullYear() &&
+          new Date(holidays[i].date).getMonth() === date.getMonth() &&
+          new Date(holidays[i].date).getDate() === date.getDate()
+        ) {
+          holiday = {
+            status: 0,
+            leaveType: {
+              name: holidays[i].name,
+              color: 7,
+            },
+          }
         }
       }
     }
+
     const leaves = approvedLeaves.filter(
       (approvedLeave) =>
         date >= new Date(approvedLeave.dateStart.split('T')[0]) &&
@@ -122,6 +125,18 @@ const TeamView = ({ users, departments, holidays }) => {
       new Date(selectedMonth).getFullYear(),
       new Date(selectedMonth).getMonth(),
       day
+    )
+  }
+
+  const isWeekend = (day) => {
+    return (
+      (day === 'M' && !schedule.monday) ||
+      (day === 'Tu' && !schedule.tuesday) ||
+      (day === 'W' && !schedule.wednesday) ||
+      (day === 'Th' && !schedule.thursday) ||
+      (day === 'F' && !schedule.friday) ||
+      (day === 'Sa' && !schedule.saturday) ||
+      (day === 'Su' && !schedule.sunday)
     )
   }
 
@@ -147,17 +162,20 @@ const TeamView = ({ users, departments, holidays }) => {
                 <CalendarBody
                   data={{
                     day: day,
-                    weekend:
+                    weekend: isWeekend(
                       weekDays[
                         getDateInGeneralFormat(selectedMonth, day).getDay()
-                      ].match('Sa|Su'),
+                      ]
+                    ),
                     leave: isLeaveCell(
                       new Date(
-                        new Date(selectedMonth).getFullYear() +
-                          '-' +
-                          (new Date(selectedMonth).getMonth() + 1) +
-                          '-' +
-                          day
+                        new Date(selectedMonth).getFullYear(),
+                        new Date(selectedMonth).getMonth(),
+                        parseInt(day),
+                        1,
+                        0,
+                        0,
+                        0
                       ),
                       user
                     ),

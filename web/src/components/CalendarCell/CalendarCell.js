@@ -16,13 +16,22 @@ export const QUERY = gql`
         name
         date
       }
+      schedule {
+        monday
+        tuesday
+        wednesday
+        thursday
+        friday
+        saturday
+        sunday
+      }
     }
     user: user(id: $userId) {
       department {
         id
         name
         allowance
-        isAccruedAllowance
+        includePublicHolidays
       }
       allowanceAdjustment {
         id
@@ -83,7 +92,7 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ user, leaveTypes, company }) => {
   const { allowanceAdjustment, allLeaves } = user
-  const { holidays } = company
+  const { holidays, schedule } = company
 
   const [alternateRequest] = useMutation(ALTER_REQUEST_MUTATION, {
     onCompleted: () => {
@@ -135,6 +144,7 @@ export const Success = ({ user, leaveTypes, company }) => {
         leavesByCurrentUser={processedLeaves}
         department={user.department}
         holidays={holidays}
+        schedule={schedule}
         allowanceAdjustment={allowanceAdjustment}
         leaveTypes={leaveTypes}
         onRevoke={onRevokeRequest}

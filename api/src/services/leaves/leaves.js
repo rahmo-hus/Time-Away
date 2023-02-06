@@ -118,7 +118,14 @@ export const Leave = {
   leaveType: (_obj, { root }) => {
     return db.leave.findUnique({ where: { id: root?.id } }).leaveType()
   },
-  deductedDays: (_obj, { root }) => {
+  deductedDays: async (_obj, { root }) => {
+    const user = await db.user.findUnique({
+      where: { id: root?.requesterId },
+    })
+    const schedule = await db.schedule.findFirst({
+      where: { companyId: user.companyId },
+    })
+
     Date.prototype.workingDaysFrom = function (fromDate) {
       // ensure that the argument is a valid and past date
       if (!fromDate || isNaN(fromDate) || this < fromDate) {
@@ -137,7 +144,18 @@ export const Leave = {
       while (frD < toD) {
         frD.setDate(frD.getDate() + 1)
         var day = frD.getDay()
-        if (day !== 0 && day !== 6) {
+        // if (day !== 0 && day !== 6) { 6 je nedilja, 0 je subota
+        //   numOfWorkingDays++
+        // }
+        if (
+          (day === 1 && schedule.monday) ||
+          (day === 2 && schedule.tuesday) ||
+          (day === 3 && schedule.wednesday) ||
+          (day === 4 && schedule.thursday) ||
+          (day === 5 && schedule.friday) ||
+          (day === 6 && schedule.saturday) ||
+          (day === 0 && schedule.sunday)
+        ) {
           numOfWorkingDays++
         }
       }

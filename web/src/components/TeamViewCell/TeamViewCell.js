@@ -13,6 +13,15 @@ export const QUERY = gql`
           id
           name
         }
+        schedule {
+          monday
+          tuesday
+          wednesday
+          thursday
+          friday
+          saturday
+          sunday
+        }
         employees {
           id
           firstName
@@ -20,6 +29,7 @@ export const QUERY = gql`
           department {
             id
             name
+            includePublicHolidays
           }
           approvedLeaves {
             id
@@ -61,9 +71,11 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ company }) => {
-  const { employees } = company.company
+  const { employees, schedule } = company.company
+
   return (
     <TeamView
+      schedule={schedule}
       users={employees}
       holidays={company?.company?.holidays}
       departments={company?.company?.departments}

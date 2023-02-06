@@ -9,6 +9,7 @@ const Calendar = ({
   allowanceAdjustment,
   leaveTypes,
   holidays,
+  schedule,
   onRevoke,
   onCancel,
 }) => {
@@ -77,6 +78,7 @@ const Calendar = ({
           allowanceAdjustment={allowanceAdjustment}
           holidays={holidays}
           leaveTypes={leaveTypes}
+          schedule={schedule}
           department={department}
           leaves={leavesByCurrentUser}
         />

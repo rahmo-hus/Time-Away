@@ -12,6 +12,7 @@ const EditEmployee = ({
   onSubmit,
   deleteEmployee,
   allowanceAdjustment,
+  schedule,
   leaveTypes,
   leaves,
   loading,
@@ -93,6 +94,7 @@ const EditEmployee = ({
         <Schedule user={user} />
       ) : selectedItem === 2 ? (
         <AbsenceDetails
+          schedule={schedule}
           allowanceAdjustment={allowanceAdjustment}
           leaveTypes={leaveTypes}
           leaves={leaves}

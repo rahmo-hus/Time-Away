@@ -1,4 +1,5 @@
 import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from '@redwoodjs/router'
 
 const Requests = ({
   requests,
@@ -49,10 +50,22 @@ const Requests = ({
                 {requests.map((request) => (
                   <tr key={request.id}>
                     <td>
-                      {request?.requester?.firstName}{' '}
-                      {request?.requester?.lastName}
+                      <Link
+                        to={routes.editEmployee({ id: request.requester?.id })}
+                      >
+                        {request?.requester?.firstName}{' '}
+                        {request?.requester?.lastName}
+                      </Link>
                     </td>
-                    <td>{request.requester?.department?.name}</td>
+                    <td>
+                      <Link
+                        to={routes.editDepartment({
+                          id: request.requester?.department?.id,
+                        })}
+                      >
+                        {request.requester?.department?.name}
+                      </Link>
+                    </td>
                     <td className="date_of_request">
                       {parseDate(request.createdAt)}
                     </td>
@@ -69,7 +82,9 @@ const Requests = ({
                     <td>{request.comment}</td>
                     <td>
                       <button
-                        disabled={loading || submissionSuccess === request.id}
+                        disabled={
+                          loading || submissionSuccess.includes(request.id)
+                        }
                         className="btn btn-warning single-click"
                         onClick={() =>
                           request.status === 1
@@ -88,7 +103,9 @@ const Requests = ({
                     </td>
                     <td>
                       <button
-                        disabled={loading || submissionSuccess === request.id}
+                        disabled={
+                          loading || submissionSuccess.includes(request.id)
+                        }
                         className="btn btn-success single-click"
                         onClick={() =>
                           request.status === 1

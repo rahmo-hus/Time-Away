@@ -42,10 +42,10 @@ export const schema = gql`
 
   input UpdateUserInput {
     email: String!
-    password: String!
+    password: String
     firstName: String!
     lastName: String!
-    isActivated: Boolean!
+    isActivated: Boolean
     roles: String!
     isAdmin: Boolean!
     isAutoApprove: Boolean!

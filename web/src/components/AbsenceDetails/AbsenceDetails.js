@@ -8,6 +8,7 @@ import CalendarBody from 'src/components/CalendarBody'
 const AbsenceDetails = ({
   allowanceAdjustment,
   leaveTypes,
+  schedule,
   department,
   holidays,
   leaves,
@@ -162,7 +163,7 @@ const AbsenceDetails = ({
   }
 
   const isLeaveCell = (year, month, day) => {
-    if (holidays) {
+    if (holidays && department.includePublicHolidays) {
       for (let i = 0; i < holidays.length; i++) {
         if (
           new Date(holidays[i].date).getFullYear() === year &&
@@ -212,7 +213,7 @@ const AbsenceDetails = ({
             />
           </div>
 
-          <div className="col-md-3 secondary-leave-type-statistics hidden-xs">
+          <div className="col-md-4 secondary-leave-type-statistics hidden-xs">
             <dl>
               <dt>Used so far</dt>
               {leaveTypes.map((leaveType) => (
@@ -346,6 +347,7 @@ const AbsenceDetails = ({
                                   data.month,
                                   week.M
                                 ),
+                                weekend: !schedule.monday,
                               }}
                             ></CalendarBody>
                             <CalendarBody
@@ -356,6 +358,7 @@ const AbsenceDetails = ({
                                   data.month,
                                   week.Tu
                                 ),
+                                weekend: !schedule.tuesday,
                               }}
                             ></CalendarBody>
                             <CalendarBody
@@ -366,6 +369,7 @@ const AbsenceDetails = ({
                                   data.month,
                                   week.W
                                 ),
+                                weekend: !schedule.wednesday,
                               }}
                             ></CalendarBody>
                             <CalendarBody
@@ -376,6 +380,7 @@ const AbsenceDetails = ({
                                   data.month,
                                   week.Th
                                 ),
+                                weekend: !schedule.thursday,
                               }}
                             ></CalendarBody>
                             <CalendarBody
@@ -386,13 +391,30 @@ const AbsenceDetails = ({
                                   data.month,
                                   week.F
                                 ),
+                                weekend: !schedule.friday,
                               }}
                             ></CalendarBody>
                             <CalendarBody
-                              data={{ day: week.Sa, weekend: true }}
+                              data={{
+                                day: week.Sa,
+                                leave: isLeaveCell(
+                                  data.year,
+                                  data.month,
+                                  week.Sa
+                                ),
+                                weekend: !schedule.saturday,
+                              }}
                             ></CalendarBody>
                             <CalendarBody
-                              data={{ day: week.Su, weekend: true }}
+                              data={{
+                                day: week.Su,
+                                leave: isLeaveCell(
+                                  data.year,
+                                  data.month,
+                                  week.Su
+                                ),
+                                weekend: !schedule.sunday,
+                              }}
                             ></CalendarBody>
                           </tr>
                         </React.Fragment>

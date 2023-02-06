@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
 import { useAuth } from '@redwoodjs/auth'
 import {
+  CheckboxField,
+  DateField,
   FieldError,
   Form,
   Label,
-  TextField,
-  DateField,
   SelectField,
   Submit,
-  CheckboxField,
+  TextField,
 } from '@redwoodjs/forms'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
@@ -20,12 +20,8 @@ const AddEmployee = ({ data }) => {
   const [passwordValue, setPassword] = useState('')
   const { signUp } = useAuth()
 
-  const [employeeData, setEmployeeData] = useState({})
-
-  useEffect(() => {})
-
   const onSubmit = async (input) => {
-    setEmployeeData({
+    const response = await signUp({
       username: input.Email,
       firstName: input['First name'],
       lastName: input['Last name'],
@@ -38,10 +34,6 @@ const AddEmployee = ({ data }) => {
       departmentId: parseInt(input.Department),
       companyId: data.company.id,
     })
-
-    const response = await signUp(employeeData)
-
-    console.log(response)
 
     if (response.message) {
       toast.success('User created successfully')

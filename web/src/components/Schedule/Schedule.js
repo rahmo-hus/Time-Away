@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 
 import { Label, Form, CheckboxField } from '@redwoodjs/forms'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const Schedule = ({ user }) => {
   const [schedule, setSchedule] = useState({
@@ -22,11 +23,13 @@ const Schedule = ({ user }) => {
 
   const onSubmit = (input) => {
     console.log(input)
+    toast.success('Schedule override success')
   }
 
   return (
     <div>
       <div className="col-md-9">
+        <Toaster />
         <Form onSubmit={onSubmit}>
           <div className="form-group">
             <Label className="control-label">Schedule</Label>

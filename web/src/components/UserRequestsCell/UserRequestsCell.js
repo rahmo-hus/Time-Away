@@ -102,6 +102,15 @@ export const Success = ({ user }) => {
   return (
     <div>
       <Toaster />
+
+      <h1 className="flex-center">Leave requests</h1>
+
+      <div className="row">
+        <div className="col-md-12 lead flex-center">
+          List of all leave requests
+        </div>
+      </div>
+      <hr></hr>
       <UserRequests
         leaves={processedLeaves}
         onCancel={onCancelRequest}

@@ -22,21 +22,21 @@ export const QUERY = gql`
       isAdmin
       startDate
       departmentId
-      schedule {
-        id
-        monday
-        tuesday
-        wednesday
-        thursday
-        friday
-        saturday
-        sunday
-      }
       company {
         id
         departments {
           id
           name
+        }
+        schedule {
+          id
+          monday
+          tuesday
+          wednesday
+          thursday
+          friday
+          saturday
+          sunday
         }
       }
 
@@ -122,7 +122,8 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ user, leaveTypes, id }) => {
-  const { allowanceAdjustment, allLeaves } = user
+  const { allowanceAdjustment, allLeaves, company } = user
+  const { schedule } = company
 
   const [updateUser, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_USER_MUTATION, {
@@ -140,7 +141,7 @@ export const Success = ({ user, leaveTypes, id }) => {
     },
   ] = useMutation(UPDATE_ALLOWANCE_ADJUSTMENT, {
     onCompleted: () => {
-      toast('Allowance adjustment update success')
+      toast.success('Allowance adjustment update success')
     },
   })
 
@@ -152,7 +153,7 @@ export const Success = ({ user, leaveTypes, id }) => {
     },
   ] = useMutation(CREATE_ALLOWANCE_ADJUSTMENT, {
     onCompleted: () => {
-      toast('Allowance adjustment update success')
+      toast.success('Allowance adjustment update success')
     },
   })
 
@@ -189,6 +190,7 @@ export const Success = ({ user, leaveTypes, id }) => {
           firstName: input['First name'],
           lastName: input['Last name'],
           isAdmin: input.admin,
+          isActivated: true,
           startDate: input['Start date'],
           roles: input.admin ? 'manager' : 'employee',
           isAutoApprove: input.auto_approve,
@@ -210,6 +212,7 @@ export const Success = ({ user, leaveTypes, id }) => {
         leaveTypes={leaveTypes}
         allowanceAdjustment={allowanceAdjustment}
         leaves={processedLeaves}
+        schedule={schedule}
         deleteEmployee={deleteEmployee}
         loading={updateLoading}
         error={updateError}

@@ -59,7 +59,7 @@ export const Success = ({ department }) => {
   const [updateDepartment, { loading: updateLoading, error: updateError }] =
     useMutation(UPDATE_DEPARTMENT_MUTATION, {
       onCompleted: () => {
-        toast('Department successfully updated')
+        toast.success('Department successfully updated')
       },
     })
 
@@ -83,7 +83,6 @@ export const Success = ({ department }) => {
           name: input['Department name'],
           allowance: parseInt(input.allowance),
           includePublicHolidays: input.includePublicHolidays,
-          isAccruedAllowance: false,
           companyId: company.id,
         },
       },

@@ -127,6 +127,7 @@ const Settings = ({
                           className="form-control"
                           min="0"
                           max="20"
+                          defaultValue={20}
                         ></NumberField>
                         <p>
                           <em>

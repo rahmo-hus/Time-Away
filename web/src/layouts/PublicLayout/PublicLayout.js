@@ -27,9 +27,11 @@ const PublicLayout = ({ children }) => {
                     <li>
                       <Link to={routes.calendar()}>Calendar</Link>
                     </li>
-                    <li>
-                      <Link to={routes.teamView()}>Team View</Link>
-                    </li>
+                    {!currentUser.isTeamViewHidden && (
+                      <li>
+                        <Link to={routes.teamView()}>Team View</Link>
+                      </li>
+                    )}
                     {hasRole('manager') && (
                       <li className="hidden-xs">
                         <Link to={routes.viewEmployees()}>Employees</Link>
