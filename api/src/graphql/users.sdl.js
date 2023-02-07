@@ -13,6 +13,7 @@ export const schema = gql`
     updatedAt: DateTime
     companyId: Int
     departmentId: Int
+    isTeamViewHidden: Boolean!
     company: Company
     department: Department
     approvedLeaves: [Leave]
@@ -50,6 +51,7 @@ export const schema = gql`
     isAdmin: Boolean!
     isAutoApprove: Boolean!
     startDate: DateTime!
+    isTeamViewHidden: Boolean!
     departmentId: Int!
   }
 

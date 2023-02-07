@@ -9,7 +9,7 @@ import { Link, routes } from '@redwoodjs/router'
 import CalendarBody from 'src/components/CalendarBody'
 
 const Holidays = ({ company }) => {
-  const { holidays } = company
+  const { holidays, schedule } = company
 
   const months = [
     'January',
@@ -226,6 +226,7 @@ const Holidays = ({ company }) => {
                                     data.month,
                                     week.M
                                   ),
+                                  weekend: !schedule.monday,
                                 }}
                               ></CalendarBody>
                               <CalendarBody
@@ -236,6 +237,7 @@ const Holidays = ({ company }) => {
                                     data.month,
                                     week.Tu
                                   ),
+                                  weekend: !schedule.tuesday,
                                 }}
                               ></CalendarBody>
                               <CalendarBody
@@ -246,6 +248,7 @@ const Holidays = ({ company }) => {
                                     data.month,
                                     week.W
                                   ),
+                                  weekend: !schedule.wednesday,
                                 }}
                               ></CalendarBody>
                               <CalendarBody
@@ -256,6 +259,7 @@ const Holidays = ({ company }) => {
                                     data.month,
                                     week.Th
                                   ),
+                                  weekend: !schedule.thursday,
                                 }}
                               ></CalendarBody>
                               <CalendarBody
@@ -266,13 +270,30 @@ const Holidays = ({ company }) => {
                                     data.month,
                                     week.F
                                   ),
+                                  weekend: !schedule.friday,
                                 }}
                               ></CalendarBody>
                               <CalendarBody
-                                data={{ day: week.Sa, weekend: true }}
+                                data={{
+                                  day: week.Sa,
+                                  leave: isLeaveCell(
+                                    data.year,
+                                    data.month,
+                                    week.Sa
+                                  ),
+                                  weekend: !schedule.saturday,
+                                }}
                               ></CalendarBody>
                               <CalendarBody
-                                data={{ day: week.Su, weekend: true }}
+                                data={{
+                                  day: week.Su,
+                                  leave: isLeaveCell(
+                                    data.year,
+                                    data.month,
+                                    week.Su
+                                  ),
+                                  weekend: !schedule.sunday,
+                                }}
                               ></CalendarBody>
                             </tr>
                           </Fragment>

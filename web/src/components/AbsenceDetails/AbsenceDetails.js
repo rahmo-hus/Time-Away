@@ -52,7 +52,10 @@ const AbsenceDetails = ({
     let total = 0
     for (let i = 0; i < leaves.length; i++) {
       total +=
-        leaves[i].leaveType?.useAllowance === true ? leaves[i].deductedDays : 0
+        leaves[i].leaveType?.useAllowance === true &&
+        new Date(leaves[i].dateStart).getFullYear() === new Date().getFullYear()
+          ? leaves[i].deductedDays
+          : 0
     }
     return total
   }
@@ -62,7 +65,8 @@ const AbsenceDetails = ({
       .filter(
         (leave) =>
           (leave.status === 2 || leave.status === 4) &&
-          leave?.leaveType.name === name
+          leave?.leaveType.name === name &&
+          new Date(leave.dateStart).getFullYear() === new Date().getFullYear()
       )
       .reduce((accumulator, leave) => accumulator + leave.deductedDays, 0)
   }

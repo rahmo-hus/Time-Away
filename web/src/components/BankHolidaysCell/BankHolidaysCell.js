@@ -10,6 +10,15 @@ export const QUERY = gql`
         name
         date
       }
+      schedule {
+        monday
+        tuesday
+        wednesday
+        thursday
+        friday
+        saturday
+        sunday
+      }
     }
   }
 `

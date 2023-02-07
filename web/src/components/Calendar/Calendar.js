@@ -18,7 +18,8 @@ const Calendar = ({
       .filter(
         (leave) =>
           (leave.status === 2 || leave.status === 4) &&
-          leave.leaveType?.useAllowance === true
+          leave.leaveType?.useAllowance === true &&
+          new Date(leave.dateStart).getFullYear() === new Date().getFullYear()
       )
       .reduce((acc, leave) => acc + leave.deductedDays, 0)
   }

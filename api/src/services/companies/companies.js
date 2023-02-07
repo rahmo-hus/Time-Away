@@ -16,7 +16,13 @@ export const createCompany = ({ input }) => {
   })
 }
 
-export const updateCompany = ({ id, input }) => {
+export const updateCompany = async ({ id, input }) => {
+  await db.user.updateMany({
+    data: {
+      isTeamViewHidden: !input.shareAllAbsences,
+    },
+    where: { companyId: id },
+  })
   return db.company.update({
     data: input,
     where: { id },
