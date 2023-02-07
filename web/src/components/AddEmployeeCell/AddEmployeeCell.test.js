@@ -1,5 +1,6 @@
+/* eslint-disable import/order */
 import { render } from '@redwoodjs/testing/web'
-import { Loading, Empty, Failure, Success } from './AddEmployeeCell'
+import { Empty, Failure, Loading, Success } from './AddEmployeeCell'
 import { standard } from './AddEmployeeCell.mock'
 
 // Generated boilerplate tests do not account for all circumstances
