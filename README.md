@@ -3,7 +3,10 @@
   <h1 align="center">TimeAway - A Leave Management Application</h1>
 </p>
 
+_This project was created as part of a bachelor degree program **Web application development using the RedwoodJS framework** at the Faculty of Electrical Engineering, Banja Luka, B&H. The goal of TimeAway is to provide an easy-to-use solution for leave management in companies, streamlining the process for both employees and managers._
+
 TimeAway is a modern and user-friendly application designed to help companies manage employee leave requests and absences. Built using [RedwoodJS](https://redwoodjs.com/), TimeAway provides a simple and intuitive interface for employees, managers, and HR teams.
+
 
 ## Features
 
